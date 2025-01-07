@@ -22,3 +22,15 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# env
+.env
+
+# python
+node_modules
+experiments.py
+misc.py
+
+# js
+package-lock.json
+examples.js
