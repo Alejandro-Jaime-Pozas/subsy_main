@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     # manually install
     'core',
     'rest_framework',
-
+    # 'server',
 ]
 
 MIDDLEWARE = [
