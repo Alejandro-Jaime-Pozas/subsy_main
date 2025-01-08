@@ -1,5 +1,4 @@
 # docker-compose is the top layer for how to run the Dockerfile
-
 services:
   app:
     build:
