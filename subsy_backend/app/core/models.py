@@ -65,10 +65,10 @@ class Company(models.Model):
         return f'<Company {self.id}|{self.name}|{self.domain}>'
 
 
-class LinkedBank(models.Model):
-    """Linked Bank (plaid item) in the db system."""
-    name = models.CharField(max_length=255)
-    web_portal_url = models.URLField(max_length=5000)  # maybe a better way to acct for long urls?
+# class LinkedBank(models.Model):
+#     """Linked Bank (plaid item) in the db system."""
+#     name = models.CharField(max_length=255)
+#     web_portal_url = models.URLField(max_length=5000)  # maybe a better way to acct for long urls?
 
 
 # class BankAccount(models.Model):
