@@ -9,7 +9,7 @@ services:
     # ports: local machine port first, then container port
     ports:
       - "8000:8000"
-    # volumes use to persist data, we want to persist the app dir
+    # volumes used to persist data, we want to persist the app dir
     # this creates a two way sync
     volumes:
       - ./app:/app
