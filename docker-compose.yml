@@ -1,0 +1,55 @@
+services:
+  app:
+    build:
+      context: ./subsy_backend
+      args:
+        - DEV=true
+    # ports: local machine port first, then container port
+    ports:
+      - "8000:8000"
+    # volumes used to persist data, we want to persist the app dir
+    # this creates a two way sync
+    volumes:
+      - ./subsy_backend/app:/app
+    command: >
+      sh -c "python manage.py wait_for_db &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASS=changeme
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+    # these are env variables stored on our local machine
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
+
+  react_frontend:
+    build:
+      context: ./subsy_frontend
+      args:
+        - DEV=true
+    volumes:
+      - ./subsy_frontend:/subsy_frontend      # Bind mount local frontend directory
+    environment:
+      - NODE_ENV=development # Set frontend to development mode
+    ports:
+      - "3000:3000"          # Expose frontend on localhost:3000
+    command: ["npm", "start"] # Start frontend app in dev mode
+
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  dev-db-data:

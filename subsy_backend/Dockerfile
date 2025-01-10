@@ -31,5 +31,6 @@ RUN python -m venv /py && \
         django-user
 
 ENV PATH="/py/bin:$PATH"
+ENV PYTHONPATH="/app"
 
 USER django-user
