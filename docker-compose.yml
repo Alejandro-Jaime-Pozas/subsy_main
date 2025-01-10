@@ -16,6 +16,7 @@ services:
              python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     environment:
+      - WATCHPACK_POLLING=true
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_USER=devuser
@@ -40,8 +41,14 @@ services:
         - DEV=true
     volumes:
       - ./subsy_frontend:/subsy_frontend      # Bind mount local frontend directory
+      - /subsy_frontend/node_modules
     environment:
-      - NODE_ENV=development # Set frontend to development mode
+      # Enable polling for file changes
+      WATCHPACK_POLLING: "true"
+      WATCHPACK_POLLING_INTERVAL: "150"  # Optional: Adjust the interval (in ms)
+      # HOST: "0.0.0.0"          # Ensure server is accessible from the host
+    depends_on:
+      - app                 # Wait for app to be ready before starting frontend
     ports:
       - "3000:3000"          # Expose frontend on localhost:3000
     command: ["npm", "start"] # Start frontend app in dev mode

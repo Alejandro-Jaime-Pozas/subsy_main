@@ -100,7 +100,6 @@ function App(props) {
         } disabled={!ready}>
         <strong>Link account</strong>
       </button>
-
       {/* if transaction data has been retreived successfully, show data */}
       {/* try displaying the transactions as I want them.
           merchant logo
