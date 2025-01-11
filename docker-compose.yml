@@ -14,15 +14,22 @@ services:
     command: >
       sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000 --reload"
+             python manage.py runserver 0.0.0.0:8000"
     environment:
-      - WATCHPACK_POLLING=true
+      - WATCHFILES_FORCE_POLLING=True
+      - DEBUG=True
       - DB_HOST=db
       - DB_NAME=devdb
       - DB_USER=devuser
       - DB_PASS=changeme
     depends_on:
       - db
+    # develop:
+    # # supposedly, the watch below should trigger hot reloading
+    #   watch:
+    #     - action: sync
+    #       path: ./subsy_backend/app
+    #       target: /django_app
 
   db:
     image: postgres:16-alpine
@@ -52,6 +59,10 @@ services:
     ports:
       - "3000:3000"          # Expose frontend on localhost:3000
     command: ["npm", "start"] # Start frontend app in dev mode
+    develop:
+      watch:
+        - action: rebuild
+          path: ./subsy_frontend/package.json
 
 
 networks:

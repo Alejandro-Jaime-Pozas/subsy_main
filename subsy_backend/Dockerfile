@@ -7,8 +7,8 @@ ENV PYTHONUNBUFFERED=1
 
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
-COPY ./app /app
-WORKDIR /app
+COPY ./app /django_app
+WORKDIR /django_app
 EXPOSE 8000
 
 ARG DEV=false
@@ -31,6 +31,6 @@ RUN python -m venv /py && \
         django-user
 
 ENV PATH="/py/bin:$PATH"
-ENV PYTHONPATH="/app"
+# ENV PYTHONPATH="/django_app"  # CHECK IF REMOVING THIS BREAKS THE BUILD!!
 
 USER django-user
