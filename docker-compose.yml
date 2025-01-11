@@ -10,7 +10,7 @@ services:
     # volumes used to persist data, we want to persist the django_app dir
     # this creates a two way sync
     volumes:
-      - ./subsy_backend/django_app:/django_app
+      - ./subsy_backend/app:/django_app
     command: >
       sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&

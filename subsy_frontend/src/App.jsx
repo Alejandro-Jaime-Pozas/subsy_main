@@ -96,6 +96,7 @@ function App(props) {
 
   return (
     <div>
+      howdy
       <button onClick={() => open()
         } disabled={!ready}>
         <strong>Link account</strong>
