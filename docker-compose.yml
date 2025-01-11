@@ -22,6 +22,8 @@ services:
       - DB_NAME=devdb
       - DB_USER=devuser
       - DB_PASS=changeme
+    env_file:
+      - ./subsy_backend/.env
     depends_on:
       - db
     # develop:

@@ -16,11 +16,12 @@ from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.configuration import Configuration
 from plaid.api_client import ApiClient
 from plaid.model.country_code import CountryCode
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from utils import validate_access_token
 
-# Load environment variables
-load_dotenv("../.env")
+# # Load environment variables
+# load_dotenv("../.env")  # prev version for django_react quickstart
+# # load_dotenv()
 
 PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
 PLAID_SECRET = os.getenv('PLAID_SECRET')
