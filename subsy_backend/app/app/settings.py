@@ -42,9 +42,12 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'server',
+    # allow react CORS
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,6 +56,18 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Allow specific frontend origins
+# DEV CHANGE FOR PROD
+CORS_ALLOWED_ORIGINS = [
+    # REPLACE WITH ENV VARIABLES BELOW LATER
+    "http://localhost:3000",       # For React dev environment
+    "http://react_frontend:3000",  # Service name in Docker
+]
+
+# DEV ONLY
+# Optionally: Allow all origins (for development only)
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'app.urls'
 
