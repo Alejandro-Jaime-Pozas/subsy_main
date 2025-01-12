@@ -16,8 +16,8 @@ from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.configuration import Configuration
 from plaid.api_client import ApiClient
 from plaid.model.country_code import CountryCode
-# from dotenv import load_dotenv
 from utils import validate_access_token
+# from dotenv import load_dotenv
 
 # # Load environment variables
 # load_dotenv("../.env")  # prev version for django_react quickstart
