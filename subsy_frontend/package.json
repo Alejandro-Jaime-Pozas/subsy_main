@@ -44,5 +44,6 @@
   },
   "engines": {
     "node": ">=16.0.0"
-  }
+  },
+  "proxy": "http://django_app:8000"
 }

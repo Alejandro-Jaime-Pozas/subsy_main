@@ -68,7 +68,6 @@ services:
         - action: rebuild
           path: ./subsy_frontend/package.json
 
-
 networks:
   default:
     driver: bridge
