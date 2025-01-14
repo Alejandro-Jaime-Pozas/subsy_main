@@ -1,5 +1,5 @@
 services:
-  django_app:
+  backend:
     build:
       context: ./subsy_backend
       args:
@@ -7,10 +7,10 @@ services:
     # ports: local machine port first, then container port
     ports:
       - "8000:8000"
-    # volumes used to persist data, we want to persist the django_app dir
+    # volumes used to persist data, we want to persist the backend dir
     # this creates a two way sync
     volumes:
-      - ./subsy_backend/app:/django_app
+      - ./subsy_backend/app:/backend
     command: >
       sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&
@@ -31,7 +31,7 @@ services:
     #   watch:
     #     - action: sync
     #       path: ./subsy_backend/app
-    #       target: /django_app
+    #       target: /backend
 
   db:
     image: postgres:16-alpine
@@ -43,7 +43,7 @@ services:
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
 
-  react_frontend:
+  frontend:
     build:
       context: ./subsy_frontend
       args:
@@ -59,7 +59,7 @@ services:
     env_file:
       - ./subsy_frontend/.env
     depends_on:
-      - django_app                 # Wait for django_app to start before starting frontend
+      - backend                 # Wait for backend to start before starting frontend
     ports:
       - "3000:3000"          # Expose frontend on localhost:3000
     command: ["npm", "start"] # Start frontend app in dev mode

@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-1a5ri5z&=j2ap*1+!26x59s%=cz_d6_ai@3nglxs+0auu-u6of
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
-
+# DEV
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -57,13 +57,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Allow specific frontend origins
-# DEV CHANGE FOR PROD
-CORS_ALLOWED_ORIGINS = [
-    # REPLACE WITH ENV VARIABLES BELOW LATER
-    "http://localhost:3000",       # For React dev environment
-    "http://react_frontend:3000",  # Service name in Docker
-]
+# # Allow specific frontend origins
+# # DEV CHANGE FOR PROD
+# CORS_ALLOWED_ORIGINS = [
+#     # REPLACE WITH ENV VARIABLES BELOW LATER
+#     "http://localhost:3000",       # For React dev environment
+#     "http://react_frontend:3000",  # Service name in Docker
+# ]
 
 # DEV ONLY
 # Optionally: Allow all origins (for development only)
@@ -159,3 +159,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'  # use our core app, and the User model within that app to override the default AUTH_USER_MODEL builtin w/django
+
+# # this should be put at the end of the settings.py file
+# CORS_ORIGIN_WHITELIST = [
+#      'http://localhost:3000',
+#      'http://react_backend:3000',
+# ]
