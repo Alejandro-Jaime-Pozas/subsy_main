@@ -52,7 +52,7 @@ services:
       - ./subsy_frontend:/subsy_frontend      # Bind mount local frontend directory
       - /subsy_frontend/node_modules
     environment:
-      # Enable polling for file changes
+      # Enable polling for file changes hot reloading
       WATCHPACK_POLLING: "true"
       WATCHPACK_POLLING_INTERVAL: "150"  # Optional: Adjust the interval (in ms)
       # HOST: "0.0.0.0"          # Ensure server is accessible from the host
