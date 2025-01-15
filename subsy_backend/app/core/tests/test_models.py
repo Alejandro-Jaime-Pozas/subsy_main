@@ -18,6 +18,7 @@ from core.models import (
 )
 
 
+# use this format whithout test_ prefix for helper fns
 def create_user():
     """Create a user for tests."""
     user = get_user_model().objects.create_user(
@@ -35,7 +36,7 @@ class ModelTests(TestCase):
     # test base success case user created and is active
     def test_create_user_with_email_successful(self):
         """ Test creating a user with an email is successful,
-            and hashed password is correct.
+            hashed password is correct, and user is active.
         """
         email = 'test@example.com'
         password = 'testpass123'
