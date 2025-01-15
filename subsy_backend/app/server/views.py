@@ -1,5 +1,3 @@
-# from django.shortcuts import render
-
 # Create your views here.
 import os, json, time
 from django.http import JsonResponse
