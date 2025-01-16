@@ -9,11 +9,11 @@ ENV PATH /subsy_frontend/node_modules/.bin:$PATH
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Copy the rest of the application code
-COPY . .
-
 # Install dependencies
 RUN npm install
+
+# Copy the rest of the application code
+COPY . .
 
 # Expose the port.
 EXPOSE 3000

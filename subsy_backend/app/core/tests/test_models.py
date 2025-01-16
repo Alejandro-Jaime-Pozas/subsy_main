@@ -36,7 +36,8 @@ class ModelTests(TestCase):
     # test base success case user created and is active
     def test_create_user_with_email_successful(self):
         """ Test creating a user with an email is successful,
-            hashed password is correct, and user is active.
+            hashed password is correct, and defaults are set
+            correctly.
         """
         email = 'test@example.com'
         password = 'testpass123'
@@ -116,12 +117,11 @@ class ModelTests(TestCase):
     # if super user check True is_active and is_superuser and is_staff
     def test_create_superuser(self):
         """Test creating a superuser is successfull and is_active,
-        is_superuser both True."""
+        is_superuser, is_staff all True."""
         user = get_user_model().objects.create_superuser(
             'test@example.com',
             'testpass123',
         )
-
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
         self.assertTrue(user.is_active)
