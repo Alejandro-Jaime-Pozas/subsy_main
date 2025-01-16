@@ -15,11 +15,7 @@ from plaid.configuration import Configuration
 from plaid.api_client import ApiClient
 from plaid.model.country_code import CountryCode
 from utils import validate_access_token
-# from dotenv import load_dotenv
 
-# # Load environment variables
-# load_dotenv("../.env")  # prev version for django_react quickstart
-# # load_dotenv()
 
 PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
 PLAID_SECRET = os.getenv('PLAID_SECRET')

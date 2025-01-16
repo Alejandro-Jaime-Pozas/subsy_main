@@ -96,7 +96,6 @@ function App(props) {
 
   return (
     <div>
-      changes here do work, or do they?
       <button onClick={() => open()
         } disabled={!ready}>
         <strong>Link account</strong>

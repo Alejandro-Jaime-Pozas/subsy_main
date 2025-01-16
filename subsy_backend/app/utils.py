@@ -1,7 +1,7 @@
 from functools import wraps
 from django.http import JsonResponse
 
-# WRAPPER FUNCTIONS FOR VIEWS
+# WRAPPER FUNCTIONS FOR PLAID VIEWS
 
 def validate_access_token(view_func):
     """Wrapper function that checks if user has a valid access token."""
