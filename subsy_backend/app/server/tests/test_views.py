@@ -1,3 +1,4 @@
+import json
 from django.test import TestCase, SimpleTestCase, RequestFactory
 from unittest.mock import Mock
 from utils import validate_access_token
@@ -23,3 +24,17 @@ class TestValidateAccessTokenDecorator(TestCase):
 
         # ensure the view func is called once
         view_func.assert_called_once_with(request, access_token='valid_token')
+
+    def test_access_token_missing(self):
+        request = self.factory.get('/other-url')
+        request.session = {'access_token': None}
+
+        view_func = Mock(return_value=Mock())
+        wrapped_view = validate_access_token(view_func)
+        response = wrapped_view(request)
+        response_data = json.loads(response.content)  # this needed to convert response binary data to python dict obj
+
+        view_func.assert_not_called()
+
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response_data, {'error': 'Access token not available.'})
