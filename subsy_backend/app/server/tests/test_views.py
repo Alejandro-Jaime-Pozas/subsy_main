@@ -38,3 +38,8 @@ class TestValidateAccessTokenDecorator(TestCase):
 
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response_data, {'error': 'Access token not available.'})
+
+
+class TestViews(TestCase):
+    """Test the views that allow our app to connect to plaid's API."""
+    
