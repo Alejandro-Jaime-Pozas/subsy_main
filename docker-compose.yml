@@ -4,6 +4,7 @@ services:
       context: ./subsy_backend
       args:
         - DEV=true
+        - ZSCALER_CERTIFICATE=true  # ${ZSCALER_CERTIFICATE} doesn't work as dynamic varialbe, FIX!!
     # ports: local machine port first, then container port
     ports:
       - "8000:8000"
