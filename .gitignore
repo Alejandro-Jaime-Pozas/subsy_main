@@ -9,3 +9,6 @@ misc.py
 # js
 package-lock.json
 examples.js
+
+# zscaler
+ZscalerRootCertificate.crt
