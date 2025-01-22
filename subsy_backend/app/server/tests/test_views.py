@@ -1,7 +1,10 @@
-import json
+import json, os, time
 from django.test import TestCase, SimpleTestCase, RequestFactory
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
+from django.http import JsonResponse
+
 from utils import validate_access_token
+from server.views import create_link_token
 
 
 class TestValidateAccessTokenDecorator(TestCase):
@@ -43,8 +46,37 @@ class TestValidateAccessTokenDecorator(TestCase):
 class TestViews(TestCase):
     """Test the views that allow our app to connect to plaid's API."""
 
-    def test_create_link_token_success(self):
+    def setUp(self):
+        self.factory = RequestFactory()  # to create mock requests
+
+    @patch('server.views.plaid_client')  # Mock the plaid_client
+    def test_create_link_token_success(self, mock_plaid_client):
         """Test that creating a Link token returns a valid Link token."""
         # set up a http request obj
         # send http request from django to plaid backend
         # return expected status, expected value/type
+        # Arrange
+        mock_response = Mock()
+        mock_response.to_dict.return_value = {
+            "link_token": "link-sandbox-8def151b-7666-4f67-b1c1-50e0bc24a811",
+            "expiration": "2025-01-22T06:43:11Z",
+            "request_id": "qHZAELcgO5WW2ax"
+        }
+        mock_plaid_client.link_token_create.return_value = mock_response
+
+        request = self.factory.get('/create-link-token/')  # Create a mock GET request
+
+        # Act
+        response = create_link_token(request)
+
+        # Assert
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(
+            response.content,
+            {
+                "link_token": "link-sandbox-8def151b-7666-4f67-b1c1-50e0bc24a811",
+                "expiration": "2025-01-22T06:43:11Z",
+                "request_id": "qHZAELcgO5WW2ax"
+            }
+        )
+        mock_plaid_client.link_token_create.assert_called_once()

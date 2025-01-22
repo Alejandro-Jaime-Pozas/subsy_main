@@ -101,6 +101,7 @@ def exchange_public_token(request):
             # access_token = exchange_response.to_dict()["access_token"]
             return JsonResponse({"success": True})
         except plaid.ApiException as e:
+            print(e)
             return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
