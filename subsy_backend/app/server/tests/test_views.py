@@ -49,7 +49,7 @@ class TestViews(TestCase):
     def setUp(self):
         self.factory = RequestFactory()  # to create mock requests
 
-    @patch('server.views.splaid_client')  # Mock the plaid_client
+    @patch('server.views.plaid_client')  # Mock the plaid_client
     def test_create_link_token_success(self, mock_plaid_client):
         """Test that creating a Link token returns a valid Link token."""
         # set up a http request obj
