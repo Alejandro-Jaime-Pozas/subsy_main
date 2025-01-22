@@ -44,7 +44,7 @@ class TestViews(TestCase):
     """Test the views that allow our app to connect to plaid's API."""
 
     def test_create_link_token_success(self):
-        """Test that creating a link token returns a valid token."""
+        """Test that creating a Link token returns a valid Link token."""
         # set up a http request obj
         # send http request from django to plaid backend
         # return expected status, expected value/type
