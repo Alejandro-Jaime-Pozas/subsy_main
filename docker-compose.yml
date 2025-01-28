@@ -3,8 +3,8 @@ services:
     build:
       context: ./subsy_backend
       args:
-        - DEV=true
-        - ZSCALER_CERTIFICATE=false  # ${ZSCALER_CERTIFICATE} doesn't work as dynamic varialbe, FIX!!
+        - DEV=${DEV}
+        - ZSCALER_CERTIFICATE=${ZSCALER_CERTIFICATE}  # ${ZSCALER_CERTIFICATE} doesn't work as dynamic varialbe, FIX!!
     # ports: local machine port first, then container port
     ports:
       - "8000:8000"

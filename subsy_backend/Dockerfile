@@ -14,15 +14,17 @@ COPY ./app /backend
 WORKDIR /backend
 EXPOSE 8000
 
+# This below will only run if the docker compose file does NOT include the specified arg, otherwise docker compose arg version will take precedence
 ARG DEV=false
 ARG ZSCALER_CERTIFICATE=false
-# # Zscaler issues start
-# RUN if [ $ZSCALER_CERTIFICATE = "true" ]; \
-#         then apk --no-cache \
-#         --repository http://dl-cdn.alpinelinux.org/alpine/v3.19/main \
-#         add ca-certificates && update-ca-certificates ; \
-#     fi
-# # Zscaler issues end
+# Zscaler issues start
+RUN if [ $ZSCALER_CERTIFICATE = "true" ]; \
+        then cp ./ZscalerRootCertificate.crt /usr/local/share/ca-certificates/ && \
+        apk --no-cache \
+        --repository http://dl-cdn.alpinelinux.org/alpine/v3.19/main \
+        add ca-certificates && update-ca-certificates ; \
+    fi
+# Zscaler issues end
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     # apk lines reference python-postgres adaptor dependencies req for this alpine image so that postgres can work in this image
