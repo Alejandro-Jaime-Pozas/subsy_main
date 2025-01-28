@@ -1,4 +1,4 @@
-import json, os, time
+import json, os, time, plaid
 from django.test import TestCase, SimpleTestCase, RequestFactory
 from unittest.mock import Mock, patch
 from django.http import JsonResponse
@@ -52,9 +52,6 @@ class TestViews(TestCase):
     @patch('server.views.plaid_client')  # Mock the plaid_client
     def test_create_link_token_success(self, mock_plaid_client):
         """Test that creating a Link token returns a valid Link token."""
-        # set up a http request obj
-        # send http request from django to plaid backend
-        # return expected status, expected value/type
         # Arrange
         mock_response = Mock()
         mock_response.to_dict.return_value = {
@@ -79,4 +76,19 @@ class TestViews(TestCase):
                 "request_id": "qHZAELcgO5WW2ax"
             }
         )
+        mock_plaid_client.link_token_create.assert_called_once()
+
+    # test create link token exception
+    @patch('server.views.plaid_client')
+    def test_create_link_token_exception(self, mock_plaid_client):
+        """Test that creating a link token with wrong input creates exception."""
+        # simluate a request that creates an exception
+        mock_plaid_client.link_token_create.side_effect = plaid.ApiException(status=400, reason='Test error')
+
+        request = self.factory.get('/create-link-token/')  # create mock get request
+
+        response = create_link_token(request)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, {'error': 'Status Code: 400\nReason: Test error\n'})
         mock_plaid_client.link_token_create.assert_called_once()

@@ -82,7 +82,7 @@ def create_link_token(request):
         link_token_response = plaid_client.link_token_create(link_token_request)
         return JsonResponse(link_token_response.to_dict(), safe=False)
     except plaid.ApiException as e:
-        print(e)
+        # print(e)
         return JsonResponse({"error": str(e)}, status=400)
 
 # Exchange Public Token for Access Token
