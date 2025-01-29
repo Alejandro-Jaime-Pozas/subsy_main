@@ -55,6 +55,7 @@ class TestViews(TestCase):
     def setUp(self):
         self.factory = RequestFactory()  # to create mock requests
 
+    # test create_link_token endpoint
     @patch('server.views.plaid_client')  # Mock the plaid_client
     def test_create_link_token_success(self, mock_plaid_client):
         """Test that creating a Link token returns a valid Link token."""
@@ -73,7 +74,6 @@ class TestViews(TestCase):
         self.assertJSONEqual(response.content, self.create_link_token_dict)
         mock_plaid_client.link_token_create.assert_called_once()
 
-    # test create link token exception
     @patch('server.views.plaid_client')
     def test_create_link_token_exception(self, mock_plaid_client):
         """Test that creating a link token with wrong input creates exception."""
@@ -87,3 +87,8 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(response.content, {'error': 'Status Code: 400\nReason: Test error\n'})
         mock_plaid_client.link_token_create.assert_called_once()
+
+    # test exchange_public_token endpoint
+    def test_exchange_public_token_success(self):
+        mock_response = Mock()
+        link_token = self.create_link_token_dict.get("link_token")
