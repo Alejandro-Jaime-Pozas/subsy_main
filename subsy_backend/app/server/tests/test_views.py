@@ -4,7 +4,10 @@ from unittest.mock import Mock, patch
 from django.http import JsonResponse
 
 from utils import validate_access_token
-from server.views import create_link_token
+from server.views import (
+    create_link_token,
+    exchange_public_token,
+)
 
 
 class TestValidateAccessTokenDecorator(TestCase):
@@ -89,6 +92,28 @@ class TestViews(TestCase):
         mock_plaid_client.link_token_create.assert_called_once()
 
     # test exchange_public_token endpoint
-    def test_exchange_public_token_success(self):
+    @patch('server.views.plaid_client')
+    def test_exchange_public_token_success(self, mock_plaid_client):
+        """Test that exchanging the public token for an access token is successful."""
+
+        # Arrange
         mock_response = Mock()
-        link_token = self.create_link_token_dict.get("link_token")
+        mock_response.to_dict.return_value = {
+            "access_token": "access-sandbox-1234"
+        }
+        mock_plaid_client.item_public_token_exchange.return_value = mock_response
+
+        data = dict()
+        data["public_token"] = self.create_link_token_dict.get("link_token")
+
+        request = self.factory.post('exchange_public_token/', data=json.dumps(data), content_type='application/json')
+        request.session = {}
+
+        # Act
+        response = exchange_public_token(request)
+
+        # Assert
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"success": True})
+        self.assertEqual(request.session["access_token"], "access-sandbox-1234")
+        mock_plaid_client.item_public_token_exchange.assert_called_once()
