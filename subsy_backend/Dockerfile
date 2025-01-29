@@ -9,7 +9,8 @@ COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /backend
 # Zscaler issues start
-COPY ./ZscalerRootCertificate.crt /usr/local/share/ca-certificates/
+COPY ./jci_pc_config /tmp/jci_pc_config
+# COPY ./ZscalerRootCertificate.crt /usr/local/share/ca-certificates/
 # Zscaler issues end
 WORKDIR /backend
 EXPOSE 8000
@@ -19,7 +20,8 @@ ARG DEV=false
 ARG ZSCALER_CERTIFICATE=false
 # Zscaler issues start
 RUN if [ $ZSCALER_CERTIFICATE = "true" ]; \
-        then apk --no-cache \
+        then cp /tmp/jci_pc_config/ZscalerRootCertificate.crt /usr/local/share/ca-certificates/ && \
+        apk --no-cache \
         --repository http://dl-cdn.alpinelinux.org/alpine/v3.19/main \
         add ca-certificates && update-ca-certificates ; \
     fi
