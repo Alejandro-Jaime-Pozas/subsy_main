@@ -46,6 +46,12 @@ class TestValidateAccessTokenDecorator(TestCase):
 class TestViews(TestCase):
     """Test the views that allow our app to connect to plaid's API."""
 
+    create_link_token_dict = {
+        "link_token": "link-sandbox-8def151b-7666-4f67-b1c1-50e0bc24a811",
+        "expiration": "2025-01-22T06:43:11Z",
+        "request_id": "qHZAELcgO5WW2ax"
+    }
+
     def setUp(self):
         self.factory = RequestFactory()  # to create mock requests
 
@@ -54,28 +60,17 @@ class TestViews(TestCase):
         """Test that creating a Link token returns a valid Link token."""
         # Arrange
         mock_response = Mock()
-        mock_response.to_dict.return_value = {
-            "link_token": "link-sandbox-8def151b-7666-4f67-b1c1-50e0bc24a811",
-            "expiration": "2025-01-22T06:43:11Z",
-            "request_id": "qHZAELcgO5WW2ax"
-        }
+        mock_response.to_dict.return_value = self.create_link_token_dict
         mock_plaid_client.link_token_create.return_value = mock_response
 
-        request = self.factory.get('/create-link-token/')  # Create a mock GET request
+        request = self.factory.get('create_link_token/')  # Create a mock GET request
 
         # Act
         response = create_link_token(request)
 
         # Assert
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(
-            response.content,
-            {
-                "link_token": "link-sandbox-8def151b-7666-4f67-b1c1-50e0bc24a811",
-                "expiration": "2025-01-22T06:43:11Z",
-                "request_id": "qHZAELcgO5WW2ax"
-            }
-        )
+        self.assertJSONEqual(response.content, self.create_link_token_dict)
         mock_plaid_client.link_token_create.assert_called_once()
 
     # test create link token exception
@@ -85,7 +80,7 @@ class TestViews(TestCase):
         # simluate a request that creates an exception
         mock_plaid_client.link_token_create.side_effect = plaid.ApiException(status=400, reason='Test error')
 
-        request = self.factory.get('/create-link-token/')  # create mock get request
+        request = self.factory.get('create_link_token/')  # create mock get request
 
         response = create_link_token(request)
 
