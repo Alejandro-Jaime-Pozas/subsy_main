@@ -117,3 +117,19 @@ class TestViews(TestCase):
         self.assertJSONEqual(response.content, {"success": True})
         self.assertEqual(request.session["access_token"], "access-sandbox-1234")
         mock_plaid_client.item_public_token_exchange.assert_called_once()
+
+    @patch('server.views.plaid_client')
+    def test_exchange_public_token_exception(self, mock_plaid_client):
+        """Test that trying to exchange a token invalidly returns exception error."""
+        mock_plaid_client.item_public_token_exchange.side_effect = plaid.ApiException(status=400, reason='Test error')
+        data = {"public_token": "invalid-token"}
+
+        request = self.factory.post('exchange_public_token/', data=json.dumps(data), content_type='application/json')
+        request.session = {}
+
+        response = exchange_public_token(request)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, {"error": 'Status Code: 400\nReason: Test error\n'})
+        self.assertIsNone(request.session.get("access_token"))
+        mock_plaid_client.item_public_token_exchange.assert_called_once()
