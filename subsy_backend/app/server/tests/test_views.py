@@ -7,6 +7,8 @@ from utils import validate_access_token
 from server.views import (
     create_link_token,
     exchange_public_token,
+    get_balance,
+    csrf_token,
 )
 
 
@@ -141,6 +143,21 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 405)
         self.assertJSONEqual(response.content, {"error": "Invalid request method."})
 
-    # test get_balance endpoint
-    def test_get_balance_success(self):
-        """Test that getting """
+    # test csrf_token endpoint
+    @patch('django.middleware.csrf.get_token')
+    def test_csrf_token_success(self, mock_get_token):
+        """Test obtaining csrf token is successful."""
+        mock_response = Mock()
+        mock_response.return_value = {"csrfToken": 'token-12345'}
+        mock_get_token.return_value = mock_response
+        request = self.factory.get('csrf_token/')
+        response = csrf_token(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"csrfToken": "token-12345"})
+
+    # # test get_balance endpoint
+    # @patch('utils.validate_access_token')
+    # @patch('server.views.plaid_client')
+    # def test_get_balance_success(self):
+    #     """Test that getting user bank balance is successful."""
+    #     pass
