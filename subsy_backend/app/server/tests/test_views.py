@@ -133,3 +133,14 @@ class TestViews(TestCase):
         self.assertJSONEqual(response.content, {"error": 'Status Code: 400\nReason: Test error\n'})
         self.assertIsNone(request.session.get("access_token"))
         mock_plaid_client.item_public_token_exchange.assert_called_once()
+
+    def test_exchange_public_token_invalid_method(self):
+        """Test that making an invalid http request returns error."""
+        request = self.factory.get('exchange_public_token/')
+        response = exchange_public_token(request)
+        self.assertEqual(response.status_code, 405)
+        self.assertJSONEqual(response.content, {"error": "Invalid request method."})
+
+    # test get_balance endpoint
+    def test_get_balance_success(self):
+        """Test that getting """
