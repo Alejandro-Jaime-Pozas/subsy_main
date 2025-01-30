@@ -16,10 +16,11 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Checkout
         uses: actions/checkout@v4
-      # - name: Set up environment variables
-      #   run: |
-      #     cp ./subsy_backend/.env ./subsy_backend.env
-      #     cp ./subsy_frontend/.env ./subsy_frontend.env
+      - name: Restore base64 encoded git bash .env files
+        run: |
+          echo "${{ secrets.ENV }}" | base64 --decode > .env
+          echo "${{ secrets.SUBSY_BACKEND_ENV }}" | base64 --decode > .env
+          echo "${{ secrets.SUBSY_FRONTEND_ENV }}" | base64 --decode > .env
       - name: Test
         run: docker compose -f ./docker-compose.yml run --rm backend sh -c "python manage.py wait_for_db && python manage.py test"
         # run: docker compose -f ./subsy_backend/docker-compose.yml run --rm app sh -c "python manage.py wait_for_db && python manage.py test"
