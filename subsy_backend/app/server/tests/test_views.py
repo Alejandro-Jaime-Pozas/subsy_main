@@ -165,7 +165,6 @@ class TestViews(TestCase):
         self.assertEqual(len(response_data.get('csrfToken')), 64)
 
     # test get_balance endpoint
-    # @validate_access_token
     @patch('server.views.plaid_client')
     def test_get_balance_success(self, mock_plaid_client):
         """Test that getting user bank balance is successful."""
@@ -191,3 +190,14 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response_content["Balance"], accts_balance_get_value)
         mock_plaid_client.accounts_balance_get.assert_called_once()
+
+    @patch('server.views.plaid_client')
+    def test_get_balance_exception(self, mock_plaid_client):
+        """Test that wrongly getting balance returns error."""
+        mock_plaid_client.accounts_balance_get.side_effect = plaid.ApiException(status=400, reason='Test error.')
+        request = self.factory.get('balance/')
+        self._add_session_to_request(request)
+        response = get_balance(request)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertJSONEqual(response.content, {"error": 'Status Code: 400\nReason: Test error.\n'})
