@@ -53,7 +53,7 @@ function App(props) {
   // Fetch transaction data
   const getLatestTransactions = useCallback(async () => {
     setLoading(true);
-    const response = await fetch("/api/get_latest_transactions/", {});
+    const response = await fetch("/api/get_transactions/", {});
     const data = await response.json();
     setLatestTransactions(data.latest_transactions);
     localStorage.setItem("latest_transactions", JSON.stringify(data.latest_transactions));

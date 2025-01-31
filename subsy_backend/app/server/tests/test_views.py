@@ -208,4 +208,6 @@ class TestViews(TestCase):
     @patch('server.views.plaid_client.transactions_sync')
     def test_get_transactions_success(self, mock_transactions_sync):
         """Test that getting transactions from plaid is successful."""
-        pass 
+
+
+        request = self.factory.get('')
