@@ -11,6 +11,9 @@ from server.views import (
     exchange_public_token,
     get_balance,
     csrf_token,
+    get_transactions,
+    pretty_print_response,
+    format_error,
 )
 
 
@@ -201,3 +204,8 @@ class TestViews(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(response.content, {"error": 'Status Code: 400\nReason: Test error.\n'})
+
+    @patch('server.views.plaid_client.transactions_sync')
+    def test_get_transactions_success(self, mock_transactions_sync):
+        """Test that getting transactions from plaid is successful."""
+        pass 
