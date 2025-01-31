@@ -1,8 +1,9 @@
 import json, os, time, plaid
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, MagicMock, patch
 
 from django.middleware.csrf import get_token
 from django.test import TestCase, SimpleTestCase, RequestFactory
+from django.contrib.sessions.middleware import SessionMiddleware
 
 from utils import validate_access_token
 from server.views import (
@@ -60,6 +61,14 @@ class TestViews(TestCase):
 
     def setUp(self):
         self.factory = RequestFactory()  # to create mock requests
+        self.access_token = "test_access_token-12345"
+
+    def _add_session_to_request(self, request):
+        """Helper function to add session support to a request."""
+        middleware = SessionMiddleware(lambda req: None)
+        middleware.process_request(request)
+        request.session["access_token"] = self.access_token
+        request.session.save()
 
     # test create_link_token endpoint
     @patch('server.views.plaid_client')  # Mock the plaid_client
@@ -156,6 +165,7 @@ class TestViews(TestCase):
         self.assertEqual(len(response_data.get('csrfToken')), 64)
 
     # test get_balance endpoint
+    # @validate_access_token
     @patch('server.views.plaid_client')
     def test_get_balance_success(self, mock_plaid_client):
         """Test that getting user bank balance is successful."""
@@ -174,9 +184,10 @@ class TestViews(TestCase):
         mock_plaid_client.accounts_balance_get.return_value = mock_response
 
         request = self.factory.get('balance/')
-
+        self._add_session_to_request(request)
         response = get_balance(request)
+        response_content = json.loads(response.content)
 
         self.assertEqual(response.status_code, 200)
-        self.assertJSONEqual(response.content, accts_balance_get_value)
+        self.assertEqual(response_content["Balance"], accts_balance_get_value)
         mock_plaid_client.accounts_balance_get.assert_called_once()
