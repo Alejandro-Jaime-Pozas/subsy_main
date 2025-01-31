@@ -153,12 +153,30 @@ class TestViews(TestCase):
         response_data = json.loads(response.content)
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotEqual(response_data.get('csrfToken'), None)
         self.assertEqual(len(response_data.get('csrfToken')), 64)
 
-    # # test get_balance endpoint
-    # @patch('utils.validate_access_token')
-    # @patch('server.views.plaid_client')
-    # def test_get_balance_success(self):
-    #     """Test that getting user bank balance is successful."""
-    #     pass
+    # test get_balance endpoint
+    @patch('server.views.plaid_client')
+    def test_get_balance_success(self, mock_plaid_client):
+        """Test that getting user bank balance is successful."""
+        accts_balance_get_value = {
+            "account_id": "zWKvgMexepUDDRmjA4NoIGK7Xq337nflXVdVg",
+            "balances": {
+                "available": 100,
+                "current": 110,
+                "limit": None,
+                "iso_currency_code": "USD",
+                "unofficial_currency_code": None
+            }
+        }
+        mock_response = Mock()
+        mock_response.to_dict.return_value = accts_balance_get_value
+        mock_plaid_client.accounts_balance_get.return_value = mock_response
+
+        request = self.factory.get('balance/')
+
+        response = get_balance(request)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, accts_balance_get_value)
+        mock_plaid_client.accounts_balance_get.assert_called_once()
