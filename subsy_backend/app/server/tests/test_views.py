@@ -208,6 +208,20 @@ class TestViews(TestCase):
     @patch('server.views.plaid_client.transactions_sync')
     def test_get_transactions_success(self, mock_transactions_sync):
         """Test that getting transactions from plaid is successful."""
+        mock_response = Mock()
+        mock_response.to_dict.return_value = {
+            'next_cursor': 'cursor_a',
+            'added': [{'date': '2024-12-31'}],
+            'modified': [],
+            'removed': [],
+            'has_more': False,
+        }
+        mock_transactions_sync.return_value = mock_response
 
+        request = self.factory.get('get_transactions/')
+        self._add_session_to_request(request)  # add session and access token
+        response = get_transactions(request)
+        response_content = json.loads(response.content)
 
-        request = self.factory.get('')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('latest_transactions', response_content)

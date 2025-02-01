@@ -162,12 +162,11 @@ def get_transactions(request, *args, **kwargs):
             modified.extend(response['modified'])
             removed.extend(response['removed'])
             has_more = response['has_more']
-            pretty_print_response(response)
+            # pretty_print_response(response)  # TO VIEW TRANSACTION DETAILS
 
-        # Return the 8 most recent transactions
-        latest_transactions = sorted(added, key=lambda t: t['date'])[-8:]
-        return JsonResponse({
-            'latest_transactions': added[:15]})  # CHANGE BACK!
+        # Return the 15 most recent transactions
+        latest_transactions = sorted(added, key=lambda t: t['date'])[-15:]
+        return JsonResponse({'latest_transactions': added[:15]})  # CHANGE BACK!
             # 'latest_transactions': latest_transactions})  # CHANGE BACK!
 
     except plaid.ApiException as e:
