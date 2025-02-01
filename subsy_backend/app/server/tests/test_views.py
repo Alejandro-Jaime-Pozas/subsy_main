@@ -225,3 +225,28 @@ class TestViews(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('latest_transactions', response_content)
+
+    @patch('server.views.plaid_client.transactions_sync')
+    def test_get_transactions_exception(self, mock_transactions_sync):
+        """Test that getting transactions with wrong reqs returns error."""
+
+        # Make mock_transactions_sync raise an exception with a valid body
+        mock_exception = plaid.ApiException(status=400, reason='Test error.')
+        mock_exception.body = json.dumps({
+            "status": 400,
+            'error_message': 'some message',
+            'error_code': 'some code',
+            'error_type': 'some type',
+        })  # Add body
+
+        mock_transactions_sync.side_effect = mock_exception
+
+        request = self.factory.get('get_transactions/')
+        self._add_session_to_request(request)
+
+        # Call the actual function, which should now trigger an exception
+        response = get_transactions(request)
+        response_content = json.loads(response.content)
+        print(response_content)
+
+        self.assertEqual(response_content["error"]["status_code"], 400)
