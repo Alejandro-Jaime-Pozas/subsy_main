@@ -1,8 +1,7 @@
-import json, os, time, plaid
-from unittest.mock import Mock, MagicMock, patch
+import json, plaid
+from unittest.mock import Mock, patch
 
-from django.middleware.csrf import get_token
-from django.test import TestCase, SimpleTestCase, RequestFactory
+from django.test import TestCase, RequestFactory
 from django.contrib.sessions.middleware import SessionMiddleware
 
 from utils import validate_access_token
@@ -12,8 +11,6 @@ from server.views import (
     get_balance,
     csrf_token,
     get_transactions,
-    pretty_print_response,
-    format_error,
 )
 
 
@@ -205,6 +202,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(response.content, {"error": 'Status Code: 400\nReason: Test error.\n'})
 
+    # test get_transactions endpoint
     @patch('server.views.plaid_client.transactions_sync')
     def test_get_transactions_success(self, mock_transactions_sync):
         """Test that getting transactions from plaid is successful."""
