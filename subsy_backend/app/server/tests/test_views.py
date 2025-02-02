@@ -10,7 +10,7 @@ from server.views import (
     exchange_public_token,
     get_balance,
     csrf_token,
-    get_transactions,
+    get_latest_transactions,
 )
 
 
@@ -202,9 +202,9 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertJSONEqual(response.content, {"error": 'Status Code: 400\nReason: Test error.\n'})
 
-    # test get_transactions endpoint
+    # test get_latest_transactions endpoint
     @patch('server.views.plaid_client.transactions_sync')
-    def test_get_transactions_success(self, mock_transactions_sync):
+    def test_get_latest_transactions_success(self, mock_transactions_sync):
         """Test that getting transactions from plaid is successful."""
         mock_response = Mock()
         mock_response.to_dict.return_value = {
@@ -216,16 +216,16 @@ class TestViews(TestCase):
         }
         mock_transactions_sync.return_value = mock_response
 
-        request = self.factory.get('get_transactions/')
+        request = self.factory.get('get_latest_transactions/')
         self._add_session_to_request(request)  # add session and access token
-        response = get_transactions(request)
+        response = get_latest_transactions(request)
         response_content = json.loads(response.content)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn('latest_transactions', response_content)
 
     @patch('server.views.plaid_client.transactions_sync')
-    def test_get_transactions_exception(self, mock_transactions_sync):
+    def test_get_latest_transactions_exception(self, mock_transactions_sync):
         """Test that getting transactions with wrong reqs returns error."""
 
         # Make mock_transactions_sync raise an exception with a valid body
@@ -239,11 +239,11 @@ class TestViews(TestCase):
 
         mock_transactions_sync.side_effect = mock_exception
 
-        request = self.factory.get('get_transactions/')
+        request = self.factory.get('get_latest_transactions/')
         self._add_session_to_request(request)
 
         # Call the actual function, which should now trigger an exception
-        response = get_transactions(request)
+        response = get_latest_transactions(request)
         response_content = json.loads(response.content)
         print(response_content)
 

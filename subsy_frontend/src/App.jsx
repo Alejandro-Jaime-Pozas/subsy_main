@@ -6,6 +6,7 @@ function App(props) {
   const [token, setToken] = useState(null);
   // set the balance and transaction data to the data retreived from local storage, if it exists
   const [data, setData] = useState(JSON.parse(localStorage.getItem("balance")) || null);
+  const [allTransactions, setAllTransactions] = useState(JSON.parse(localStorage.getItem("all_transactions")) || null);
   const [latestTransactions, setLatestTransactions] = useState(JSON.parse(localStorage.getItem("latest_transactions")) || null);
   const [loading, setLoading] = useState(false);
 
@@ -19,6 +20,7 @@ function App(props) {
       body: JSON.stringify({ public_token: publicToken }),
     });
     await getLatestTransactions();
+    await getAllTransactions();
     await getBalance();
   }, []);
 
@@ -47,19 +49,30 @@ function App(props) {
     setData(data);
     localStorage.setItem("balance", JSON.stringify(data));
     setLoading(false);
-    console.log(data)
+    // console.log(data)
   }, [setData, setLoading]);
 
-  // Fetch transaction data
+  // Fetch latest transaction data
   const getLatestTransactions = useCallback(async () => {
     setLoading(true);
-    const response = await fetch("/api/get_transactions/", {});
+    const response = await fetch("/api/get_latest_transactions/", {});
     const data = await response.json();
     setLatestTransactions(data.latest_transactions);
     localStorage.setItem("latest_transactions", JSON.stringify(data.latest_transactions));
     setLoading(false);
     console.log(data);
   }, [setLatestTransactions, setLoading]);
+
+  // Fetch all transaction data
+  const getAllTransactions = useCallback(async () => {
+    setLoading(true);
+    const response = await fetch("/api/get_all_transactions/", {});
+    const data = await response.json();
+    setAllTransactions(data.all_transactions);
+    localStorage.setItem("all_transactions", JSON.stringify(data.all_transactions));
+    setLoading(false);
+    // console.log(data);
+  }, [setAllTransactions, setLoading]);
 
   let isOauth = false;
 
@@ -134,10 +147,19 @@ function App(props) {
         )
       )}
       TRANSACTIONS!!!
-      {/* show transactions json */}
-      {!loading &&
+      {/* show latest transactions json */}
+      {/* {!loading &&
         latestTransactions != null &&
         Object.entries(latestTransactions).map((entry, i) => (
+          <pre key={i}>
+            <code>{JSON.stringify(entry[1], null, 2)}</code>
+          </pre>
+        )
+      )} */}
+      {/* show all transactions json */}
+      {!loading &&
+        allTransactions != null &&
+        Object.entries(allTransactions).map((entry, i) => (
           <pre key={i}>
             <code>{JSON.stringify(entry[1], null, 2)}</code>
           </pre>

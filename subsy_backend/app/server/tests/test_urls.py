@@ -22,6 +22,6 @@ class TestUrls(SimpleTestCase):
         url = reverse('csrf_token')
         self.assertEqual(resolve(url).func, views.csrf_token)
 
-    def test_get_transactions_url(self):
-        url = reverse('get_transactions')
-        self.assertEqual(resolve(url).func, views.get_transactions)
+    def test_get_latest_transactions_url(self):
+        url = reverse('get_latest_transactions')
+        self.assertEqual(resolve(url).func, views.get_latest_transactions)

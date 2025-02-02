@@ -123,9 +123,9 @@ def csrf_token(request):
     token = get_token(request)
     return JsonResponse({"csrfToken": token})
 
-# Get Transactions
+# Get Latest Transactions
 @validate_access_token
-def get_transactions(request, *args, **kwargs):
+def get_latest_transactions(request, *args, **kwargs):
     # Set cursor to empty to receive all historical updates
     # Provide a cursor from your database if you've previously
     # received one for the Item. Leave null if this is your
@@ -168,6 +168,54 @@ def get_transactions(request, *args, **kwargs):
         latest_transactions = sorted(added, key=lambda t: t['date'])[-15:]
         return JsonResponse({'latest_transactions': added[:15]})  # CHANGE BACK!
             # 'latest_transactions': latest_transactions})  # CHANGE BACK!
+
+    except plaid.ApiException as e:
+        error_response = format_error(e)  # can format other errors this same way later
+        return JsonResponse(error_response)
+
+# Get Transactions
+@validate_access_token
+def get_all_transactions(request, *args, **kwargs):
+    # Set cursor to empty to receive all historical updates
+    # Provide a cursor from your database if you've previously
+    # received one for the Item. Leave null if this is your
+    # first sync call for this Item. The first request will
+    # return a cursor.
+    cursor = ''
+
+    # New transaction updates since "cursor"
+    added = []
+    modified = []
+    removed = []  # Removed transaction ids
+    has_more = True
+    try:
+        # Iterate through each page of new transaction updates for item
+        while has_more:
+            request = TransactionsSyncRequest(
+                access_token=kwargs.get("access_token"),
+                cursor=cursor,
+            )
+            response = plaid_client.transactions_sync(request).to_dict()
+            cursor = response['next_cursor']
+            # If no transactions are available yet, wait and poll the endpoint.
+            # Normally, we would listen for a webhook, but the Quickstart doesn't
+            # support webhooks. For a webhook example, see
+            # https://github.com/plaid/tutorial-resources or
+            # https://github.com/plaid/pattern
+            if cursor == '':
+                time.sleep(2)
+                print('Waiting for cursor to be available')
+                continue
+            # If cursor is not an empty string, we got results,
+            # so add this page of results
+            added.extend(response['added'])
+            modified.extend(response['modified'])
+            removed.extend(response['removed'])
+            has_more = response['has_more']
+            pretty_print_response(response)  # TO VIEW TRANSACTION DETAILS
+            # all_transactions = [added, modified, removed]
+
+        return JsonResponse({'all_transactions': response})
 
     except plaid.ApiException as e:
         error_response = format_error(e)  # can format other errors this same way later
