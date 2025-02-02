@@ -58,7 +58,7 @@ function App(props) {
     setLatestTransactions(data.latest_transactions);
     localStorage.setItem("latest_transactions", JSON.stringify(data.latest_transactions));
     setLoading(false);
-    console.log(data.latest_transactions);
+    console.log(data);
   }, [setLatestTransactions, setLoading]);
 
   let isOauth = false;
@@ -128,6 +128,16 @@ function App(props) {
       {!loading &&
         data != null &&
         Object.entries(data).map((entry, i) => (
+          <pre key={i}>
+            <code>{JSON.stringify(entry[1], null, 2)}</code>
+          </pre>
+        )
+      )}
+      TRANSACTIONS!!!
+      {/* show transactions json */}
+      {!loading &&
+        latestTransactions != null &&
+        Object.entries(latestTransactions).map((entry, i) => (
           <pre key={i}>
             <code>{JSON.stringify(entry[1], null, 2)}</code>
           </pre>
