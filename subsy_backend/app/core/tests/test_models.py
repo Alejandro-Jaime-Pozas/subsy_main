@@ -9,7 +9,7 @@ from django.db.utils import IntegrityError
 
 from core.models import (
     Company,
-    # LinkedBank,
+    LinkedBank,
     # BankAccount,
     # Transaction,
     # Application,
@@ -200,19 +200,23 @@ class CompayModelTests(TestCase):
 class LinkedBankModelTests(TestCase):
     """Test the LinkedBank model."""
 
-    # linked_bank_name = 'test_linked_bank'
-    # linked_bank_url = 'https://www.example.com'
+    item_id = '3eWb5P7zNlfZABn9yqjos4zK3yvwD4FqwmNNp'
+    institution_id = 'ins_56'
+    institution_name = 'Chase'
 
-    # # create LinkedBank is successful
-    # def test_create_linked_bank_successful(self):
-    #     """Test creating a linked bank account (plaid item) is successful
-    #     and that the bank's web portal is active."""
-    #     linked_bank = LinkedBank.objects.create(
-    #         name=self.linked_bank_name,
-    #         web_portal_url=self.linked_bank_url,
-    #     )
-    #     self.assertEqual(linked_bank.name, self.linked_bank_name)
-    #     self.assertEqual(linked_bank.web_portal_url, self.linked_bank_url)
+    # create LinkedBank is successful
+    def test_create_linked_bank_successful(self):
+        """Test creating a linked bank account (plaid item)
+            is successful.
+        """
+        linked_bank = LinkedBank.objects.create(
+            item_id=self.item_id,
+            institution_id=self.institution_id,
+            institution_name=self.institution_name,
+        )
+        self.assertEqual(linked_bank.item_id, self.item_id)
+        self.assertEqual(linked_bank.institution_id, self.institution_id)
+        self.assertEqual(linked_bank.institution_name, self.institution_name)
 
     # BANK_ACCOUNT
 

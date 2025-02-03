@@ -65,11 +65,11 @@ class Company(models.Model):
         return f'<Company {self.id}|{self.name}|{self.domain}>'
 
 
-# class LinkedBank(models.Model):
-#     """Linked Bank (equivalent to Plaid Item) in the db system."""
-#     item_id  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique
-#     institution_id  # Plaid id for the bank. Not unique
-#     institution_name  # Plaid name for the bank. Not unique
+class LinkedBank(models.Model):
+    """Linked Bank (equivalent to Plaid Item) in the db system."""
+    item_id = models.CharField(unique=True)  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique
+    institution_id = models.CharField()  # Plaid id for the bank. Not unique
+    institution_name = models.CharField()  # Plaid name for the bank. Not unique
 
 
 # class BankAccount(models.Model):

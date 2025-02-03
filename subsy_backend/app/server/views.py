@@ -212,7 +212,7 @@ def get_all_transactions(request, *args, **kwargs):
             modified.extend(response['modified'])
             removed.extend(response['removed'])
             has_more = response['has_more']
-            pretty_print_response(response)  # TO VIEW TRANSACTION DETAILS
+            # pretty_print_response(response)  # TO VIEW TRANSACTION DETAILS
             # all_transactions = [added, modified, removed]
 
         return JsonResponse({'all_transactions': response})
