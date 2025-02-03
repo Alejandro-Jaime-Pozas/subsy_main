@@ -9,8 +9,8 @@ ENV PATH /subsy_frontend/node_modules/.bin:$PATH
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies  - WATCH OUT, FROZEN LOCKFILE COULD
+RUN npm install --frozen-lockfile
 
 # Copy the rest of the application code
 COPY . .
@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 3000
 
 # Run the application.
-CMD [“npm”, “start”]
+CMD ["npm", "start"]

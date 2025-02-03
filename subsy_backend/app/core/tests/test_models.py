@@ -196,7 +196,7 @@ class CompayModelTests(TestCase):
         self.assertEqual(company.users.get(pk=user.pk).email, user.email)
         self.assertEqual(user.company_set.get(pk=company.pk).pk, company.pk)
 
-    # # LINKED_BANK
+
 class LinkedBankModelTests(TestCase):
     """Test the LinkedBank model."""
 
@@ -217,6 +217,9 @@ class LinkedBankModelTests(TestCase):
         self.assertEqual(linked_bank.item_id, self.item_id)
         self.assertEqual(linked_bank.institution_id, self.institution_id)
         self.assertEqual(linked_bank.institution_name, self.institution_name)
+
+    # item_id is unique
+    
 
     # BANK_ACCOUNT
 

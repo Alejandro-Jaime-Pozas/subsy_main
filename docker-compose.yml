@@ -51,7 +51,7 @@ services:
         - DEV=true
     volumes:
       - ./subsy_frontend:/subsy_frontend      # Bind mount local frontend directory
-      - /subsy_frontend/node_modules
+      - subsy_frontend_node_modules:/subsy_frontend/node_modules
     environment:
       # Enable polling for file changes hot reloading
       WATCHPACK_POLLING: "true"
@@ -63,10 +63,11 @@ services:
     ports:
       - "3000:3000"          # Expose frontend on localhost:3000
     command: ["npm", "start"] # Start frontend app in dev mode
-    develop:
-      watch:
-        - action: rebuild
-          path: ./subsy_frontend/package.json
+    # to check for changes on package.json while running and hot reload
+    # develop:
+    #   watch:
+    #     - action: rebuild
+    #       path: ./subsy_frontend/package.json
 
 networks:
   default:
@@ -74,3 +75,4 @@ networks:
 
 volumes:
   dev-db-data:
+  subsy_frontend_node_modules:

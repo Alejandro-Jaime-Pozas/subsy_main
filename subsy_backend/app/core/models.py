@@ -59,7 +59,7 @@ class Company(models.Model):
     the same name but different domains."""
     name = models.CharField(max_length=255, blank=False)  # in theory this should not allow blank strings as input IN FORMS only, but does allow blanks if input directly into model instance
     domain = models.CharField(max_length=255, blank=False, unique=True)
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, related_name='companies')
 
     def __repr__(self) -> str:
         return f'<Company {self.id}|{self.name}|{self.domain}>'
@@ -67,9 +67,10 @@ class Company(models.Model):
 
 class LinkedBank(models.Model):
     """Linked Bank (equivalent to Plaid Item) in the db system."""
-    item_id = models.CharField(unique=True)  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique
-    institution_id = models.CharField()  # Plaid id for the bank. Not unique
-    institution_name = models.CharField()  # Plaid name for the bank. Not unique
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='linked_banks')
+    item_id = models.CharField(max_length=37, unique=True)  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique
+    institution_id = models.CharField(max_length=25, )  # Plaid id for the bank. Not unique
+    institution_name = models.CharField(max_length=55, )  # Plaid name for the bank. Not unique
 
 
 # class BankAccount(models.Model):
