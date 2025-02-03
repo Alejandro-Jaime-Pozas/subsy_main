@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Company(models.Model):
     # TODO
-    # - create the name field based on the domain name from the user's email; should maybe make the name unique, since there should really only be unique companies...based on unique domains...
+    # - create the name field based on the domain name from the user's email using hunter.io API;
     # - maybe add more fields included from hunter.io API when integrating? like company sector/description?
     """Company in the db system. Different companies could have
     the same name but different domains."""
@@ -66,9 +66,10 @@ class Company(models.Model):
 
 
 # class LinkedBank(models.Model):
-#     """Linked Bank (plaid item) in the db system."""
-#     name = models.CharField(max_length=255)
-#     web_portal_url = models.URLField(max_length=5000)  # maybe a better way to acct for long urls?
+#     """Linked Bank (equivalent to Plaid Item) in the db system."""
+#     item_id  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique
+#     institution_id  # Plaid id for the bank. Not unique
+#     institution_name  # Plaid name for the bank. Not unique
 
 
 # class BankAccount(models.Model):

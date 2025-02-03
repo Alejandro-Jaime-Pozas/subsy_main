@@ -197,6 +197,8 @@ class CompayModelTests(TestCase):
         self.assertEqual(user.company_set.get(pk=company.pk).pk, company.pk)
 
     # # LINKED_BANK
+class LinkedBankModelTests(TestCase):
+    """Test the LinkedBank model."""
 
     # linked_bank_name = 'test_linked_bank'
     # linked_bank_url = 'https://www.example.com'

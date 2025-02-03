@@ -1,4 +1,4 @@
-# BALANCE ENDPOINT
+# BALANCE ENDPOINT /accounts/balance/get
     - includes item/linkedbank, and accounts/bankaccount
 
 {
@@ -63,7 +63,7 @@
 
 
 
-# TRANSACTIONS ENDPOINT
+# TRANSACTIONS ENDPOINT /transactions/sync
     - includes transactions
 
 {
