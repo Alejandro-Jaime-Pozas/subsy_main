@@ -28,10 +28,8 @@ def create_user():
     return user
 
 
-class ModelTests(TestCase):
-    """Test models."""
-
-    # USER TESTS
+class UserModelTests(TestCase):
+    """Test the User model."""
 
     # test base success case user created and is active
     def test_create_user_with_email_successful(self):
@@ -138,7 +136,9 @@ class ModelTests(TestCase):
                 extra_field_2=['a', 'b'],
             )
 
-    # COMPANY
+
+class CompayModelTests(TestCase):
+    """Test the Company model."""
 
     company_name = 'test_company'
     company_domain = 'example.com'
