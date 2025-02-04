@@ -194,32 +194,45 @@ class CompayModelTests(TestCase):
         )
         company.users.add(user)
         self.assertEqual(company.users.get(pk=user.pk).email, user.email)
-        self.assertEqual(user.company_set.get(pk=company.pk).pk, company.pk)
+        self.assertEqual(user.companies.get(pk=company.pk).pk, company.pk)
 
 
 class LinkedBankModelTests(TestCase):
     """Test the LinkedBank model."""
 
-    item_id = '3eWb5P7zNlfZABn9yqjos4zK3yvwD4FqwmNNp'
-    institution_id = 'ins_56'
-    institution_name = 'Chase'
+    def setUp(self):
+        """Create company for tests."""
+        self.company = Company.objects.create(
+            name='Apple',
+            domain='apple.com'
+        )
+
+        self.test_dict = {
+            'company': self.company,
+            'item_id': '3eWb5P7zNlfZABn9yqjos4zK3yvwD4FqwmNNp',
+            'institution_id': 'ins_56',
+            'institution_name': 'Chase',
+        }
 
     # create LinkedBank is successful
     def test_create_linked_bank_successful(self):
         """Test creating a linked bank account (plaid item)
             is successful.
         """
-        linked_bank = LinkedBank.objects.create(
-            item_id=self.item_id,
-            institution_id=self.institution_id,
-            institution_name=self.institution_name,
-        )
-        self.assertEqual(linked_bank.item_id, self.item_id)
-        self.assertEqual(linked_bank.institution_id, self.institution_id)
-        self.assertEqual(linked_bank.institution_name, self.institution_name)
+        linked_bank = LinkedBank.objects.create(**self.test_dict)
+        self.assertEqual(linked_bank.company, self.test_dict['company'])
+        self.assertEqual(linked_bank.item_id, self.test_dict['item_id'])
+        self.assertEqual(linked_bank.institution_id, self.test_dict['institution_id'])
+        self.assertEqual(linked_bank.institution_name, self.test_dict['institution_name'])
 
-    # item_id is unique
-    
+    # # item_id is unique
+    # def test_create_linked_bank_duplicate_item_id_error(self):
+    #     """Test that creating a duplicate item_id raises error."""
+
+    # FK to Company works
+
+    # FK to Company is required
+
 
     # BANK_ACCOUNT
 

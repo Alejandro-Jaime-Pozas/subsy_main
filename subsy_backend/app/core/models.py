@@ -67,10 +67,13 @@ class Company(models.Model):
 
 class LinkedBank(models.Model):
     """Linked Bank (equivalent to Plaid Item) in the db system."""
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='linked_banks')
     item_id = models.CharField(max_length=37, unique=True)  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique
     institution_id = models.CharField(max_length=25, )  # Plaid id for the bank. Not unique
     institution_name = models.CharField(max_length=55, )  # Plaid name for the bank. Not unique
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='linked_banks')
+
+    def __repr__(self):
+        return f'<LinkedBank {self.id}|{self.institution_name}|{self.institution_id}>'
 
 
 # class BankAccount(models.Model):

@@ -9,7 +9,7 @@ ENV PATH /subsy_frontend/node_modules/.bin:$PATH
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies  - WATCH OUT, FROZEN LOCKFILE COULD
+# Install dependencies  # frozen-lockfile ensures consistency, builds exactly what's in package-lock.json
 RUN npm install --frozen-lockfile
 
 # Copy the rest of the application code
