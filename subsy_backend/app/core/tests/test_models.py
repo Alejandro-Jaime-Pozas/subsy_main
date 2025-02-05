@@ -225,9 +225,29 @@ class LinkedBankModelTests(TestCase):
         self.assertEqual(linked_bank.institution_id, self.test_dict['institution_id'])
         self.assertEqual(linked_bank.institution_name, self.test_dict['institution_name'])
 
-    # # item_id is unique
-    # def test_create_linked_bank_duplicate_item_id_error(self):
-    #     """Test that creating a duplicate item_id raises error."""
+    # item_id is unique
+    def test_linked_bank_item_id_is_unique(self):
+        """Test that creating a duplicate item_id raises error."""
+        LinkedBank.objects.create(**self.test_dict)
+        duplicate_linked_bank = {
+            'company': self.company,
+            'item_id': '3eWb5P7zNlfZABn9yqjos4zK3yvwD4FqwmNNp',
+            'institution_id': 'ins_56',
+            'institution_name': 'Chase',
+        }
+        with self.assertRaises(IntegrityError):
+            LinkedBank.objects.create(**duplicate_linked_bank)
+
+
+    # if company deleted, related linkedbank also deleted
+    def test_linked_bank_company_deletion_cascade(self):
+        """Test that deleting a linked bank's company also deletes the related linked bank."""
+        test_company = Company.objects.create(name='X', domain='x.com')
+        linked_bank = LinkedBank.objects.create(**{**self.test_dict, 'company': test_company})
+
+        test_company.delete()
+
+        self.assertFalse(LinkedBank.objects.filter(id=linked_bank.id).count())  # Should be deleted
 
     # FK to Company works
 
