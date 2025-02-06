@@ -78,11 +78,15 @@ class LinkedBank(models.Model):
 
 # class BankAccount(models.Model):
 #     """Bank account in the db system."""
-#     name = models.CharField(max_length=255, blank=False)
-#     routing_number = models.CharField(max_length=9)
-#     account_number = models.CharField(max_length=17)
-#     balance = models.DecimalField(max_digits=52, decimal_places=2, default=0)  # this should prob becaome a class property later with @ symbol...since it requires freq updates
-#     account_type = models.CharField(max_length=255)
+#     account_id = models.CharField(max_length=37)
+#     balances_available = models.IntegerField()
+#     balances_current = models.IntegerField()
+#     balances_limit = models.IntegerField()
+#     balances_iso_currency_code = models.CharField(max_length=10)  # for unoffical codes which could be 10 chars long
+#     name = models.CharField(max_length=255)
+#     official_name = models.CharField(max_length=255)
+#     type = models.CharField(max_length=25)
+#     subtype = models.CharField(max_length=50)
 
 
 # class Transaction(models.Model):

@@ -263,3 +263,11 @@ class LinkedBankModelTests(TestCase):
     # SUBSCRIPTION
 
     # TAG
+
+
+class BankAccount(TestCase):
+    """Test the Bank Account model."""
+
+    def setUp(self):
+        # create a test bank acct
+        pass
