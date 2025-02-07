@@ -14,7 +14,7 @@ def company():
         domain='apple.com'
     )
 
-test_company = company()
+# test_company = company()
 
 def linked_bank():
     return LinkedBank.objects.create(
@@ -24,7 +24,7 @@ def linked_bank():
         institution_name='Chase',
     )
 
-test_linked_bank = linked_bank()
+# test_linked_bank = linked_bank()
 
 setup_bank_account_dict = {
     "account_id": "BzqZXwn1mehQnB1RlbwGtJDADWkMkJc4DAwVk",
