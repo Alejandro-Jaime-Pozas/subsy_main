@@ -8,9 +8,23 @@ from core.models import (
     # Tag,
 )
 
+def company():
+    return Company.objects.create(
+        name='Apple',
+        domain='apple.com'
+    )
 
-def 
+test_company = company()
 
+def linked_bank():
+    return LinkedBank.objects.create(
+        company=test_company,
+        item_id='3eWb5P7zNlfZABn9yqjos4zK3yvwD4FqwmNNp',
+        institution_id='ins_56',
+        institution_name='Chase',
+    )
+
+test_linked_bank = linked_bank()
 
 setup_bank_account_dict = {
     "account_id": "BzqZXwn1mehQnB1RlbwGtJDADWkMkJc4DAwVk",
@@ -22,6 +36,7 @@ setup_bank_account_dict = {
     "official_name": "Plaid Gold Standard 0% Interest Checking",
     "type": "depository",
     "subtype": "checking",
+    "linked_bank": test_linked_bank
 }
 
 bank_account_dict = {
@@ -34,4 +49,5 @@ bank_account_dict = {
     "official_name": "Plaid Gold Standard 0% Interest Checking",
     "type": "depository",
     "subtype": "checking",
+    "linked_bank": test_linked_bank
 }

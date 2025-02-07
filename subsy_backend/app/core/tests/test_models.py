@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 # from django.forms.models import model_to_dict
 
-from .ref import bank_account_dict, setup_bank_account_dict
+from .setup_ref import bank_account_dict, setup_bank_account_dict
 from core.models import (
     Company,
     LinkedBank,
@@ -209,6 +209,7 @@ class LinkedBankModelTests(TestCase):
             domain='apple.com'
         )
 
+        # one way to do this is here in setUp, or could use another module
         self.test_dict = {
             'company': self.company,
             'item_id': '3eWb5P7zNlfZABn9yqjos4zK3yvwD4FqwmNNp',
@@ -258,13 +259,12 @@ class BankAccountTests(TestCase):
     def setUp(self):
         # create a test bank acct
         self.setup_bank_account = BankAccount.objects.create(**setup_bank_account_dict)
-        # mock the linked_bank obj related
 
     # test bank acct success
     def test_create_bank_account_success(self):
         """Test that creating a bank account is successful."""
-        bank_account_dict['linked_bank'] = self.linked_bank_mock
         bank_account = BankAccount.objects.create(**bank_account_dict)
+        print(bank_account.__dict__)
 
         # self.assertIsInstance(bank_account, BankAccount)
         self.assertEqual(bank_account.account_id, bank_account_dict['account_id'])
