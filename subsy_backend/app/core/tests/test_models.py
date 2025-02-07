@@ -8,7 +8,6 @@ from django.db.utils import IntegrityError
 # from django.forms.models import model_to_dict
 
 from .ref import bank_account_dict, setup_bank_account_dict
-
 from core.models import (
     Company,
     LinkedBank,
@@ -21,6 +20,7 @@ from core.models import (
 
 
 # use this format whithout test_ prefix for helper fns
+# THIS COULD POTENTIALLY NOT TEAR DOWN THE TEST DATABASE..SO USERS COULD BE KEPT
 def create_user():
     """Create a user for tests."""
     user = get_user_model().objects.create_user(
@@ -251,12 +251,27 @@ class LinkedBankModelTests(TestCase):
 
         self.assertFalse(LinkedBank.objects.filter(id=linked_bank.id).count())  # Should be deleted
 
-    # FK to Company works
 
-    # FK to Company is required
+class BankAccountTests(TestCase):
+    """Test the Bank Account model."""
+
+    def setUp(self):
+        # create a test bank acct
+        self.setup_bank_account = BankAccount.objects.create(**setup_bank_account_dict)
+        # mock the linked_bank obj related
+
+    # test bank acct success
+    def test_create_bank_account_success(self):
+        """Test that creating a bank account is successful."""
+        bank_account_dict['linked_bank'] = self.linked_bank_mock
+        bank_account = BankAccount.objects.create(**bank_account_dict)
+
+        # self.assertIsInstance(bank_account, BankAccount)
+        self.assertEqual(bank_account.account_id, bank_account_dict['account_id'])
+
+    # test deleting a bank acct's linked bank also deletes the bank acct
 
 
-    # BANK_ACCOUNT
 
     # TRANSACTION
 
@@ -265,20 +280,3 @@ class LinkedBankModelTests(TestCase):
     # SUBSCRIPTION
 
     # TAG
-
-
-class BankAccountTests(TestCase):
-    """Test the Bank Account model."""
-
-    def setUp(self):
-        # create a test bank acct
-        self.setup_bank_account = BankAccount.objects.create(**setup_bank_account_dict)
-
-    # test bank acct success
-    def test_create_bank_account_success(self):
-        """Test that creating a bank account is successful."""
-        bank_account = BankAccount.objects.create(**bank_account_dict)
-
-        self.assertEqual(bank_account.account_id, bank_account_dict['account_id'])
-
-    # test deleting a bank acct's linked bank also deletes the bank acct

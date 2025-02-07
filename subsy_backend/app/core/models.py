@@ -79,14 +79,14 @@ class LinkedBank(models.Model):
 class BankAccount(models.Model):
     """Bank account in the db system."""
     account_id = models.CharField(max_length=37)
-    balances_available = models.IntegerField()
-    balances_current = models.IntegerField()
-    balances_limit = models.IntegerField()
-    balances_iso_currency_code = models.CharField(max_length=10)  # 10 for unoffical codes which could be 10 chars long
-    name = models.CharField(max_length=255)
-    official_name = models.CharField(max_length=255)
-    type = models.CharField(max_length=25)
-    subtype = models.CharField(max_length=50)
+    balances_available = models.IntegerField(null=True)
+    balances_current = models.IntegerField(null=True)
+    balances_limit = models.IntegerField(null=True)
+    balances_iso_currency_code = models.CharField(max_length=10, null=True)  # 10 for unoffical codes which could be 10 chars long
+    name = models.CharField(max_length=255, null=True)
+    official_name = models.CharField(max_length=255, null=True)
+    type = models.CharField(max_length=25, null=True)
+    subtype = models.CharField(max_length=50, null=True)
     linked_bank = models.ForeignKey(LinkedBank, on_delete=models.CASCADE, related_name='bank_accounts')
 
 
