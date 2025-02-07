@@ -30,6 +30,17 @@ def create_user():
     return user
 
 
+# class BaseTests(TestCase):
+#     """Create all required setup objects to run in tests."""
+
+#     @classmethod
+#     def setUpTestData(cls):
+#         """Create a user for tests."""
+#         cls.user = get_user_model().objects.create_user(
+#             email='test@example.com',
+#             password='testpass123'
+#         )
+
 class UserModelTests(TestCase):
     """Test the User model."""
 

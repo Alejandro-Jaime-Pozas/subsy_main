@@ -1,20 +1,6 @@
-from core.models import (
-    Company,
-    LinkedBank,
-    BankAccount,
-    # Transaction,
-    # Application,
-    # Subscription,
-    # Tag,
-)
+"""Object data for input in django test modules."""
 
-def company():
-    return Company.objects.create(
-        name='Apple',
-        domain='apple.com'
-    )
-
-# test_company = company()
+test_company_data = {'name': 'Apple', 'domain': 'apple.com'}
 
 def linked_bank():
     return LinkedBank.objects.create(
@@ -23,8 +9,6 @@ def linked_bank():
         institution_id='ins_56',
         institution_name='Chase',
     )
-
-# test_linked_bank = linked_bank()
 
 setup_bank_account_dict = {
     "account_id": "BzqZXwn1mehQnB1RlbwGtJDADWkMkJc4DAwVk",
