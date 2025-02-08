@@ -33,15 +33,16 @@ TEST_BANK_ACCOUNT_DATA = {
     # "linked_bank": test_linked_bank
 }
 
+def create_default_instances():
+    """Create and return default instances for all db models."""
+    user = get_user_model().objects.create_user(**TEST_USER_DATA)
+    company = Company.objects.create(**TEST_COMPANY_DATA)
+    linked_bank = LinkedBank.objects.create(**TEST_LINKED_BANK_DATA, company=company)
+    bank_account = BankAccount.objects.create(**TEST_BANK_ACCOUNT_DATA, linked_bank=linked_bank)
 
-def create_user():
-    return get_user_model().objects.create_user(**TEST_USER_DATA)
-
-def create_company():
-    return Company.objects.create(**TEST_COMPANY_DATA)
-
-def create_linked_bank():
-    return LinkedBank.objects.create(**TEST_LINKED_BANK_DATA)
-
-def create_bank_account():
-    return BankAccount.objects.create(**TEST_BANK_ACCOUNT_DATA)
+    return {
+        'user': user,
+        'company': company,
+        'linked_bank': linked_bank,
+        'bank_account': bank_account,
+    }

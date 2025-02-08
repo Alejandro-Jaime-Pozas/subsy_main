@@ -7,12 +7,7 @@ from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 # from django.forms.models import model_to_dict
 
-from .shared_data import (
-    create_user,
-    create_company,
-    create_linked_bank,
-    create_bank_account,
-)
+from core.tests.shared_data import create_default_instances
 from core.models import (
     Company,
     LinkedBank,
@@ -24,19 +19,12 @@ from core.models import (
 )
 
 
-# class BaseTests(TestCase):
-#     """Create all required setup objects to run in tests."""
-
-#     @classmethod
-#     def setUpTestData(cls):
-#         """Create a user for tests."""
-#         cls.user = get_user_model().objects.create_user(
-#             email='test@example.com',
-#             password='testpass123'
-#         )
-
 class UserModelTests(TestCase):
     """Test the User model."""
+
+    # @classmethod
+    # def setUpTestData(cls):
+    #     cls.data = create_default_instances()
 
     # test base success case user created and is active
     def test_create_user_with_email_successful(self):
@@ -92,7 +80,10 @@ class UserModelTests(TestCase):
     # email must be unique
     def test_email_must_be_unique(self):
         """Test that checks if email is unique by creating email duplicate."""
-        create_user()
+        get_user_model().objects.create_user(
+            email='test@example.com',
+            password='nomatter'
+        )
         with self.assertRaises(IntegrityError):
             get_user_model().objects.create_user(
                 email='test@example.com',
