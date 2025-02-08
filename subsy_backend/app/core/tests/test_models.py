@@ -24,17 +24,6 @@ from core.models import (
 )
 
 
-# use this format whithout test_ prefix for helper fns
-# THIS COULD POTENTIALLY NOT TEAR DOWN THE TEST DATABASE..SO USERS COULD BE KEPT
-def create_user():
-    """Create a user for tests."""
-    user = get_user_model().objects.create_user(
-        email='test@example.com',
-        password='testpass123'
-    )
-    return user
-
-
 # class BaseTests(TestCase):
 #     """Create all required setup objects to run in tests."""
 
@@ -205,7 +194,10 @@ class CompayModelTests(TestCase):
     # test creating relationship to user is successful
     def test_user_relation_success(self):
         """Test creating a user relation is successful."""
-        user = create_user()
+        user = get_user_model().objects.create_user(
+            email='test@example.com',
+            password='testpass123'
+        )
         company = Company.objects.create(
             name=self.company_name,
             domain=self.company_domain
