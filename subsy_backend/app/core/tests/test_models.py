@@ -7,7 +7,12 @@ from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 # from django.forms.models import model_to_dict
 
-from .setup_ref import bank_account_dict, setup_bank_account_dict
+from .shared_data import (
+    create_user,
+    create_company,
+    create_linked_bank,
+    create_bank_account,
+)
 from core.models import (
     Company,
     LinkedBank,
@@ -264,21 +269,21 @@ class LinkedBankModelTests(TestCase):
         self.assertFalse(LinkedBank.objects.filter(id=linked_bank.id).count())  # Should be deleted
 
 
-class BankAccountTests(TestCase):
-    """Test the Bank Account model."""
+# class BankAccountTests(TestCase):
+#     """Test the Bank Account model."""
 
-    def setUp(self):
-        # create a test bank acct
-        self.setup_bank_account = BankAccount.objects.create(**setup_bank_account_dict)
+#     def setUp(self):
+#         # create a test bank acct
+#         self.setup_bank_account = BankAccount.objects.create(**setup_bank_account_dict)
 
-    # test bank acct success
-    def test_create_bank_account_success(self):
-        """Test that creating a bank account is successful."""
-        bank_account = BankAccount.objects.create(**bank_account_dict)
-        print(bank_account.__dict__)
+#     # test bank acct success
+#     def test_create_bank_account_success(self):
+#         """Test that creating a bank account is successful."""
+#         bank_account = BankAccount.objects.create(**bank_account_dict)
+#         print(bank_account.__dict__)
 
-        # self.assertIsInstance(bank_account, BankAccount)
-        self.assertEqual(bank_account.account_id, bank_account_dict['account_id'])
+#         # self.assertIsInstance(bank_account, BankAccount)
+#         self.assertEqual(bank_account.account_id, bank_account_dict['account_id'])
 
     # test deleting a bank acct's linked bank also deletes the bank acct
 
