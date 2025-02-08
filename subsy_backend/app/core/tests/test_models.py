@@ -7,7 +7,10 @@ from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 # from django.forms.models import model_to_dict
 
-from core.tests.shared_data import create_default_instances
+from core.tests.shared_data import (
+    create_default_instances,
+    TEST_BANK_ACCOUNT_DATA,
+)
 from core.models import (
     Company,
     LinkedBank,
@@ -22,9 +25,9 @@ from core.models import (
 class UserModelTests(TestCase):
     """Test the User model."""
 
-    # @classmethod
-    # def setUpTestData(cls):
-    #     cls.data = create_default_instances()
+    @classmethod
+    def setUpTestData(cls):
+        cls.data = create_default_instances()
 
     # test base success case user created and is active
     def test_create_user_with_email_successful(self):
@@ -32,7 +35,7 @@ class UserModelTests(TestCase):
             hashed password is correct, and defaults are set
             correctly.
         """
-        email = 'test@example.com'
+        email = 'test2@example.com'
         password = 'testpass123'
         user = get_user_model().objects.create_user(
             email=email,
@@ -80,20 +83,16 @@ class UserModelTests(TestCase):
     # email must be unique
     def test_email_must_be_unique(self):
         """Test that checks if email is unique by creating email duplicate."""
-        get_user_model().objects.create_user(
-            email='test@example.com',
-            password='nomatter'
-        )
         with self.assertRaises(IntegrityError):
             get_user_model().objects.create_user(
-                email='test@example.com',
+                email='test@example.com',  # this already in setup data
                 password='testpass456'
             )
 
     # optional password
     def test_password_is_optional(self):
         """Test the password is optional field."""
-        email = 'test@example.com'
+        email = 'test2@example.com'
         password = None
         user = get_user_model().objects.create_user(
             email=email,
@@ -106,7 +105,7 @@ class UserModelTests(TestCase):
         """Test the minimum password length is 8 chars."""
         with self.assertRaises(ValidationError):
             get_user_model().objects.create_user(
-                email='test@example.com',
+                email='test2@example.com',
                 password='a234567'
             )
 
@@ -115,7 +114,7 @@ class UserModelTests(TestCase):
         """Test creating a superuser is successfull and is_active,
         is_superuser, is_staff all True."""
         user = get_user_model().objects.create_superuser(
-            'test@example.com',
+            'test2@example.com',
             'testpass123',
         )
         self.assertTrue(user.is_superuser)
@@ -129,7 +128,7 @@ class UserModelTests(TestCase):
         (since fields not set in user model)."""
         with self.assertRaises(TypeError):
             get_user_model().objects.create_user(
-                email='test@example.com',
+                email='test2@example.com',
                 extra_field_1=500,
                 extra_field_2=['a', 'b'],
             )
@@ -137,6 +136,10 @@ class UserModelTests(TestCase):
 
 class CompayModelTests(TestCase):
     """Test the Company model."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.data = create_default_instances()
 
     company_name = 'test_company'
     company_domain = 'example.com'
@@ -186,7 +189,7 @@ class CompayModelTests(TestCase):
     def test_user_relation_success(self):
         """Test creating a user relation is successful."""
         user = get_user_model().objects.create_user(
-            email='test@example.com',
+            email='test2@example.com',
             password='testpass123'
         )
         company = Company.objects.create(
@@ -200,6 +203,10 @@ class CompayModelTests(TestCase):
 
 class LinkedBankModelTests(TestCase):
     """Test the LinkedBank model."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.data = create_default_instances()
 
     def setUp(self):
         """Create company for tests."""
@@ -251,24 +258,44 @@ class LinkedBankModelTests(TestCase):
 
         self.assertFalse(LinkedBank.objects.filter(id=linked_bank.id).count())  # Should be deleted
 
+    # if no company FK, raise error
+    def test_linked_bank_no_company_FK_error(self):
+        """Test that trying to create a linked bank obj without company returns error."""
+        with self.assertRaises(IntegrityError):
+            self.test_dict['company'] = None
+            LinkedBank.objects.create(**self.test_dict)
 
-# class BankAccountTests(TestCase):
-#     """Test the Bank Account model."""
+class BankAccountTests(TestCase):
+    """Test the Bank Account model."""
 
-#     def setUp(self):
-#         # create a test bank acct
-#         self.setup_bank_account = BankAccount.objects.create(**setup_bank_account_dict)
+    @classmethod
+    def setUpTestData(cls):
+        cls.data = create_default_instances()
 
-#     # test bank acct success
-#     def test_create_bank_account_success(self):
-#         """Test that creating a bank account is successful."""
-#         bank_account = BankAccount.objects.create(**bank_account_dict)
-#         print(bank_account.__dict__)
+    # test bank acct success
+    def test_create_bank_account_success(self):
+        """Test that creating a bank account is successful."""
+        # bank_account_data = TEST_BANK_ACCOUNT_DATA
+        bank_account = BankAccount.objects.create(
+            **TEST_BANK_ACCOUNT_DATA,
+            linked_bank=self.data['linked_bank']
+        )
 
-#         # self.assertIsInstance(bank_account, BankAccount)
-#         self.assertEqual(bank_account.account_id, bank_account_dict['account_id'])
+        self.assertEqual(bank_account.account_id, TEST_BANK_ACCOUNT_DATA['account_id'])
+
+    # if no linked bank FK, raise error
+    def test_create_bank_acct_no_linked_bank_FK_error(self):
+        """Test that creating a bank account with no linked bank returns error."""
+        with self.assertRaises(IntegrityError):
+            BankAccount.objects.create(
+                **TEST_BANK_ACCOUNT_DATA,
+                linked_bank=None
+            )
 
     # test deleting a bank acct's linked bank also deletes the bank acct
+    def test_deleting_linked_bank_deletes_bank_acct(self):
+        """Test that deleting a bank account's linked bank cascades deletion of bank acct."""
+
 
 
 

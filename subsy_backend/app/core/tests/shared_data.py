@@ -5,23 +5,23 @@ from django.contrib.auth import get_user_model
 
 TEST_USER_DATA = {
     'email': 'test@example.com',
-    'password': 'testpass123',
+    'password': 'deftestpass123',
 }
 
 TEST_COMPANY_DATA = {
-    'name': 'Apple',
-    'domain': 'apple.com',
+    'name': 'def Apple',
+    'domain': 'defapple.com',
 }
 
 TEST_LINKED_BANK_DATA = {
-    'item_id': '3eWb5P7zNlfZABn9yqjos4zK3yvwD4FqwmNNp',
+    'item_id': 'defb5P7zNlfZABn9yqjos4zK3yvwD4FqwmNNp',
     'institution_id': 'ins_56',
     'institution_name': 'Chase',
     # company
 }
 
 TEST_BANK_ACCOUNT_DATA = {
-    "account_id": "BzqZXwn1mehQnB1RlbwGtJDADWkMkJc4DAwVk",
+    "account_id": "defZXwn1mehQnB1RlbwGtJDADWkMkJc4DAwVk",
     "balances_available": 100,
     "balances_current": 110,
     "balances_limit": None,
