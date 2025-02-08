@@ -295,6 +295,12 @@ class BankAccountTests(TestCase):
     # test deleting a bank acct's linked bank also deletes the bank acct
     def test_deleting_linked_bank_deletes_bank_acct(self):
         """Test that deleting a bank account's linked bank cascades deletion of bank acct."""
+        self.data['linked_bank'].delete()  # will only delete for this test, Django refreshes the db setup for each test
+
+        self.assertFalse(BankAccount.objects.filter(id=self.data['bank_account'].id).count())
+
+    def test_some(self):
+        print(self.data.items())
 
 
 
