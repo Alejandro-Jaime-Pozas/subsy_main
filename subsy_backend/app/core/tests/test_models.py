@@ -299,10 +299,20 @@ class BankAccountTests(TestCase):
 
         self.assertFalse(BankAccount.objects.filter(id=self.data['bank_account'].id).count())
 
-    def test_some(self):
-        print(self.data.items())
+    # test all fields can be null except account_id, linked_bank
+    def test_some_fields_can_be_null(self):
+        test_bank_account = {}
+        for k, v in TEST_BANK_ACCOUNT_DATA.items():
+            if k != 'account_id':
+                test_bank_account[k] = None
+            else:
+                test_bank_account[k] = v 
+        bank_account = BankAccount.objects.create(
+            **test_bank_account,
+            linked_bank=self.data['linked_bank']
+        )
 
-
+        self.assertIsInstance(bank_account, BankAccount)
 
 
     # TRANSACTION
