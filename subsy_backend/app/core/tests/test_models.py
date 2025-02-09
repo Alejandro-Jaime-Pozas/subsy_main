@@ -265,6 +265,7 @@ class LinkedBankModelTests(TestCase):
             self.test_dict['company'] = None
             LinkedBank.objects.create(**self.test_dict)
 
+
 class BankAccountTests(TestCase):
     """Test the Bank Account model."""
 
@@ -306,7 +307,7 @@ class BankAccountTests(TestCase):
             if k != 'account_id':
                 test_bank_account[k] = None
             else:
-                test_bank_account[k] = v 
+                test_bank_account[k] = v
         bank_account = BankAccount.objects.create(
             **test_bank_account,
             linked_bank=self.data['linked_bank']

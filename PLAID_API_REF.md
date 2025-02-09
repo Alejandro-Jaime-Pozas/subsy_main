@@ -23,10 +23,10 @@ https://plaid.com/docs/api/
 - account_id: bank acct used
 - account_owner
 - **amount**
-- category: similar but not as good as personal_finance_category
-- counterparties: could be redundant since most info here also mentioned in outer scope of data, but is a list/dict with data about the merchant like name, logo, website
-- **date**
-- iso_currency_code (check how this impacts if multi-currency acct)
+- category: dict similar but not as good as personal_finance_category
+- counterparties: could be redundant since most info here also mentioned in outer scope of data, but is a list/dict with data about the merchant like name, logo, website (KEEP SINCE COULD BE SOMETHING LIKE 3RD PARTY INFO LIKE DOORDASH ORDER FOR SPECIFIC REST)
+- **datetime**
+- iso_currency_code/unofficial code MERGE BOTH TO ONE (check how this impacts if multi-currency acct)
 - **logo_url**
 - **merchant_name**: sometimes cleaner than 'name'
 - **name**: merchant name
@@ -34,6 +34,7 @@ https://plaid.com/docs/api/
 - pending: true or false if payment pending
 - **personal_finance_category**: dict with confidence_level, detailed, and primary category info
 - **personal_finance_category_icon_url**: like entertainment, food, travel icons
+- **transaction_id**: unique ID of the transaction
 - website
 
 <!--  -->

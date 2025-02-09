@@ -78,11 +78,11 @@ class LinkedBank(models.Model):
 
 class BankAccount(models.Model):
     """Bank account in the db system."""
-    account_id = models.CharField(max_length=37)
+    account_id = models.CharField(max_length=37, unique=True)
     balances_available = models.IntegerField(null=True)
     balances_current = models.IntegerField(null=True)
     balances_limit = models.IntegerField(null=True)
-    balances_iso_currency_code = models.CharField(max_length=10, null=True)  # 10 for unoffical codes which could be 10 chars long
+    balances_currency_code = models.CharField(max_length=10, null=True)  # will merge iso_currency_code with unofficial_currency_code when request comes in
     name = models.CharField(max_length=255, null=True)
     official_name = models.CharField(max_length=255, null=True)
     type = models.CharField(max_length=25, null=True)
@@ -90,12 +90,23 @@ class BankAccount(models.Model):
     linked_bank = models.ForeignKey(LinkedBank, on_delete=models.CASCADE, related_name='bank_accounts')
 
 
-# class Transaction(models.Model):
-#     """Transaction (cash in or cash out) in the db system."""
-#     merchant = models.CharField(max_length=255, blank=True, null=True)
-#     timestamp = models.DateTimeField(auto_now_add=True)  # CHANGE TO BANK INPUT
-#     amount = models.DecimalField(max_digits=52, decimal_places=2)
-
+class Transaction(models.Model):
+    """Transaction (cash in or cash out) in the db system."""
+    transaction_id = models.CharField(max_length=37, unique=True)
+    account_id = models.CharField(max_length=37)
+    account_owner = models.CharField(max_length=255, null=True)
+    amount = models.DecimalField(max_digits=20, decimal_places=2, null=True)
+    counterparties = models.JSONField(null=True)
+    datetime = models.DateTimeField(null=True)
+    currency_code = models.CharField(max_length=10, null=True)  # will merge iso_currency_code with unofficial_currency_code when request comes in
+    logo_url = models.URLField(max_length=1000, null=True)
+    merchant_name = models.CharField(max_length=255, null=True)
+    name = models.CharField(max_length=255, null=True)
+    payment_channel = models.CharField(max_length=255, null=True)
+    pending = models.BooleanField(null=True)
+    personal_finance_category = models.JSONField(null=True)
+    personal_finance_category_icon_url = models.URLField(max_length=1000, null=True)
+    website = models.URLField(max_length=1000, null=True)
 
 # class Application(models.Model):
 #     """
