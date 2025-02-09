@@ -25,7 +25,7 @@ TEST_BANK_ACCOUNT_DATA = {
     "balances_available": 100,
     "balances_current": 110,
     "balances_limit": None,
-    "balances_iso_currency_code": "USD",
+    "balances_currency_code": "USD",
     "name": "Plaid Checking",
     "official_name": "Plaid Gold Standard 0% Interest Checking",
     "type": "depository",
