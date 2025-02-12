@@ -276,20 +276,25 @@ class BankAccountTests(TestCase):
     # test bank acct success
     def test_create_bank_account_success(self):
         """Test that creating a bank account is successful."""
-        # bank_account_data = TEST_BANK_ACCOUNT_DATA
+        bank_account_data = TEST_BANK_ACCOUNT_DATA.copy()
+        account_id = '123ZXwn1mehQnBvRlbtGtJgAD23MkJc4DAwVk'
+        bank_account_data['account_id'] = account_id
         bank_account = BankAccount.objects.create(
-            **TEST_BANK_ACCOUNT_DATA,
+            **bank_account_data,
             linked_bank=self.data['linked_bank']
         )
 
-        self.assertEqual(bank_account.account_id, TEST_BANK_ACCOUNT_DATA['account_id'])
+        self.assertEqual(bank_account.account_id, account_id)
 
     # if no linked bank FK, raise error
     def test_create_bank_acct_no_linked_bank_FK_error(self):
         """Test that creating a bank account with no linked bank returns error."""
         with self.assertRaises(IntegrityError):
+            bank_account_data = TEST_BANK_ACCOUNT_DATA.copy()
+            account_id = '123ZXwn1mehQnBvRlbtGtJgAD23MkJc4DAwVk'
+            bank_account_data['account_id'] = account_id
             BankAccount.objects.create(
-                **TEST_BANK_ACCOUNT_DATA,
+                **bank_account_data,
                 linked_bank=None
             )
 
@@ -307,7 +312,7 @@ class BankAccountTests(TestCase):
             if k != 'account_id':
                 test_bank_account[k] = None
             else:
-                test_bank_account[k] = v
+                test_bank_account[k] = 'defZXwn1mehQn11Rlb5G7nvADWkMkJc4DAwVk'
         bank_account = BankAccount.objects.create(
             **test_bank_account,
             linked_bank=self.data['linked_bank']
