@@ -62,6 +62,7 @@ TEST_TRANSACTION_DATA = {
     },
     "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
     "website": "walmart.com",
+    # "bank_account": test_bank_account
 }
 
 def create_default_instances():

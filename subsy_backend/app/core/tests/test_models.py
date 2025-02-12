@@ -10,6 +10,7 @@ from django.db.utils import IntegrityError
 from core.tests.shared_data import (
     create_default_instances,
     TEST_BANK_ACCOUNT_DATA,
+    TEST_TRANSACTION_DATA,
 )
 from core.models import (
     Company,
