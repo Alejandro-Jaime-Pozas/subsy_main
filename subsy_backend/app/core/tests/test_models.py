@@ -307,12 +307,13 @@ class BankAccountTests(TestCase):
 
     # test all fields can be null except account_id, linked_bank
     def test_some_fields_can_be_null(self):
+        """Test that all nullable fields can be null."""
         test_bank_account = {}
-        for k, v in TEST_BANK_ACCOUNT_DATA.items():
+        for k in TEST_BANK_ACCOUNT_DATA.keys():
             if k != 'account_id':
                 test_bank_account[k] = None
             else:
-                test_bank_account[k] = 'defZXwn1mehQn11Rlb5G7nvADWkMkJc4DAwVk'
+                test_bank_account[k] = 'ABCZXwn1mehQn11Rlb5G7nvADWkMkJc4DAwVk'
         bank_account = BankAccount.objects.create(
             **test_bank_account,
             linked_bank=self.data['linked_bank']
@@ -321,7 +322,23 @@ class BankAccountTests(TestCase):
         self.assertIsInstance(bank_account, BankAccount)
 
 
-    # TRANSACTION
+class TransactionTests(TestCase):
+    """Test the Transaction model."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.data = create_default_instances()
+
+    # test transaction created successfully (relation as well)
+    def test_create_transaction_success(self):
+        """Test that creating a transaction is successful."""
+
+
+    # test some values can be null
+
+    # test no FK to bank acct returns error
+
+    # test obj deletion if parent obj is deleted
 
     # APPLICATION
 
