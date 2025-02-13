@@ -343,6 +343,7 @@ class TransactionTests(TestCase):
 
         # SHOULD NOT WORK SINCE TRANSACTION W/SAME ID ALREADY EXISTS
         self.assertIsInstance(transaction, Transaction)
+        self.assertEqual(transaction.transaction_id, transaction_data.get('transaction_id'))
 
     # test some values can be null
 
