@@ -331,23 +331,50 @@ class TransactionTests(TestCase):
     def setUpTestData(cls):
         cls.data = create_default_instances()
 
+    def setUp(self):
+        self.transaction_data = TEST_TRANSACTION_DATA.copy()
+
     # test transaction created successfully (relation as well)
     def test_create_transaction_success(self):
         """Test that creating a transaction is successful."""
-        transaction_data = TEST_TRANSACTION_DATA.copy()
-        transaction_data['transaction_id'] = random_37_char_string()  # first time using random generator
+        self.transaction_data['transaction_id'] = random_37_char_string()  # first time using random generator
         transaction = Transaction.objects.create(
-            **transaction_data,
+            **self.transaction_data,
             bank_account=self.data['bank_account']
         )
 
         # SHOULD NOT WORK SINCE TRANSACTION W/SAME ID ALREADY EXISTS
         self.assertIsInstance(transaction, Transaction)
-        self.assertEqual(transaction.transaction_id, transaction_data.get('transaction_id'))
+        self.assertEqual(transaction.transaction_id, self.transaction_data.get('transaction_id'))
 
     # test some values can be null
+    def test_null_values_valid_creating_transactions(self):
+        """Test that creating transaction with valid null values is successful."""
+        # for k/v pair, if k can be null, set to null, else set to something
+
+        for k in self.transaction_data.keys():
+            if k == 'transaction_id':
+                self.transaction_data[k] = random_37_char_string()
+            elif k == 'account_id':
+                continue
+            else:
+                self.transaction_data[k] = None
+        transaction = Transaction.objects.create(
+            **self.transaction_data,
+            bank_account=self.data.get('bank_account')
+        )
+
+        self.assertEqual(transaction.account_owner, None)
+        self.assertIsInstance(transaction, Transaction)
 
     # test no FK to bank acct returns error
+    def test_no_FK_to_bank_acct_error(self):
+        """Test that failing to include a FK to bank acct obj returns error."""
+        with self.assertRaises(IntegrityError):
+            Transaction.objects.create(
+                **self.transaction_data,
+                # no bank_account FK
+            )
 
     # test obj deletion if parent obj is deleted
 
