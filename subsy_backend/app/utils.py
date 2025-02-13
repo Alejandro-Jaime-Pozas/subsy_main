@@ -1,5 +1,6 @@
 from functools import wraps
 from django.http import JsonResponse
+import random, string
 
 # WRAPPER FUNCTIONS FOR PLAID VIEWS
 
@@ -14,3 +15,6 @@ def validate_access_token(view_func):
         kwargs["access_token"] = access_token
         return view_func(request, *args, **kwargs)
     return wrapper
+
+def random_37_char_string():
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=37))

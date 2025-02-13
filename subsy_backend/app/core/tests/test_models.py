@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 # from django.forms.models import model_to_dict
 
+from utils import random_37_char_string
 from core.tests.shared_data import (
     create_default_instances,
     TEST_BANK_ACCOUNT_DATA,
@@ -16,7 +17,7 @@ from core.models import (
     Company,
     LinkedBank,
     BankAccount,
-    # Transaction,
+    Transaction,
     # Application,
     # Subscription,
     # Tag,
@@ -333,7 +334,15 @@ class TransactionTests(TestCase):
     # test transaction created successfully (relation as well)
     def test_create_transaction_success(self):
         """Test that creating a transaction is successful."""
+        transaction_data = TEST_TRANSACTION_DATA.copy()
+        transaction_data['transaction_id'] = random_37_char_string()  # first time using random generator
+        transaction = Transaction.objects.create(
+            **transaction_data,
+            bank_account=self.data['bank_account']
+        )
 
+        # SHOULD NOT WORK SINCE TRANSACTION W/SAME ID ALREADY EXISTS
+        self.assertIsInstance(transaction, Transaction)
 
     # test some values can be null
 
