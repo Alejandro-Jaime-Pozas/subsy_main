@@ -14,8 +14,9 @@ Once we have all of your bank accounts/credit cards/paypal, etc, MySubs will
     - let you know if a subscription is soon expiring or up for renewal
     - let you know if a sub is periodic (contract) or indefinite, meaning it will always charge that card with no set end date (netflix, but not something like airbyte maybe)
       - will be challenge to define if is contract, would need pay history OR api access to platform..
-    - Link to each of your subscription websites to manage the subscription if needed (ideally would be able to modify subscription within MySubs)
+    - Link to each of your subscription websites to manage the subscription if needed (ideally would be able to modify subscription within MySubs)\
       - would need api auth access and require user who signs up to have access to change sub...hard
+    - will let you know when a card you use to pay with is EXPIRING
     - Recommend subscriptions using AI search tool where user can specify tool needed, and MySubs finds best subscription deals (think netflix free 2 months, disney plus bundle, partner deals, etc hooked to a 3rd party deals api like couponbirds or something)
       - Subsy could potentially partner w/apps for deals, but always be impartial in terms of best recommendations
     - Marketplace of possible subscriptions to benefit the company (with recommendation system)
