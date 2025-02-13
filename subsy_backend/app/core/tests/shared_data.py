@@ -71,10 +71,12 @@ def create_default_instances():
     company = Company.objects.create(**TEST_COMPANY_DATA)
     linked_bank = LinkedBank.objects.create(**TEST_LINKED_BANK_DATA, company=company)
     bank_account = BankAccount.objects.create(**TEST_BANK_ACCOUNT_DATA, linked_bank=linked_bank)
+    transaction = Transaction.objects.create(**TEST_TRANSACTION_DATA, bank_account=bank_account)
 
     return {
         'user': user,
         'company': company,
         'linked_bank': linked_bank,
         'bank_account': bank_account,
+        'transaction': transaction,
     }

@@ -2,7 +2,7 @@
 Tests for models.
 """
 from django.test import TestCase  # , Client
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
 # from django.forms.models import model_to_dict
@@ -377,6 +377,12 @@ class TransactionTests(TestCase):
             )
 
     # test obj deletion if parent obj is deleted
+    def test_delete_bank_account_deletes_transaction(self):
+        """Test that deleting a transaction's bank acct cascades transactions deletion."""
+        self.data['bank_account'].delete()
+
+        self.assertFalse(Transaction.objects.filter(id=self.data['transaction'].id).exists())
+
 
     # APPLICATION
 
