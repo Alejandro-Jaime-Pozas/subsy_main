@@ -22,6 +22,7 @@ PLAID_SECRET = os.getenv('PLAID_SECRET')
 PLAID_ENV = os.getenv('PLAID_ENV', 'sandbox')
 PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'auth').split(',')
 PLAID_COUNTRY_CODES = os.getenv('PLAID_COUNTRY_CODES', 'US').split(',')
+# PLAID_SANDBOX_REDIRECT_URI = os.getenv('PLAID_SANDBOX_REDIRECT_URI')
 
 def empty_to_none(field):
     value = os.getenv(field)
@@ -47,6 +48,7 @@ if PLAID_ENV == 'production':
 # this redirect URI for your client ID through the Plaid developer dashboard
 # at https://dashboard.plaid.com/team/api.
 PLAID_REDIRECT_URI = empty_to_none('PLAID_REDIRECT_URI')
+PLAID_REDIRECT_URI = os.getenv('PLAID_REDIRECT_URI')
 
 configuration = Configuration(
     host=host,
@@ -65,9 +67,15 @@ for product in PLAID_PRODUCTS:
 
 # Create Link Token
 def create_link_token(request):
-    # print("PLAID_CLIENT_ID:", os.getenv("PLAID_CLIENT_ID"))
-    # print("PLAID_SECRET:", os.getenv("PLAID_SECRET"))
-    # print("PLAID_ENV:", os.getenv("PLAID_ENV"))
+    print("PLAID_CLIENT_ID:", PLAID_CLIENT_ID)
+    print("PLAID_SECRET:", PLAID_SECRET)
+    print("PLAID_ENV:", PLAID_ENV)
+    print("PLAID_COUNTRY_CODES:", PLAID_COUNTRY_CODES)
+    print("PLAID_PRODUCTS:", PLAID_PRODUCTS)
+    print("PLAID_SANDBOX_REDIRECT_URI:", os.getenv('PLAID_SANDBOX_REDIRECT_URI'))
+    print("PLAID_REDIRECT_URI:", os.getenv('PLAID_REDIRECT_URI'))
+    print('='*100)
+
     try:
         link_token_request = LinkTokenCreateRequest(
             user=LinkTokenCreateRequestUser(
@@ -77,12 +85,13 @@ def create_link_token(request):
             language="en",
             products=products,
             country_codes=list(map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)),
-            redirect_uri=os.getenv('PLAID_SANDBOX_REDIRECT_URI'),
+            redirect_uri=os.getenv('PLAID_REDIRECT_URI'),
+            # redirect_uri=os.getenv('PLAID_SANDBOX_REDIRECT_URI'),
         )
         link_token_response = plaid_client.link_token_create(link_token_request)
         return JsonResponse(link_token_response.to_dict(), safe=False)
     except plaid.ApiException as e:
-        # print(e)
+        print(e)
         return JsonResponse({"error": str(e)}, status=400)
 
 # Exchange Public Token for Access Token
@@ -101,7 +110,7 @@ def exchange_public_token(request):
             # access_token = exchange_response.to_dict()["access_token"]
             return JsonResponse({"success": True})
         except plaid.ApiException as e:
-            # print(e)
+            print(e)
             return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
@@ -116,6 +125,7 @@ def get_balance(request, *args, **kwargs):
         balance_response = plaid_client.accounts_balance_get(balance_request)
         return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)
     except plaid.ApiException as e:
+        print(e)
         return JsonResponse({"error": str(e)}, status=400)
 
 # CSRF Token endpoint for front-end use
@@ -170,6 +180,7 @@ def get_latest_transactions(request, *args, **kwargs):
             # 'latest_transactions': latest_transactions})  # CHANGE BACK!
 
     except plaid.ApiException as e:
+        print(e)
         error_response = format_error(e)  # can format other errors this same way later
         return JsonResponse(error_response)
 
@@ -218,6 +229,7 @@ def get_all_transactions(request, *args, **kwargs):
         return JsonResponse({'all_transactions': response})
 
     except plaid.ApiException as e:
+        print(e)
         error_response = format_error(e)  # can format other errors this same way later
         return JsonResponse(error_response)
 
