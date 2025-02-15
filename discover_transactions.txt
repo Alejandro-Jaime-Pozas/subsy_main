@@ -1,0 +1,372 @@
+JUST 4 TRANSACTIONS WERE RETURNED. 
+
+Robinhood
+80
+2025-02-10
+Transfer Out Investment And Retirement Funds
+
+-80
+2025-02-07
+Transfer In Account Transfer
+
+Robinhood
+1000
+2025-01-27
+Transfer Out Investment And Retirement Funds
+
+-1000
+2025-01-24
+Transfer In Account Transfer
+{
+  "accounts": [
+    {
+      "account_id": "JzV66b0oonho4Deg8VP9urNwA088Q7U0g4naN",
+      "balances": {
+        "available": 0,
+        "current": 0,
+        "limit": null,
+        "iso_currency_code": "USD",
+        "unofficial_currency_code": null
+      },
+      "mask": "3562",
+      "name": "CASHBACK DEBIT",
+      "official_name": "CASHBACK DEBIT",
+      "type": "depository",
+      "subtype": "checking"
+    },
+    {
+      "account_id": "xxeOOJMzzdsjo8zgBypvCVpj30KKxMFmLbn5b",
+      "balances": {
+        "available": 0.63,
+        "current": 0.63,
+        "limit": null,
+        "iso_currency_code": "USD",
+        "unofficial_currency_code": null
+      },
+      "mask": "6951",
+      "name": "ONLINE SAVINGS",
+      "official_name": "ONLINE SAVINGS",
+      "type": "depository",
+      "subtype": "savings"
+    }
+  ],
+  "item": {
+    "item_id": "1pqQQZjddKSgqNbPLZrVsAD67qrVMEsmom4ea",
+    "webhook": "",
+    "error": null,
+    "available_products": [
+      "assets",
+      "balance",
+      "income_verification",
+      "liabilities",
+      "recurring_transactions"
+    ],
+    "billed_products": [
+      "auth",
+      "transactions"
+    ],
+    "consent_expiration_time": null,
+    "update_type": "background",
+    "auth_method": "INSTANT_AUTH",
+    "consented_products": [
+      "auth",
+      "income_verification",
+      "transactions"
+    ],
+    "institution_id": "ins_33",
+    "institution_name": "Discover",
+    "products": [
+      "auth",
+      "transactions"
+    ]
+  },
+  "request_id": "uVjZF2rnNFzU5LF"
+}
+TRANSACTIONS!!!
+"INITIAL_UPDATE_COMPLETE"
+[
+  {
+    "account_id": "JzV66b0oonho4Deg8VP9urNwA088Q7U0g4naN",
+    "balances": {
+      "available": 0,
+      "current": 0,
+      "limit": null,
+      "iso_currency_code": "USD",
+      "unofficial_currency_code": null
+    },
+    "mask": "3562",
+    "name": "CASHBACK DEBIT",
+    "official_name": "CASHBACK DEBIT",
+    "type": "depository",
+    "subtype": "checking"
+  }
+]
+[
+  {
+    "account_id": "JzV66b0oonho4Deg8VP9urNwA088Q7U0g4naN",
+    "account_owner": null,
+    "amount": 80,
+    "authorized_date": "2025-02-10",
+    "authorized_datetime": "2025-02-10T05:00:00Z",
+    "category": [
+      "Service",
+      "Financial",
+      "Stock Brokers"
+    ],
+    "category_id": "18020003",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Robinhood",
+        "type": "financial_institution",
+        "website": "robinhood.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/robinhood_39.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "A6EeaXMEQp57OWoRZ4kmqw6RBY9YLqm6RaAOb",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-02-10",
+    "datetime": "2025-02-10T05:00:00Z",
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": null,
+    "merchant_entity_id": null,
+    "merchant_name": "Robinhood",
+    "name": "Robinhood",
+    "payment_channel": "other",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": "ACH",
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "MEDIUM",
+      "detailed": "TRANSFER_OUT_INVESTMENT_AND_RETIREMENT_FUNDS",
+      "primary": "TRANSFER_OUT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_TRANSFER_OUT.png",
+    "transaction_code": null,
+    "transaction_id": "yJeOO3MzzwsVaZeR5KrOUbqa63YqDkUgyDwwq",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": null
+  },
+  {
+    "account_id": "JzV66b0oonho4Deg8VP9urNwA088Q7U0g4naN",
+    "account_owner": null,
+    "amount": -80,
+    "authorized_date": "2025-02-07",
+    "authorized_datetime": "2025-02-07T05:00:00Z",
+    "category": [
+      "Transfer",
+      "Credit"
+    ],
+    "category_id": "21005000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Zelle",
+        "type": "payment_app",
+        "website": "zellepay.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/zelle_73.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zQ64DmD0mdD4r6QrYndzZWLwJn7DyJEYdwLYp",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-02-07",
+    "datetime": "2025-02-07T05:00:00Z",
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": null,
+    "merchant_entity_id": null,
+    "merchant_name": null,
+    "name": "Zelle Payment From SUSANA POZAS CBZ1156FC",
+    "payment_channel": "other",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "HIGH",
+      "detailed": "TRANSFER_IN_ACCOUNT_TRANSFER",
+      "primary": "TRANSFER_IN"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_TRANSFER_IN.png",
+    "transaction_code": null,
+    "transaction_id": "KzXLLOjbbph1zVbwq7nki7ADqnLAr1FmgLOOj",
+    "transaction_type": "special",
+    "unofficial_currency_code": null,
+    "website": null
+  },
+  {
+    "account_id": "JzV66b0oonho4Deg8VP9urNwA088Q7U0g4naN",
+    "account_owner": null,
+    "amount": 1000,
+    "authorized_date": "2025-01-27",
+    "authorized_datetime": "2025-01-27T05:00:00Z",
+    "category": [
+      "Service",
+      "Financial",
+      "Stock Brokers"
+    ],
+    "category_id": "18020003",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Robinhood",
+        "type": "financial_institution",
+        "website": "robinhood.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/robinhood_39.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "A6EeaXMEQp57OWoRZ4kmqw6RBY9YLqm6RaAOb",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-01-27",
+    "datetime": "2025-01-27T05:00:00Z",
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": null,
+    "merchant_entity_id": null,
+    "merchant_name": "Robinhood",
+    "name": "Robinhood",
+    "payment_channel": "other",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": "ACH",
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "MEDIUM",
+      "detailed": "TRANSFER_OUT_INVESTMENT_AND_RETIREMENT_FUNDS",
+      "primary": "TRANSFER_OUT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_TRANSFER_OUT.png",
+    "transaction_code": null,
+    "transaction_id": "kqeKKvEmm7TJP3rKQ1L5FyPnzYJPjBSvXpkk8",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": null
+  },
+  {
+    "account_id": "JzV66b0oonho4Deg8VP9urNwA088Q7U0g4naN",
+    "account_owner": null,
+    "amount": -1000,
+    "authorized_date": "2025-01-24",
+    "authorized_datetime": "2025-01-24T05:00:00Z",
+    "category": [
+      "Transfer",
+      "Credit"
+    ],
+    "category_id": "21005000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Zelle",
+        "type": "payment_app",
+        "website": "zellepay.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/zelle_73.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zQ64DmD0mdD4r6QrYndzZWLwJn7DyJEYdwLYp",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-01-24",
+    "datetime": "2025-01-24T05:00:00Z",
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": null,
+    "merchant_entity_id": null,
+    "merchant_name": null,
+    "name": "Zelle Payment From SUSANA POZAS ZBH1IFTTC",
+    "payment_channel": "other",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "HIGH",
+      "detailed": "TRANSFER_IN_ACCOUNT_TRANSFER",
+      "primary": "TRANSFER_IN"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_TRANSFER_IN.png",
+    "transaction_code": null,
+    "transaction_id": "z8eOOvMzz6S7x5nZNEgXugjAxmwjrkCnbz77m",
+    "transaction_type": "special",
+    "unofficial_currency_code": null,
+    "website": null
+  }
+]
+[]
+[]
+"CAESJXo4ZU9Pdk16ejZTN3g1blpORWdYdWdqQXhtd2pya0NuYno3N20aDAjFxb+9BhDItIGQASIMCMXFv70GEMi0gZABKgwIxcW/vQYQyLSBkAE="
+false
+"eoQHA0DjoiZI5Ah"
