@@ -71,7 +71,8 @@ function App(props) {
     setAllTransactions(data.all_transactions);
     localStorage.setItem("all_transactions", JSON.stringify(data.all_transactions));
     setLoading(false);
-    // console.log(data);
+    console.log(data);
+    console.log('Hello World from getAllTransactions');
   }, [setAllTransactions, setLoading]);
 
   let isOauth = false;
@@ -114,12 +115,6 @@ function App(props) {
         <strong>Link account</strong>
       </button>
       {/* if transaction data has been retreived successfully, show data */}
-      {/* try displaying the transactions as I want them.
-          merchant logo
-          merchant name
-          amount
-          date
-        (if there is some sort of description about the product purchase, ideal) */}
       {!loading &&
         latestTransactions != null &&
         latestTransactions.map((entry, i) => (
@@ -130,7 +125,7 @@ function App(props) {
               <img className='tr-image img-fluid col-1 rounded-circle ' src={entry.personal_finance_category_icon_url} alt="" />
             }
             {/* <div className="tr-data div col">{entry.name}</div> */}
-            <div className="tr-data div col">{entry.merchant_name}</div>
+            <div className="tr-data div col">{entry.merchant_name}</div> 
             <div className="tr-data div col-1">{entry.amount}</div>
             <div className="tr-data div col">{entry.date}</div>
             <div className="tr-data div col-5 ">{toTitleCase(entry.personal_finance_category.detailed)}</div>
@@ -138,24 +133,15 @@ function App(props) {
         )
       )}
       {/* if balance data has been retreived successfully, show data */}
-      {!loading &&
+      {/* {!loading &&
         data != null &&
         Object.entries(data).map((entry, i) => (
           <pre key={i}>
             <code>{JSON.stringify(entry[1], null, 2)}</code>
           </pre>
         )
-      )}
-      TRANSACTIONS!!!
-      {/* show latest transactions json */}
-      {/* {!loading &&
-        latestTransactions != null &&
-        Object.entries(latestTransactions).map((entry, i) => (
-          <pre key={i}>
-            <code>{JSON.stringify(entry[1], null, 2)}</code>
-          </pre>
-        )
       )} */}
+      ALL TRANSACTIONS!!!
       {/* show all transactions json */}
       {!loading &&
         allTransactions != null &&
@@ -165,6 +151,16 @@ function App(props) {
           </pre>
         )
       )}
+      LATEST TRANSACTIONS!!!
+      {/* show latest transactions json */}
+      {/* {!loading &&
+        latestTransactions != null &&
+        Object.entries(latestTransactions).map((entry, i) => (
+          <pre key={i}>
+            <code>{JSON.stringify(entry[1], null, 2)}</code>
+          </pre>
+        )
+      )} */}
     </div>
   );
 }
