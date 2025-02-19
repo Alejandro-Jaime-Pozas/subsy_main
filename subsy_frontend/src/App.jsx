@@ -91,6 +91,8 @@ function App(props) {
 
   // need to understand this below
   useEffect(() => {
+    console.log(allTransactions);
+    console.log(latestTransactions);
     if (token == null) {
       console.log('No token, will create one now.')
       createLinkToken();
@@ -116,8 +118,11 @@ function App(props) {
       </button>
       {/* if transaction data has been retreived successfully, show data */}
       {!loading &&
-        latestTransactions != null &&
-        latestTransactions.map((entry, i) => (
+        // latestTransactions != null &&
+        // latestTransactions.map((entry, i) => (
+        // MAP ALL TRANSACTIONS
+        allTransactions != null &&
+        allTransactions.added.map((entry, i) => (
           <div className="transactions-plaid row " key={i}>
             {entry.logo_url ?
               <img className='tr-image img-fluid col-1 rounded-circle ' src={entry.logo_url} alt="" />
@@ -125,7 +130,7 @@ function App(props) {
               <img className='tr-image img-fluid col-1 rounded-circle ' src={entry.personal_finance_category_icon_url} alt="" />
             }
             {/* <div className="tr-data div col">{entry.name}</div> */}
-            <div className="tr-data div col">{entry.merchant_name}</div> 
+            <div className="tr-data div col">{entry.merchant_name}</div>
             <div className="tr-data div col-1">{entry.amount}</div>
             <div className="tr-data div col">{entry.date}</div>
             <div className="tr-data div col-5 ">{toTitleCase(entry.personal_finance_category.detailed)}</div>
