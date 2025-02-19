@@ -109,14 +109,15 @@ class Transaction(models.Model):
     website = models.URLField(max_length=1000, null=True)
     bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='transactions')
 
-# class Application(models.Model):
-#     """
-#     Software application/platform in the db system.
-#     i.e. Netflix, Spotify, AWS are applications.
-#     """
-#     name = models.CharField(max_length=255)  # assumed by the transaction merchant data
-#     website = models.URLField(max_length=5000)  # from transaction website field
 
+class Application(models.Model):
+    """
+    Software application/platform in the db system.
+    i.e. Netflix, Spotify, AWS are applications.
+    """
+    name = models.CharField(max_length=255, unique=True)  # assumed by the transaction merchant data
+    website = models.URLField(max_length=5000, null=True)  # from transaction website field
+    transactions = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='application')
 
 # class Subscription(models.Model):
 #     """

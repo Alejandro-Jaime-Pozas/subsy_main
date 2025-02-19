@@ -12,6 +12,7 @@ from core.tests.shared_data import (
     create_default_instances,
     TEST_BANK_ACCOUNT_DATA,
     TEST_TRANSACTION_DATA,
+    TEST_APPLICATION_DATA
 )
 from core.models import (
     Company,
@@ -384,7 +385,27 @@ class TransactionTests(TestCase):
         self.assertFalse(Transaction.objects.filter(id=self.data['transaction'].id).exists())
 
 
-    # APPLICATION
+class ApplicationTests(TestCase):
+    """Tests for the Application model."""
+
+    def setUpTestData(cls):
+        cls.data = create_default_instances()
+
+    def setUp(self):
+        self.application_data = {
+            'name': 'Snowflake',
+            'website': 'snowflake.com'
+        }
+
+    def test_create_application_success(self):
+        """Test that creating an application in the db system is successful."""
+        application = Application.objects.create(
+            **self.application_data,
+            transaction=self.data['transaction']
+        )
+
+        self.assertIsInstance(application, Application)
+        self.assertEqual(application.name, self.application_data['name'])
 
     # SUBSCRIPTION
 
