@@ -91,8 +91,8 @@ function App(props) {
 
   // need to understand this below
   useEffect(() => {
-    console.log(allTransactions);
-    console.log(latestTransactions);
+    // console.log(allTransactions);
+    // console.log(latestTransactions);
     if (token == null) {
       console.log('No token, will create one now.')
       createLinkToken();

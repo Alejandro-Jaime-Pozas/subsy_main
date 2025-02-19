@@ -126,6 +126,7 @@ def get_balance(request, *args, **kwargs):
         # if not access_token:
         #     return JsonResponse({"error": "Access token not found."}, status=403)
         balance_request = AccountsBalanceGetRequest(access_token=kwargs["access_token"])
+        # print(request.session['access_token'])
         balance_response = plaid_client.accounts_balance_get(balance_request)
         return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)
     except plaid.ApiException as e:
