@@ -112,10 +112,10 @@ class Transaction(models.Model):
 # class Application(models.Model):
 #     """
 #     Software application/platform in the db system.
-#     i.e. Netflix, Spotify are applications.
+#     i.e. Netflix, Spotify, AWS are applications.
 #     """
-#     name = models.CharField(max_length=255)
-#     domain_url = models.URLField(max_length=5000)
+#     name = models.CharField(max_length=255)  # assumed by the transaction merchant data
+#     website = models.URLField(max_length=5000)  # from transaction website field
 
 
 # class Subscription(models.Model):

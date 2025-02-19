@@ -7,6 +7,7 @@ jobs:
   test-and-lint:
     name: Test and Lint
     runs-on: ubuntu-latest
+    # setting env allows to check out that env's specific variables..but can also use non-env variables/secrets
     environment: development
     steps:
       - name: Docker Hub Login

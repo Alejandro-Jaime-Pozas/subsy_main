@@ -68,15 +68,8 @@ for product in PLAID_PRODUCTS:
 
 # Create Link Token
 def create_link_token(request):
-    print("PLAID_CLIENT_ID:", PLAID_CLIENT_ID)
-    print("PLAID_SECRET:", PLAID_SECRET)
-    print("PLAID_ENV:", PLAID_ENV)
-    print("PLAID_COUNTRY_CODES:", PLAID_COUNTRY_CODES)
-    print("PLAID_PRODUCTS:", PLAID_PRODUCTS)
-    print("PLAID_SANDBOX_REDIRECT_URI:", os.getenv('PLAID_SANDBOX_REDIRECT_URI'))
-    print("PLAID_REDIRECT_URI:", os.getenv('PLAID_REDIRECT_URI'))
-    print('='*100)
-
+    # print("PLAID_SANDBOX_REDIRECT_URI:", os.getenv('PLAID_SANDBOX_REDIRECT_URI'))
+    # print("PLAID_REDIRECT_URI:", os.getenv('PLAID_REDIRECT_URI'))
     try:
         link_token_request = LinkTokenCreateRequest(
             user=LinkTokenCreateRequestUser(
