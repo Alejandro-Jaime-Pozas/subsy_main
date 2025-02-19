@@ -11,6 +11,7 @@ from plaid.model.link_token_create_request_user import LinkTokenCreateRequestUse
 from plaid.model.item_public_token_exchange_request import ItemPublicTokenExchangeRequest
 from plaid.model.accounts_balance_get_request import AccountsBalanceGetRequest
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
+from plaid.model.link_token_transactions import LinkTokenTransactions
 from plaid.configuration import Configuration
 from plaid.api_client import ApiClient
 from plaid.model.country_code import CountryCode
@@ -79,11 +80,14 @@ def create_link_token(request):
     try:
         link_token_request = LinkTokenCreateRequest(
             user=LinkTokenCreateRequestUser(
-                client_user_id=str(time.time())
+                client_user_id=str(time.time())  # will prob need to change user_id?
             ),
-            client_name="Subsy's Tiny Quickstart",
+            client_name="Subsy - Subscription Manager",
             language="en",
             products=products,
+            transactions=LinkTokenTransactions(
+                days_requested=730  # THIS SHOULD GO BACK 2 YEARS FOR ALL NEW ITEMS, EXISTING ITEMS COULD REQUIRE TO BE REMOVED 
+            ),
             country_codes=list(map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)),
             redirect_uri=os.getenv('PLAID_REDIRECT_URI'),
             # redirect_uri=os.getenv('PLAID_SANDBOX_REDIRECT_URI'),
