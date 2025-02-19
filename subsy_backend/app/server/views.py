@@ -86,7 +86,7 @@ def create_link_token(request):
             language="en",
             products=products,
             transactions=LinkTokenTransactions(
-                days_requested=730  # THIS SHOULD GO BACK 2 YEARS FOR ALL NEW ITEMS, EXISTING ITEMS COULD REQUIRE TO BE REMOVED 
+                days_requested=730  # TEST THIS OUT: THIS SHOULD GO BACK 2 YEARS FOR ALL NEW ITEMS, EXISTING ITEMS COULD REQUIRE TO BE REMOVED BEFORE UPDATING TO 2 YEARS DATA
             ),
             country_codes=list(map(lambda x: CountryCode(x), PLAID_COUNTRY_CODES)),
             redirect_uri=os.getenv('PLAID_REDIRECT_URI'),
