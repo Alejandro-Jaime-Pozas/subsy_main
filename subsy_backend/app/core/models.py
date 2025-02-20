@@ -89,6 +89,21 @@ class BankAccount(models.Model):
     subtype = models.CharField(max_length=50, null=True)
     linked_bank = models.ForeignKey(LinkedBank, on_delete=models.CASCADE, related_name='bank_accounts')
 
+    def __repr__(self):
+        return f'<BankAccount {self.id}|{self.name}|{self.subtype}|{self.account_id}>'
+
+
+class Application(models.Model):
+    """
+    Software application/platform in the db system.
+    i.e. Snowflake, Azure, AWS are applications.
+    """
+    name = models.CharField(max_length=255, unique=True)  # assumed by the transaction merchant data
+    website = models.URLField(max_length=5000, null=True)  # from transaction website field
+
+    def __repr__(self):
+        return f'<Application {self.id}|{self.name}>'
+
 
 class Transaction(models.Model):
     """Transaction (cash in or cash out) in the db system."""
@@ -108,16 +123,10 @@ class Transaction(models.Model):
     personal_finance_category_icon_url = models.URLField(max_length=1000, null=True)
     website = models.URLField(max_length=1000, null=True)
     bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='transactions')
+    application = models.ForeignKey(Application, on_delete=models.SET_NULL, related_name='transactions', null=True)
 
-
-class Application(models.Model):
-    """
-    Software application/platform in the db system.
-    i.e. Netflix, Spotify, AWS are applications.
-    """
-    name = models.CharField(max_length=255, unique=True)  # assumed by the transaction merchant data
-    website = models.URLField(max_length=5000, null=True)  # from transaction website field
-    transactions = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='application')
+    def __repr__(self):
+        return f'<Transaction {self.id}|{self.merchant_name}|{self.name}|{self.transaction_id}>'
 
 # class Subscription(models.Model):
 #     """

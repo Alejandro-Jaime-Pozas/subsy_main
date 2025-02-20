@@ -33,6 +33,12 @@ TEST_BANK_ACCOUNT_DATA = {
     # "linked_bank": test_linked_bank
 }
 
+TEST_APPLICATION_DATA = {
+    "name": "AWS",
+    "website": "https://aws.amazon.com/",
+    # "transaction": transaction
+}
+
 TEST_TRANSACTION_DATA = {
     "transaction_id": "defjeW1nR6CDn5okmGQ6hEpMo4lLNoSrzqDje",
     "account_id": "defXxLj1m4HMXBm9WZZmCWVbPjX16EHwv99vp",
@@ -65,20 +71,18 @@ TEST_TRANSACTION_DATA = {
     # "bank_account": test_bank_account
 }
 
-TEST_APPLICATION_DATA = {
-    "name": "AWS",
-    "website": "https://aws.amazon.com/",
-    # "transaction": transaction
-}
-
 def create_default_instances():
     """Create and return default instances for all db models."""
     user = get_user_model().objects.create_user(**TEST_USER_DATA)
     company = Company.objects.create(**TEST_COMPANY_DATA)
     linked_bank = LinkedBank.objects.create(**TEST_LINKED_BANK_DATA, company=company)
     bank_account = BankAccount.objects.create(**TEST_BANK_ACCOUNT_DATA, linked_bank=linked_bank)
-    transaction = Transaction.objects.create(**TEST_TRANSACTION_DATA, bank_account=bank_account)
-    application = Application.objects.create(**TEST_APPLICATION_DATA, transaction=transaction)
+    application = Application.objects.create(**TEST_APPLICATION_DATA)
+    transaction = Transaction.objects.create(
+        **TEST_TRANSACTION_DATA,
+        bank_account=bank_account,
+        application=application,
+    )
 
     return {
         'user': user,

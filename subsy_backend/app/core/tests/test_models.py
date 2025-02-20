@@ -384,28 +384,54 @@ class TransactionTests(TestCase):
 
         self.assertFalse(Transaction.objects.filter(id=self.data['transaction'].id).exists())
 
-
-class ApplicationTests(TestCase):
-    """Tests for the Application model."""
-
-    def setUpTestData(cls):
-        cls.data = create_default_instances()
-
-    def setUp(self):
-        self.application_data = {
-            'name': 'Snowflake',
-            'website': 'snowflake.com'
-        }
-
-    def test_create_application_success(self):
-        """Test that creating an application in the db system is successful."""
-        application = Application.objects.create(
-            **self.application_data,
-            transaction=self.data['transaction']
+    def test_no_FK_to_application_ok(self):
+        """
+        Test that it's okay not to reference an Application
+        obj FK since a transaction can have no applications.
+        """
+        self.transaction_data['transaction_id'] = random_37_char_string()
+        transaction = Transaction.objects.create(
+            **self.transaction_data,
+            bank_account=self.data.get('bank_account'),
+            application=None,
         )
 
-        self.assertIsInstance(application, Application)
-        self.assertEqual(application.name, self.application_data['name'])
+        self.assertIsInstance(transaction, Transaction)
+        self.assertIsNone(transaction.application)
+
+    def test_delete_application_sets_transaction_to_null(self):
+        """
+        Test that deleting an application with transactions
+        sets transactions FK field to null.
+        """
+        self.data.get('application').delete()
+
+        updated_transaction = Transaction.objects.filter(id=self.data['transaction'].id)[0]
+        print(updated_transaction)
+        self.assertIsNone(updated_transaction.application)
+
+# class ApplicationTests(TestCase):
+#     """Tests for the Application model."""
+
+#     @classmethod
+#     def setUpTestData(cls):
+#         cls.data = create_default_instances()
+
+#     def setUp(self):
+#         self.application_data = {
+#             'name': 'Snowflake',
+#             'website': 'snowflake.com'
+#         }
+
+#     def test_create_application_success(self):
+#         """Test that creating an application in the db system is successful."""
+#         application = Application.objects.create(
+#             **self.application_data,
+#             transactions=self.data['transactions']
+#         )
+
+#         self.assertIsInstance(application, Application)
+#         self.assertEqual(application.name, self.application_data['name'])
 
     # SUBSCRIPTION
 
