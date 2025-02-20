@@ -19,7 +19,7 @@ from core.models import (
     LinkedBank,
     BankAccount,
     Transaction,
-    # Application,
+    Application,
     # Subscription,
     # Tag,
 )
@@ -407,31 +407,30 @@ class TransactionTests(TestCase):
         self.data.get('application').delete()
 
         updated_transaction = Transaction.objects.filter(id=self.data['transaction'].id)[0]
-        print(updated_transaction)
         self.assertIsNone(updated_transaction.application)
 
-# class ApplicationTests(TestCase):
-#     """Tests for the Application model."""
 
-#     @classmethod
-#     def setUpTestData(cls):
-#         cls.data = create_default_instances()
+class ApplicationTests(TestCase):
+    """Tests for the Application model."""
 
-#     def setUp(self):
-#         self.application_data = {
-#             'name': 'Snowflake',
-#             'website': 'snowflake.com'
-#         }
+    @classmethod
+    def setUpTestData(cls):
+        cls.data = create_default_instances()
 
-#     def test_create_application_success(self):
-#         """Test that creating an application in the db system is successful."""
-#         application = Application.objects.create(
-#             **self.application_data,
-#             transactions=self.data['transactions']
-#         )
+    def setUp(self):
+        self.application_data = {
+            'name': 'Snowflake',
+            'website': 'snowflake.com'
+        }
 
-#         self.assertIsInstance(application, Application)
-#         self.assertEqual(application.name, self.application_data['name'])
+    def test_create_application_success(self):
+        """Test that creating an application in the db system is successful."""
+        application = Application.objects.create(
+            **self.application_data
+        )
+
+        self.assertIsInstance(application, Application)
+        self.assertEqual(application.name, self.application_data['name'])
 
     # SUBSCRIPTION
 
