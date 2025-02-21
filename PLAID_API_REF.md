@@ -19,7 +19,7 @@ https://plaid.com/docs/api/
 
 
 
-### RELEVANT TRANSACTION DATA KEY/VALUE PAIRS
+## RELEVANT TRANSACTION DATA KEY/VALUE PAIRS
 - account_id: bank acct used
 - account_owner
 - **amount**
@@ -39,7 +39,7 @@ https://plaid.com/docs/api/
 
 <!--  -->
 
-### PLAID SERVER INITIAL TOKEN INTERACTION PROCESS
+## PLAID SERVER INITIAL TOKEN INTERACTION PROCESS
 1. frontend client requests a **link token** to backend python
 2. backend python requests a **link token** to plaid
 3. plaid sends **link token** to backend python

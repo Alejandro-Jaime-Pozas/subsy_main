@@ -109,6 +109,9 @@ An application exists outside of our django app universe (in a sense) and does n
 
 
 A subscription is for the purposes of our specific django app universe, a software platform of some form that the company subscribes to in a given, **uninterrupted** time period. It is not the application itself, it is a set of details usually including a payment for the services of that application in a given time period. If a subscription is cancelled and then resumed, it will still NOT count as the same subscription. Bill payments for utilities are NOT a subscription. Payment to a supplier is NOT a subscription. A subscription is an online software platform like Notion, Slack, Google Suite, AWS, Snowflake, Sales Nav, etc that is utilized within the company.
+  - WILL USE ANNOTATE() CAPABILITY TO CREATE AGGREGATIONS REQUIRED TO ANALYZE SPEND AND SHOW TO USER IN FRONTEND
+    - ChatGPT response: Use an annotate() QuerySet for On-the-Fly Aggregation
+
 
 
 A subscription then can also have tags for different purposes, such as what specific company dept the sub belongs to. A tag can exist on its own (to have a set of default tags), or it can be linked to a sub. There could be different types of tags, should outline this better.
