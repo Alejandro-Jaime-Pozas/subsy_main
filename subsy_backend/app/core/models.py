@@ -142,11 +142,16 @@ class Transaction(models.Model):
 #         ('Y', 'Yearly'),
 #         ('VAR', 'Variable'),
 #     ]
+    # PAYMENT_TYPE_CHOICES = [
+    #     ('F', 'Fixed'),
+    #     ('V', 'Variable'),
+    # ]
 
 #     start_date = models.DateTimeField(auto_now_add=True)
 #     end_date = models.DateTimeField(auto_now_add=True)
 #     active = models.BooleanField(default=True)
-#     payment_period = models.CharField(default='monthly', choices=PAYMENT_PERIOD_CHOICES)
+    # payment_period = models.CharField(default='Monthly', choices=PAYMENT_PERIOD_CHOICES)
+    # payment_type = models.CharField(default='Variable', choices=PAYMENT_TYPE_CHOICES)
 
 
 # class Tag(models.Model):

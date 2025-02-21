@@ -161,3 +161,8 @@ A subscription can also be linked to a sub manager, which is the user managing t
         - MAIN = USER
         - a subscription can have 0 or many users (subscription_manager)
         - a user can have 0 or many subscriptions for which they're in charge
+
+
+# IdeaLab
+
+- Could check the subscription type, example monthly, for a company's AWS subscription, and compare to what they could save if they change for a yearly subscription. Say instead of $1000 per month which comes to $12000 a year they could pay instead $10000 and save $2000 dls...could in dashboard somewhere mention the total savings they could get by paying yearly (though would come with heavier upfront payment)
