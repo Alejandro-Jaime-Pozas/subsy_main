@@ -67,7 +67,7 @@ class Company(models.Model):
 
 class LinkedBank(models.Model):
     """Linked Bank (equivalent to Plaid Item) in the db system."""
-    item_id = models.CharField(max_length=37, unique=True)  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique
+    item_id = models.CharField(max_length=37, unique=True)  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique !!!BE AWARE THAT MULTIPLE USERS LINKING THE SAME ONLINE BANK COULD RESULT IN DUPLICATE LINKEDBANKS FOR THE SAME COMPANY!!!
     institution_id = models.CharField(max_length=25, )  # Plaid id for the bank. Not unique
     institution_name = models.CharField(max_length=55, )  # Plaid name for the bank. Not unique
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='linked_banks')
@@ -142,18 +142,20 @@ class Transaction(models.Model):
 #         ('Y', 'Yearly'),
 #         ('VAR', 'Variable'),
 #     ]
-    # PAYMENT_TYPE_CHOICES = [
-    #     ('F', 'Fixed'),
-    #     ('V', 'Variable'),
-    # ]
+#     PAYMENT_TYPE_CHOICES = [
+#         ('F', 'Fixed'),
+#         ('V', 'Variable'),
+#     ]
 
 #     start_date = models.DateTimeField(default=)
 #     end_date = models.DateTimeField(auto_now_add=True, null=True)
 #     active = models.BooleanField(default=True)
-    # payment_period = models.CharField(default='Monthly', choices=PAYMENT_PERIOD_CHOICES)
-    # payment_type = models.CharField(default='Variable', choices=PAYMENT_TYPE_CHOICES)
-    # last_payment_date = models.DateTimeField(default=)
-    # next_payment_date = models.DateTimeField(default=)
+#     payment_period = models.CharField(default='Monthly', choices=PAYMENT_PERIOD_CHOICES)
+#     payment_type = models.CharField(default='Variable', choices=PAYMENT_TYPE_CHOICES)
+#     last_payment_date = models.DateTimeField(default=)
+#     next_payment_date = models.DateTimeField(default=)
+#     application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name='subscriptions')
+    # subscription_manager = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='subscriptions', null=True)
 
 
 # class Tag(models.Model):
