@@ -1,5 +1,6 @@
 from ..models import *
 from django.contrib.auth import get_user_model
+from datetime import datetime, timedelta, timezone
 
 """Object data for input in django test modules."""
 
@@ -71,6 +72,20 @@ TEST_TRANSACTION_DATA = {
     # "bank_account": test_bank_account
 }
 
+default_datetime = datetime.now(timezone.utc)
+
+TEST_SUBSCRIPTION_DATA = {
+    "start_date": default_datetime - timedelta(days=7),
+    "end_date": default_datetime,
+    "active": True,
+    "payment_period": 'Weekly',
+    "payment_type": 'Fixed',
+    "last_payment_date": default_datetime - timedelta(days=7),
+    "next_payment_date": default_datetime,
+    # "application": application,
+    # "subscription_manager": user
+}
+
 def create_default_instances():
     """Create and return default instances for all db models."""
     user = get_user_model().objects.create_user(**TEST_USER_DATA)
@@ -83,6 +98,11 @@ def create_default_instances():
         bank_account=bank_account,
         application=application,
     )
+    subscription = Subscription.objects.create(
+        **TEST_SUBSCRIPTION_DATA,
+        application=application,
+        subscription_manager=user,
+    )
 
     return {
         'user': user,
@@ -91,4 +111,5 @@ def create_default_instances():
         'bank_account': bank_account,
         'transaction': transaction,
         'application': application,
+        'subscription': subscription,
     }

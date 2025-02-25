@@ -437,4 +437,24 @@ class ApplicationTests(TestCase):
     # TAG
 
 
-# class 
+class SubscriptionTests(TestCase):
+    """Tests for Subscription model."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.data = create_default_instances()
+
+    # def setUp(self):
+
+    # test create sub success
+    def test_create_subscription_success(self):
+        """Test that creating a subscription is successful."""
+        
+
+    # test some null values allowed like dates
+
+    # test that trying to delete application with linked subscription obj raises ProtectedError
+
+    # test that deleting the user/sub manager sets the Subscription to null
+
+    # test that user/sub manager can be null
