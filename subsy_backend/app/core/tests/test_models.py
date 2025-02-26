@@ -425,14 +425,6 @@ class ApplicationTests(TestCase):
         self.assertIsInstance(application, Application)
         self.assertEqual(application.name, self.application_data['name'])
 
-    def test_delete_application_raises_error(self):
-        """
-        Test that deleting an application with linked subscriptions
-        raises a protected error.
-        """
-        with self.assertRaises(ProtectedError):
-            self.data.get('application').delete()
-
 
 class SubscriptionTests(TestCase):
     """Tests for Subscription model."""
@@ -441,20 +433,48 @@ class SubscriptionTests(TestCase):
     def setUpTestData(cls):
         cls.data = create_default_instances()
 
-    # def setUp(self):
-
     # test create sub success
     def test_create_subscription_success(self):
         """Test that creating a subscription is successful."""
         self.assertIsInstance(self.data['subscription'], Subscription)  # jumping straight to instance created previously
 
     # test some null values allowed like dates
+    def test_null_values_allowed(self):
+        """Test that fields with null values can have null values."""
+        subscription_data = {
+            "start_date": None,
+            "end_date": None,
+            "active": False,
+            "payment_period": None,
+            "payment_type": None,
+            "last_payment_date": None,
+            "next_payment_date": None,
+            "application": self.data.get('application'),
+            "subscription_manager": None,
+        }
+        subscription = Subscription.objects.create(**subscription_data)
+
+        self.assertIsInstance(subscription, Subscription)
 
     # test that trying to delete application with linked subscription obj raises ProtectedError
+    def test_delete_application_raises_error(self):
+        """
+        Test that deleting an application with linked subscriptions
+        raises a protected error.
+        """
+        with self.assertRaises(ProtectedError):
+            self.data.get('application').delete()
 
     # test that deleting the user/sub manager sets the Subscription to null
+    def test_delete_user_sets_subscription_to_null(self):
+        """
+        Test that deleting a user/subscription manager
+        sets the Subscription to null.
+        """
+        self.data.get('user').delete()  # if this is in setUpTestData, does it delete for future tests?
 
-    # test that user/sub manager can be null
+        sub_id = self.data.get('subscription').id
+        self.assertIsNone(Subscription.objects.get(id=sub_id).subscription_manager)
 
 
     # TAGS
