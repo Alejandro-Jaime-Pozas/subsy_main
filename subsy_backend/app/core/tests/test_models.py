@@ -5,6 +5,8 @@ from django.test import TestCase  # , Client
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
+from django.db.models import ProtectedError
+
 # from django.forms.models import model_to_dict
 
 from utils import random_37_char_string
@@ -21,7 +23,7 @@ from core.models import (
     BankAccount,
     Transaction,
     Application,
-    # Subscription,
+    Subscription,
     # Tag,
 )
 
@@ -400,16 +402,6 @@ class TransactionTests(TestCase):
         self.assertIsInstance(transaction, Transaction)
         self.assertIsNone(transaction.application)
 
-    def test_delete_application_sets_transaction_to_null(self):
-        """
-        Test that deleting an application with transactions
-        sets transactions FK field to null.
-        """
-        self.data.get('application').delete()
-
-        updated_transaction = Transaction.objects.filter(id=self.data['transaction'].id)[0]
-        self.assertIsNone(updated_transaction.application)
-
 
 class ApplicationTests(TestCase):
     """Tests for the Application model."""
@@ -433,9 +425,13 @@ class ApplicationTests(TestCase):
         self.assertIsInstance(application, Application)
         self.assertEqual(application.name, self.application_data['name'])
 
-    # SUBSCRIPTION
-
-    # TAG
+    def test_delete_application_raises_error(self):
+        """
+        Test that deleting an application with linked subscriptions
+        raises a protected error.
+        """
+        with self.assertRaises(ProtectedError):
+            self.data.get('application').delete()
 
 
 class SubscriptionTests(TestCase):
