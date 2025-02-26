@@ -16,5 +16,22 @@ def validate_access_token(view_func):
         return view_func(request, *args, **kwargs)
     return wrapper
 
+# FUNCTIONS FOR USE IN TESTS
+
 def random_37_char_string():
     return ''.join(random.choices(string.ascii_letters + string.digits, k=37))
+
+# CONSTANTS FOR USE IN TESTS
+
+SUBSCRIPTION_PAYMENT_PERIOD_CHOICES = [
+    ('D', 'Daily'),
+    ('W', 'Weekly'),
+    ('M', 'Monthly'),
+    ('Q', 'Quarterly'),
+    ('Y', 'Yearly'),
+    ('VAR', 'Variable'),
+]
+SUBSCRIPTION_PAYMENT_TYPE_CHOICES = [
+    ('F', 'Fixed'),
+    ('V', 'Variable'),
+]

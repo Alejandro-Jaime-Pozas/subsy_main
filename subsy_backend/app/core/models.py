@@ -10,6 +10,11 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 
+from utils import (
+    SUBSCRIPTION_PAYMENT_PERIOD_CHOICES,
+    SUBSCRIPTION_PAYMENT_TYPE_CHOICES,
+)
+
 
 class UserManager(BaseUserManager):
     """Manager for User."""
@@ -128,34 +133,39 @@ class Transaction(models.Model):
     def __repr__(self):
         return f'<Transaction {self.id}|{self.merchant_name}|{self.name}|{self.transaction_id}>'
 
-# class Subscription(models.Model):
-#     """
-#     Subscription in the db system. A subscription is a software platform
-#     of some form that the company subscribes to in a given, possibly
-#     interrupted time period.
-#     """
-#     PAYMENT_PERIOD_CHOICES = [
-#         ('D', 'Daily'),
-#         ('W', 'Weekly'),
-#         ('M', 'Monthly'),
-#         ('Q', 'Quarterly'),
-#         ('Y', 'Yearly'),
-#         ('VAR', 'Variable'),
-#     ]
-#     PAYMENT_TYPE_CHOICES = [
-#         ('F', 'Fixed'),
-#         ('V', 'Variable'),
-#     ]
+class Subscription(models.Model):
+    """
+    Subscription in the db system. A subscription is a software platform
+    of some form that the company subscribes to in a given, possibly
+    interrupted time period.
+    """
 
-#     start_date = models.DateTimeField(default=None, null=True)
-#     end_date = models.DateTimeField(default=None, null=True)
-#     active = models.BooleanField(default=True)
-#     payment_period = models.CharField(default='Monthly', choices=PAYMENT_PERIOD_CHOICES, null=True)
-#     payment_type = models.CharField(default='Variable', choices=PAYMENT_TYPE_CHOICES, null=True)
-#     last_payment_date = models.DateTimeField(default=None, null=True)
-#     next_payment_date = models.DateTimeField(default=None, null=True)
-#     application = models.ForeignKey(Application, on_delete=models.PROTECT, related_name='subscriptions')  # models.PROTECT to prevent deletion of application since would delete all related subscriptions
-    # subscription_manager = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='subscriptions', null=True)
+    start_date = models.DateTimeField(default=None, null=True)
+    end_date = models.DateTimeField(default=None, null=True)
+    active = models.BooleanField(default=True)
+    payment_period = models.CharField(
+        default='Monthly',
+        choices=SUBSCRIPTION_PAYMENT_PERIOD_CHOICES,
+        null=True
+    )
+    payment_type = models.CharField(
+        default='Variable',
+        choices=SUBSCRIPTION_PAYMENT_TYPE_CHOICES,
+        null=True
+    )
+    last_payment_date = models.DateTimeField(default=None, null=True)
+    next_payment_date = models.DateTimeField(default=None, null=True)
+    application = models.ForeignKey(
+        Application,
+        on_delete=models.PROTECT,
+        related_name='subscriptions'
+    )  # models.PROTECT to prevent deletion of application since would delete all related subscriptions
+    subscription_manager = models.ForeignKey(  # maybe naming convention not smartest since it differs
+        User,
+        on_delete=models.SET_NULL,
+        related_name='subscriptions',
+        null=True
+    )
 
 
 # class Tag(models.Model):

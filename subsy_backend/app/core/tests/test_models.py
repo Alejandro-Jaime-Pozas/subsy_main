@@ -12,7 +12,8 @@ from core.tests.shared_data import (
     create_default_instances,
     TEST_BANK_ACCOUNT_DATA,
     TEST_TRANSACTION_DATA,
-    TEST_APPLICATION_DATA
+    TEST_APPLICATION_DATA,
+    TEST_SUBSCRIPTION_DATA,
 )
 from core.models import (
     Company,
@@ -449,7 +450,7 @@ class SubscriptionTests(TestCase):
     # test create sub success
     def test_create_subscription_success(self):
         """Test that creating a subscription is successful."""
-        
+        self.assertIsInstance(self.data['subscription'], Subscription)  # jumping straight to instance created previously
 
     # test some null values allowed like dates
 
@@ -458,3 +459,9 @@ class SubscriptionTests(TestCase):
     # test that deleting the user/sub manager sets the Subscription to null
 
     # test that user/sub manager can be null
+
+
+    # TAGS
+
+
+    # MANAGE SUBSCRIPTION LINKS
