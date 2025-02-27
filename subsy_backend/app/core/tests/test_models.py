@@ -14,8 +14,6 @@ from core.tests.shared_data import (
     create_default_instances,
     TEST_BANK_ACCOUNT_DATA,
     TEST_TRANSACTION_DATA,
-    TEST_APPLICATION_DATA,
-    TEST_SUBSCRIPTION_DATA,
 )
 from core.models import (
     Company,
@@ -475,6 +473,15 @@ class SubscriptionTests(TestCase):
 
         sub_id = self.data.get('subscription').id
         self.assertIsNone(Subscription.objects.get(id=sub_id).subscription_manager)
+
+    def test_subscriptions_have_tags_field(self):
+        """
+        Test that subscriptions have a tags
+        field for many-to-many relationship.
+        """
+        tag = self.data.get('subscription').tags.first()
+
+        self.assertEqual(tag, self.data.get('tag'))
 
 
 class TagTests(TestCase):
