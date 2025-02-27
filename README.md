@@ -113,7 +113,6 @@ A subscription is for the purposes of our specific django app universe, a softwa
     - ChatGPT response: Use an annotate() QuerySet for On-the-Fly Aggregation
 
 
-
 A subscription then can also have tags for different purposes, such as what specific company dept the sub belongs to. A tag can exist on its own (to have a set of default tags), or it can be linked to a sub. There could be different types of tags, should outline this better.
 
 
@@ -165,4 +164,4 @@ A subscription can also be linked to a sub manager, which is the user managing t
 
 # IdeaLab
 
-- Could check the subscription type, example monthly, for a company's AWS subscription, and compare to what they could save if they change for a yearly subscription. Say instead of $1000 per month which comes to $12000 a year they could pay instead $10000 and save $2000 dls...could in dashboard somewhere mention the total savings they could get by paying yearly (though would come with heavier upfront payment)
+- Could check the subscription type, example monthly, for a company's AWS subscription, and compare to what they could save if they change for a yearly subscription. Say instead of $1000 per month which comes to $12000 a year they could pay instead $10000 and save $2000 dls...could in dashboard somewhere mention the total savings they could get by paying yearly (though would come with heavier upfront payment), in the end just so they know their options

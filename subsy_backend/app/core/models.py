@@ -105,6 +105,7 @@ class Application(models.Model):
     """
     name = models.CharField(max_length=255, unique=True)  # assumed by the transaction merchant data
     website = models.URLField(max_length=5000, null=True)  # from transaction website field
+    manage_subscription_link = models.URLField(max_length=5000, default=None, null=True)  # will later need to find best way to automate finding subscription page links for all applications..
 
     def __repr__(self):
         return f'<Application {self.id}|{self.name}>'

@@ -413,7 +413,7 @@ class ApplicationTests(TestCase):
     def setUp(self):
         self.application_data = {
             'name': 'Snowflake',
-            'website': 'snowflake.com'
+            'website': 'snowflake.com',
         }
 
     def test_create_application_success(self):
@@ -477,7 +477,8 @@ class SubscriptionTests(TestCase):
         self.assertIsNone(Subscription.objects.get(id=sub_id).subscription_manager)
 
 
-    # TAGS
+class TagTests(TestCase):
+    """Tests for Tag model."""
 
 
-    # MANAGE SUBSCRIPTION LINKS
+# MANAGE SUBSCRIPTION LINKS

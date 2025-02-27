@@ -37,7 +37,7 @@ TEST_BANK_ACCOUNT_DATA = {
 TEST_APPLICATION_DATA = {
     "name": "AWS",
     "website": "https://aws.amazon.com/",
-    # "transaction": transaction
+    # "manage_subscription_link": "https://aws.amazon.com/billing",
 }
 
 TEST_TRANSACTION_DATA = {
