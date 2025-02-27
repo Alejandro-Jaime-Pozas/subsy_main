@@ -86,6 +86,11 @@ TEST_SUBSCRIPTION_DATA = {
     # "subscription_manager": user
 }
 
+TEST_TAG_DATA = {
+    "name": 'productivity'
+    # "subscriptions": subscription
+}
+
 def create_default_instances():
     """Create and return default instances for all db models."""
     user = get_user_model().objects.create_user(**TEST_USER_DATA)
@@ -103,6 +108,8 @@ def create_default_instances():
         application=application,
         subscription_manager=user,
     )
+    tag = Tag.objects.create(**TEST_TAG_DATA)
+    tag.subscriptions.add(subscription)
 
     return {
         'user': user,
@@ -112,4 +119,5 @@ def create_default_instances():
         'transaction': transaction,
         'application': application,
         'subscription': subscription,
+        'tag': tag,
     }

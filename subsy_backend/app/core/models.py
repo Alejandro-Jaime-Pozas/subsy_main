@@ -134,6 +134,7 @@ class Transaction(models.Model):
     def __repr__(self):
         return f'<Transaction {self.id}|{self.merchant_name}|{self.name}|{self.transaction_id}>'
 
+
 class Subscription(models.Model):
     """
     Subscription in the db system. A subscription is a software platform
@@ -169,7 +170,10 @@ class Subscription(models.Model):
     )
 
 
-# class Tag(models.Model):
-#     """Tag in the db system. Multi-purpose tag for use in grouping/filtering."""
-#     pass
-#     # name = models.
+class Tag(models.Model):
+    """
+    Tag in the db system. Multi-purpose tag for use in grouping/filtering.
+    Can extend to other objects besides Subscription.
+    """
+    name = models.CharField(max_length=50)
+    subscriptions = models.ManyToManyField(Subscription, related_name='tags')
