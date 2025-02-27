@@ -169,6 +169,9 @@ class Subscription(models.Model):
         null=True
     )
 
+    def __repr__(self):
+        return f'<Subscription {self.id}|{self.application.name}|{self.start_date}>'
+
 
 class Tag(models.Model):
     """
@@ -177,3 +180,9 @@ class Tag(models.Model):
     """
     name = models.CharField(max_length=50)
     subscriptions = models.ManyToManyField(Subscription, related_name='tags')
+
+    def __repr__(self):
+        return (
+            f'<Tag {self.id}|{self.name}|'
+            f'subscriptions count: {len(self.subscriptions.all())}>'
+        )

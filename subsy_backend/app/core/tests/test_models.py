@@ -24,7 +24,7 @@ from core.models import (
     Transaction,
     Application,
     Subscription,
-    # Tag,
+    Tag,
 )
 
 
@@ -480,5 +480,17 @@ class SubscriptionTests(TestCase):
 class TagTests(TestCase):
     """Tests for Tag model."""
 
+    @classmethod
+    def setUpTestData(cls):
+        cls.data = create_default_instances()
 
-# MANAGE SUBSCRIPTION LINKS
+    def test_create_tag_success(self):
+        """Test creating a tag is successful."""
+        tag = Tag.objects.create(
+            name='some_tag'
+        )
+        subscription = self.data.get('subscription')
+        tag.subscriptions.add(subscription)
+
+        self.assertIsInstance(tag, Tag)
+        self.assertEqual(subscription.id, Tag.objects.get(id=self.data.get('subscription').id).id)
