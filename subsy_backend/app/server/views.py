@@ -197,14 +197,14 @@ def get_all_transactions(request, *args, **kwargs):
     modified = []
     removed = []  # Removed transaction ids
     has_more = True
-    counter = 0
+    counter = 1
     try:
         # Iterate through each page of new transaction updates for item
         while has_more:
             request = TransactionsSyncRequest(
                 access_token=kwargs.get("access_token"),
                 cursor=cursor,
-                options={"days_requested": 730}
+                options={"days_requested": 730}  # maybe this is throwing the 400 error?
             )
             response = plaid_client.transactions_sync(request).to_dict()
             cursor = response['next_cursor']
