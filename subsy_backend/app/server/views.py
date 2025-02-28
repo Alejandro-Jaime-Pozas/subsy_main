@@ -197,6 +197,7 @@ def get_all_transactions(request, *args, **kwargs):
     modified = []
     removed = []  # Removed transaction ids
     has_more = True
+    counter = 0
     try:
         # Iterate through each page of new transaction updates for item
         while has_more:
@@ -223,9 +224,21 @@ def get_all_transactions(request, *args, **kwargs):
             removed.extend(response['removed'])
             has_more = response['has_more']
             pretty_print_response(response)  # TO VIEW TRANSACTION DETAILS
+            counter += 1
+            print('MOVING ON TO CURSOR NUMBER:', str(counter))
+            print('has_more equals:', str(has_more))
+            print('LEN OF ADDED TRANSACTIONS:', str(len(added)))
+            print('='*100)
             # all_transactions = [added, modified, removed]
 
-        return JsonResponse({'all_transactions': response})
+        all_transactions_response = {
+            'added': added,
+            'modified': modified,
+            'removed': removed,
+            'has_more': has_more,
+            'cursor': cursor,
+        }
+        return JsonResponse({'all_transactions': all_transactions_response})
 
     except plaid.ApiException as e:
         print(e)

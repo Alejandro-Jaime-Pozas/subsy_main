@@ -73,8 +73,8 @@ function App(props) {
     setAllTransactions(data.all_transactions);
     localStorage.setItem("all_transactions", JSON.stringify(data.all_transactions));
     setLoading(false);
-    console.log(data);
     console.log('Hello World from getAllTransactions');
+    console.log(data);
   }, [setAllTransactions, setLoading]);
 
   let isOauth = false;
@@ -141,14 +141,15 @@ function App(props) {
         )
       )}
       {/* if balance data has been retreived successfully, show data */}
-      {/* {!loading &&
+      BALANCE!!!
+      {!loading &&
         data != null &&
         Object.entries(data).map((entry, i) => (
           <pre key={i}>
             <code>{JSON.stringify(entry[1], null, 2)}</code>
           </pre>
         )
-      )} */}
+      )}
       ALL TRANSACTIONS!!!
       {/* show all transactions json */}
       {!loading &&
