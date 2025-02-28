@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { usePlaidLink } from "react-plaid-link";
 import "./App.scss";
+import { safeParse } from "./utils/LocalStorageUtils"
 
 function App(props) {
   const [token, setToken] = useState(null);
   // set the balance and transaction data to the data retreived from local storage, if it exists
-  const [data, setData] = useState(JSON.parse(localStorage.getItem("balance")) || null);
-  const [allTransactions, setAllTransactions] = useState(JSON.parse(localStorage.getItem("all_transactions")) || null);
-  const [latestTransactions, setLatestTransactions] = useState(JSON.parse(localStorage.getItem("latest_transactions")) || null);
+  // WILL LATER PROB NEED TO RESOLVE IF JSON PARSE STILL NOT WORKING IN safeParse fn
+  const [data, setData] = useState(safeParse('balance'));
+  const [allTransactions, setAllTransactions] = useState(safeParse('all_transactions'));
+  // const [latestTransactions, setLatestTransactions] = useState(safeParse('latest_transactions'));
   const [loading, setLoading] = useState(false);
 
   const onSuccess = useCallback(async (publicToken) => {
@@ -19,7 +21,7 @@ function App(props) {
       },
       body: JSON.stringify({ public_token: publicToken }),
     });
-    await getLatestTransactions();
+    // await getLatestTransactions();
     await getAllTransactions();
     await getBalance();
   }, []);
@@ -52,16 +54,16 @@ function App(props) {
     // console.log(data)
   }, [setData, setLoading]);
 
-  // Fetch latest transaction data
-  const getLatestTransactions = useCallback(async () => {
-    setLoading(true);
-    const response = await fetch("/api/get_latest_transactions/", {});
-    const data = await response.json();
-    setLatestTransactions(data.latest_transactions);
-    localStorage.setItem("latest_transactions", JSON.stringify(data.latest_transactions));
-    setLoading(false);
-    console.log(data);
-  }, [setLatestTransactions, setLoading]);
+  // // Fetch latest transaction data
+  // const getLatestTransactions = useCallback(async () => {
+  //   setLoading(true);
+  //   const response = await fetch("/api/get_latest_transactions/", {});
+  //   const data = await response.json();
+  //   setLatestTransactions(data.latest_transactions);
+  //   localStorage.setItem("latest_transactions", JSON.stringify(data.latest_transactions));
+  //   setLoading(false);
+  //   console.log(data);
+  // }, [setLatestTransactions, setLoading]);
 
   // Fetch all transaction data
   const getAllTransactions = useCallback(async () => {
@@ -116,7 +118,8 @@ function App(props) {
         } disabled={!ready}>
         <strong>Link account</strong>
       </button>
-      {/* if transaction data has been retreived successfully, show data */}
+      ALL PRETTY TRANSACTIONS!!!
+      {/* if transaction data has been retreived successfully, show pretty data */}
       {!loading &&
         // latestTransactions != null &&
         // latestTransactions.map((entry, i) => (
