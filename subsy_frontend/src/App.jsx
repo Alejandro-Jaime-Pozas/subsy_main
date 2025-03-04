@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { usePlaidLink } from "react-plaid-link";
 import "./App.scss";
 import { safeParse } from "./utils/LocalStorageUtils"
+import { toTitleCase } from "./utils/PrettyPrintUtils"
 
 function App(props) {
   const [token, setToken] = useState(null);
@@ -105,14 +106,7 @@ function App(props) {
     }
   }, [token, isOauth, ready, open]);
 
-  // Function to transform uppercase snake_case to Title Case with spaces
-  function toTitleCase(str) {
-    return str
-      .split('_')                          // Split by underscores
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
-      .join(' ');                           // Join words with a space
-  }
-
+  
   return (
     <div>
       <button onClick={() => open()
