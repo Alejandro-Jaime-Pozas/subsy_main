@@ -12,10 +12,12 @@ from plaid.model.item_public_token_exchange_request import ItemPublicTokenExchan
 from plaid.model.accounts_balance_get_request import AccountsBalanceGetRequest
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.link_token_transactions import LinkTokenTransactions
+from plaid.model.item_remove_request import ItemRemoveRequest
 from plaid.configuration import Configuration
 from plaid.api_client import ApiClient
 from plaid.model.country_code import CountryCode
 from utils import validate_access_token
+from datetime import datetime, timedelta, timezone
 
 
 PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
@@ -70,6 +72,7 @@ for product in PLAID_PRODUCTS:
 def create_link_token(request):
     # print("PLAID_SANDBOX_REDIRECT_URI:", os.getenv('PLAID_SANDBOX_REDIRECT_URI'))
     # print("PLAID_REDIRECT_URI:", os.getenv('PLAID_REDIRECT_URI'))
+    # print("PLAID_REDIRECT_URI:", products)
     try:
         link_token_request = LinkTokenCreateRequest(
             user=LinkTokenCreateRequestUser(
@@ -118,10 +121,26 @@ def get_balance(request, *args, **kwargs):
         # access_token = request.session.get("access_token")
         # if not access_token:
         #     return JsonResponse({"error": "Access token not found."}, status=403)
-        balance_request = AccountsBalanceGetRequest(access_token=kwargs["access_token"])
-        # print(request.session['access_token'])
+        balance_request = AccountsBalanceGetRequest(
+            access_token=kwargs["access_token"],
+            options={
+                "min_last_updated_datetime": datetime.now(timezone.utc) - timedelta(days=1)
+            }
+        )
         balance_response = plaid_client.accounts_balance_get(balance_request)
+        print('access token:', kwargs["access_token"])
         return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)
+    except plaid.ApiException as e:
+        print(e)
+        return JsonResponse({"error": str(e)}, status=400)
+
+@validate_access_token
+def item_remove_request(request, *args, **kwargs):
+    try:
+        request = ItemRemoveRequest(access_token=kwargs['access_token'])
+        response = plaid_client.item_remove(request)
+        # The Item was removed and the access_token is now invalid
+        return JsonResponse({"success": response.to_dict()})
     except plaid.ApiException as e:
         print(e)
         return JsonResponse({"error": str(e)}, status=400)
@@ -204,7 +223,7 @@ def get_all_transactions(request, *args, **kwargs):
             request = TransactionsSyncRequest(
                 access_token=kwargs.get("access_token"),
                 cursor=cursor,
-                options={"days_requested": 730}  # maybe this is throwing the 400 error?
+                options={"days_requested": 730}
             )
             response = plaid_client.transactions_sync(request).to_dict()
             cursor = response['next_cursor']
@@ -228,6 +247,7 @@ def get_all_transactions(request, *args, **kwargs):
             print('MOVING ON TO CURSOR NUMBER:', str(counter))
             print('has_more equals:', str(has_more))
             print('LEN OF ADDED TRANSACTIONS:', str(len(added)))
+            print('access token:', kwargs["access_token"])
             print('='*100)
             # all_transactions = [added, modified, removed]
 
@@ -239,7 +259,6 @@ def get_all_transactions(request, *args, **kwargs):
             'cursor': cursor,
         }
         return JsonResponse({'all_transactions': all_transactions_response})
-
     except plaid.ApiException as e:
         print(e)
         error_response = format_error(e)  # can format other errors this same way later
