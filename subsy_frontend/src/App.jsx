@@ -118,7 +118,7 @@ function App(props) {
         } disabled={!ready}>
         <strong>Link account</strong>
       </button>
-      ALL PRETTY TRANSACTIONS!!!
+      !!!ALL PRETTY TRANSACTIONS!!!
       {/* if transaction data has been retreived successfully, show pretty data */}
       {!loading &&
         // latestTransactions != null &&
@@ -132,8 +132,11 @@ function App(props) {
             :
               <img className='tr-image img-fluid col-1 rounded-circle ' src={entry.personal_finance_category_icon_url} alt="" />
             }
-            {/* <div className="tr-data div col">{entry.name}</div> */}
-            <div className="tr-data div col">{entry.merchant_name}</div>
+            {entry.merchant_name ?
+              <div className="tr-data div col">{entry.merchant_name}</div>
+            :
+              <div className="tr-data div col">{entry.name}</div>
+            }
             <div className="tr-data div col-1">{entry.amount}</div>
             <div className="tr-data div col">{entry.date}</div>
             <div className="tr-data div col-5 ">{toTitleCase(entry.personal_finance_category.detailed)}</div>
@@ -141,7 +144,7 @@ function App(props) {
         )
       )}
       {/* if balance data has been retreived successfully, show data */}
-      BALANCE!!!
+      !!!BALANCE!!!
       {!loading &&
         data != null &&
         Object.entries(data).map((entry, i) => (
@@ -150,7 +153,7 @@ function App(props) {
           </pre>
         )
       )}
-      ALL TRANSACTIONS!!!
+      !!!ALL TRANSACTIONS!!!
       {/* show all transactions json */}
       {!loading &&
         allTransactions != null &&
@@ -160,7 +163,7 @@ function App(props) {
           </pre>
         )
       )}
-      LATEST TRANSACTIONS!!!
+      !!!LATEST TRANSACTIONS!!!
       {/* show latest transactions json */}
       {/* {!loading &&
         latestTransactions != null &&
