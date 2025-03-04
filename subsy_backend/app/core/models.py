@@ -73,7 +73,7 @@ class Company(models.Model):
 class LinkedBank(models.Model):
     """Linked Bank (equivalent to Plaid Item) in the db system."""
     item_id = models.CharField(max_length=37, unique=True)  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique !!!BE AWARE THAT MULTIPLE USERS LINKING THE SAME ONLINE BANK COULD RESULT IN DUPLICATE LINKEDBANKS FOR THE SAME COMPANY!!!
-    access_token = models.CharField(max_length=255, )  # Plaid access token for the bank. Unique
+    access_token = models.CharField(max_length=255, null=True)  # Plaid access token for the bank. Unique
     institution_id = models.CharField(max_length=25, )  # Plaid id for the bank. Not unique
     institution_name = models.CharField(max_length=55, )  # Plaid name for the bank. Not unique
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='linked_banks')
