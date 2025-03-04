@@ -16,6 +16,7 @@ TEST_COMPANY_DATA = {
 
 TEST_LINKED_BANK_DATA = {
     'item_id': 'defb5P7zNlfZABn9yqjos4zK3yvwD4FqwmNNp',
+    'access_token': 'sandbox-5b5b5b5b-5b5b-5b5b-5b5b-5b5b5b5b5b5b',
     'institution_id': 'ins_56',
     'institution_name': 'Chase',
     # company
@@ -35,7 +36,8 @@ TEST_BANK_ACCOUNT_DATA = {
 }
 
 TEST_APPLICATION_DATA = {
-    "name": "AWS",
+    "name": "Amazon Web Services",
+    'related_names': ['AWS'],
     "website": "https://aws.amazon.com/",
     # "manage_subscription_link": "https://aws.amazon.com/billing",
 }
