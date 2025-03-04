@@ -105,6 +105,7 @@ A transaction then can **possibly** indicate there's an application involved. An
 
 
 An application exists outside of our django app universe (in a sense) and does not need to be linked to a subscription. Applications are the equivalent of a software platform like Notion, Slack, etc. They exist outside the scope of our universe. A subscription is always linked to an application.
+  - The name for the application will be derived from the transaction merchant name/name. This will be the name used for the application, and will in the future implement a smarter way (ai) to improve applications like apple vs icloud or microsoft vs office 365. 
   - To implement application creation, could either find an existing API that somehow contains most online subscription platforms, or could create the application when considering a transaction that is referencing an application that does not yet exist in our django app universe. Example, django app has Snowflake and Azure as apps only, a new transaction comes in from user bank that is AWS, so AWS is checked in db, and created since it did not exist.
 
 
