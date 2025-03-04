@@ -23,7 +23,8 @@ from datetime import datetime, timedelta, timezone
 PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
 PLAID_SECRET = os.getenv('PLAID_SECRET')
 PLAID_ENV = os.getenv('PLAID_ENV', 'sandbox')
-PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'auth').split(',')
+PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions').split(',')
+PLAID_REQUIRED_IF_SUPPORTED_PRODUCTS = os.getenv('PLAID_REQUIRED_IF_SUPPORTED_PRODUCTS').split(',')
 PLAID_COUNTRY_CODES = os.getenv('PLAID_COUNTRY_CODES', 'US').split(',')
 # PLAID_SANDBOX_REDIRECT_URI = os.getenv('PLAID_SANDBOX_REDIRECT_URI')
 
@@ -40,8 +41,6 @@ if PLAID_ENV == 'sandbox':
 
 if PLAID_ENV == 'production':
     host = plaid.Environment.Production
-
-# access_token = None
 
 # Parameters used for the OAuth redirect Link flow.
 #
@@ -68,11 +67,15 @@ products = []
 for product in PLAID_PRODUCTS:
     products.append(Products(product))
 
+required_if_supported_products = []
+for req_product in PLAID_REQUIRED_IF_SUPPORTED_PRODUCTS:
+    required_if_supported_products.append(Products(req_product))
+
 # Create Link Token
 def create_link_token(request):
     # print("PLAID_SANDBOX_REDIRECT_URI:", os.getenv('PLAID_SANDBOX_REDIRECT_URI'))
     # print("PLAID_REDIRECT_URI:", os.getenv('PLAID_REDIRECT_URI'))
-    # print("PLAID_REDIRECT_URI:", products)
+    print("PLAID_REDIRECT_URI:", products)
     try:
         link_token_request = LinkTokenCreateRequest(
             user=LinkTokenCreateRequestUser(
@@ -81,6 +84,7 @@ def create_link_token(request):
             client_name="Subsy - Subscription Manager",
             language="en",
             products=products,
+            required_if_supported_products=required_if_supported_products,
             transactions=LinkTokenTransactions(
                 days_requested=730  # TEST THIS OUT: THIS SHOULD GO BACK 2 YEARS FOR ALL NEW ITEMS, EXISTING ITEMS COULD REQUIRE TO BE REMOVED BEFORE UPDATING TO 2 YEARS DATA
             ),
