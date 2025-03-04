@@ -73,6 +73,7 @@ class Company(models.Model):
 class LinkedBank(models.Model):
     """Linked Bank (equivalent to Plaid Item) in the db system."""
     item_id = models.CharField(max_length=37, unique=True)  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique !!!BE AWARE THAT MULTIPLE USERS LINKING THE SAME ONLINE BANK COULD RESULT IN DUPLICATE LINKEDBANKS FOR THE SAME COMPANY!!!
+    access_token = models.CharField(max_length=255, )  # Plaid access token for the bank. Unique
     institution_id = models.CharField(max_length=25, )  # Plaid id for the bank. Not unique
     institution_name = models.CharField(max_length=55, )  # Plaid name for the bank. Not unique
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='linked_banks')
@@ -104,6 +105,7 @@ class Application(models.Model):
     i.e. Snowflake, Azure, AWS are applications.
     """
     name = models.CharField(max_length=255, unique=True)  # assumed by the transaction merchant data
+    related_names = models.JSONField(default=list)  # other names the application is known by
     website = models.URLField(max_length=5000, null=True)  # from transaction website field
     manage_subscription_link = models.URLField(max_length=5000, default=None, null=True)  # will later need to find best way to automate finding subscription page links for all applications..
 
