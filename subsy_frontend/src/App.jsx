@@ -11,21 +11,7 @@ function App(props) {
   const [allTransactions, setAllTransactions] = useState(safeParse('all_transactions'));
   // const [latestTransactions, setLatestTransactions] = useState(safeParse('latest_transactions'));
   const [loading, setLoading] = useState(false);
-
-  const onSuccess = useCallback(async (publicToken) => {
-    setLoading(true);
-    await fetch("/api/exchange_public_token/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ public_token: publicToken }),
-    });
-    // await getLatestTransactions();
-    await getAllTransactions();
-    await getBalance();
-  }, []);
-
+  
   // Creates a Link token
   const createLinkToken = useCallback(async () => {
     // For OAuth, use previously generated Link token
@@ -42,6 +28,21 @@ function App(props) {
       console.log(`Link token successfully fetched and created: ${data.link_token}`);
     }
   }, [setToken]);
+
+  // Handle successful Plaid Link flow
+  const onSuccess = useCallback(async (publicToken) => {
+    setLoading(true);
+    await fetch("/api/exchange_public_token/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ public_token: publicToken }),
+    });
+    // await getLatestTransactions();
+    await getAllTransactions();
+    await getBalance();
+  }, []);
 
   // Fetch balance data
   const getBalance = useCallback(async () => {

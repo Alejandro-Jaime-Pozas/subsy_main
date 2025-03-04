@@ -57,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Company(models.Model):
+    # name field mvp is just the domain name from the user's email
     # TODO
     # - create the name field based on the domain name from the user's email using hunter.io API;
     # - maybe add more fields included from hunter.io API when integrating? like company sector/description?
