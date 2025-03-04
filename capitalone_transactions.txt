@@ -1,0 +1,1302 @@
+BALANCE!!!
+{
+  "accounts": [
+    {
+      "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+      "balances": {
+        "available": null,
+        "current": 51.25,
+        "limit": null,
+        "iso_currency_code": "USD",
+        "unofficial_currency_code": null,
+        "last_updated_datetime": "2025-03-04T00:00:00Z"
+      },
+      "mask": "8560",
+      "name": "Quicksilver",
+      "official_name": "Quicksilver",
+      "type": "credit",
+      "subtype": "credit card"
+    }
+  ],
+  "item": {
+    "item_id": "jbboMAJzxqse6OboV8kafKBy47BVwEfRj7j8R",
+    "webhook": "",
+    "error": null,
+    "available_products": [
+      "assets",
+      "balance",
+      "income_verification",
+      "recurring_transactions"
+    ],
+    "billed_products": [
+      "auth",
+      "liabilities",
+      "transactions"
+    ],
+    "consent_expiration_time": "2026-03-04T01:17:53Z",
+    "update_type": "background",
+    "auth_method": "INSTANT_AUTH",
+    "consented_products": [
+      "auth",
+      "income_verification",
+      "liabilities",
+      "transactions"
+    ],
+    "institution_id": "ins_128026",
+    "institution_name": "Capital One",
+    "products": [
+      "auth",
+      "liabilities",
+      "transactions"
+    ]
+  },
+  "request_id": "xI0TaldL1roiIz3"
+}
+ALL TRANSACTIONS!!!
+[
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": -1.14,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Transfer",
+      "Credit"
+    ],
+    "category_id": "21005000",
+    "check_number": null,
+    "counterparties": [],
+    "date": "2025-03-01",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": null,
+    "merchant_entity_id": null,
+    "merchant_name": null,
+    "name": "CREDIT-CASH BACK REWARD",
+    "payment_channel": "other",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "LOW",
+      "detailed": "TRANSFER_IN_ACCOUNT_TRANSFER",
+      "primary": "TRANSFER_IN"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_TRANSFER_IN.png",
+    "transaction_code": null,
+    "transaction_id": "VKKQrMwYm1HjpQdXkZ7OU0RmYMmvMnCXwNbBe",
+    "transaction_type": "special",
+    "unofficial_currency_code": null,
+    "website": null
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 7.57,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Computers and Electronics",
+      "Video Games"
+    ],
+    "category_id": "19013001",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Sony Playstation",
+        "type": "merchant",
+        "website": "playstation.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+        "phone_number": null
+      },
+      {
+        "name": "PayPal",
+        "type": "payment_app",
+        "website": "paypal.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/paypal_76.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zwkjrQbbDQqZJRk3egOAo0XB7jnygNDJk9Vjz",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-02-28",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+    "merchant_entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+    "merchant_name": "Sony Playstation",
+    "name": "Sony Playstation",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "ENTERTAINMENT_VIDEO_GAMES",
+      "primary": "ENTERTAINMENT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    "transaction_code": null,
+    "transaction_id": "ODDOPBgYrah3Rxn5gpJOIPbQpOQ7OzUVaK0Yy",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "playstation.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 2.95,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Digital Purchase"
+    ],
+    "category_id": "19019000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Amazon",
+        "type": "merchant",
+        "website": "amazon.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/amazon_44.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "2gOwmq9qK56K60oDm3eLrREV2B2mVadkRn8MW",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-02-18",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/amazon_44.png",
+    "merchant_entity_id": "2gOwmq9qK56K60oDm3eLrREV2B2mVadkRn8MW",
+    "merchant_name": "Amazon",
+    "name": "AMAZON MX",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "GENERAL_MERCHANDISE_ONLINE_MARKETPLACES",
+      "primary": "GENERAL_MERCHANDISE"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
+    "transaction_code": null,
+    "transaction_id": "M66JxPmV0QSN30J5LpaZH3N9kK9wKec5e3LEY",
+    "transaction_type": "digital",
+    "unofficial_currency_code": null,
+    "website": "amazon.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 2.99,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Digital Purchase"
+    ],
+    "category_id": "19019000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Apple",
+        "type": "merchant",
+        "website": "apple.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/apple_63.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zbzNyw83zkVDdrdpRo5y1yE67V7vbMWY4LNne",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-02-17",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/apple_63.png",
+    "merchant_entity_id": "zbzNyw83zkVDdrdpRo5y1yE67V7vbMWY4LNne",
+    "merchant_name": "Apple",
+    "name": "APPLE.COM/BILL",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "GENERAL_MERCHANDISE_ELECTRONICS",
+      "primary": "GENERAL_MERCHANDISE"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
+    "transaction_code": null,
+    "transaction_id": "Evvbk0r8qZhMwXANL7KjCRdOPMO6M0CJkBVzR",
+    "transaction_type": "digital",
+    "unofficial_currency_code": null,
+    "website": "apple.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 16.23,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Computers and Electronics",
+      "Video Games"
+    ],
+    "category_id": "19013001",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Sony Playstation",
+        "type": "merchant",
+        "website": "playstation.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+        "phone_number": null
+      },
+      {
+        "name": "PayPal",
+        "type": "payment_app",
+        "website": "paypal.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/paypal_76.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zwkjrQbbDQqZJRk3egOAo0XB7jnygNDJk9Vjz",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-02-13",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+    "merchant_entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+    "merchant_name": "Sony Playstation",
+    "name": "Sony Playstation",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "ENTERTAINMENT_VIDEO_GAMES",
+      "primary": "ENTERTAINMENT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    "transaction_code": null,
+    "transaction_id": "RqqJObVYxwcVvQqMBX5RHaOXQZX6ZwS4QDMYm",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "playstation.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": -10.02,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Payment",
+      "Credit Card"
+    ],
+    "category_id": "16001000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Capital One",
+        "type": "financial_institution",
+        "website": "capitalone.com",
+        "logo_url": null,
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "8rZrZMe51XDAyKd4rrZ9zzr4jrBJ8ME5Kp6mE",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-02-08",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": null,
+    "merchant_entity_id": null,
+    "merchant_name": null,
+    "name": "CAPITAL ONE AUTOPAY PYMT AuthDate 08-F eb",
+    "payment_channel": "other",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "LOAN_PAYMENTS_CREDIT_CARD_PAYMENT",
+      "primary": "LOAN_PAYMENTS"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_LOAN_PAYMENTS.png",
+    "transaction_code": null,
+    "transaction_id": "QPPJxB9YadTKAebBq8ZzHvwAXPAQPgFzDmp6x",
+    "transaction_type": "special",
+    "unofficial_currency_code": null,
+    "website": null
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 0.2,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Service",
+      "Business Services"
+    ],
+    "category_id": "18008000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Amazon Web Services",
+        "type": "merchant",
+        "website": "aws.amazon.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/amazon_web_services_48.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "mZgqE19wa6oa01E0vJzyv91o1BVkmdKv7WwBv",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-02-03",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/amazon_web_services_48.png",
+    "merchant_entity_id": "mZgqE19wa6oa01E0vJzyv91o1BVkmdKv7WwBv",
+    "merchant_name": "Amazon Web Services",
+    "name": "AWS",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "GENERAL_SERVICES_OTHER_GENERAL_SERVICES",
+      "primary": "GENERAL_SERVICES"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_GENERAL_SERVICES.png",
+    "transaction_code": null,
+    "transaction_id": "nbb49XoYdKskPmqb4109FoRMQ8MJ8ks0nebow",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "aws.amazon.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 12.98,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Computers and Electronics",
+      "Video Games"
+    ],
+    "category_id": "19013001",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Sony Playstation",
+        "type": "merchant",
+        "website": "playstation.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+        "phone_number": null
+      },
+      {
+        "name": "PayPal",
+        "type": "payment_app",
+        "website": "paypal.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/paypal_76.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zwkjrQbbDQqZJRk3egOAo0XB7jnygNDJk9Vjz",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-01-31",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+    "merchant_entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+    "merchant_name": "Sony Playstation",
+    "name": "Sony Playstation",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "ENTERTAINMENT_VIDEO_GAMES",
+      "primary": "ENTERTAINMENT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    "transaction_code": null,
+    "transaction_id": "ODDOPBgYrah3Rxn5gpJOIPbP6ZXg0MIZ84yyz",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "playstation.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 6.48,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Computers and Electronics",
+      "Video Games"
+    ],
+    "category_id": "19013001",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Sony Playstation",
+        "type": "merchant",
+        "website": "playstation.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+        "phone_number": null
+      },
+      {
+        "name": "PayPal",
+        "type": "payment_app",
+        "website": "paypal.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/paypal_76.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zwkjrQbbDQqZJRk3egOAo0XB7jnygNDJk9Vjz",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-01-30",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+    "merchant_entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+    "merchant_name": "Sony Playstation",
+    "name": "Sony Playstation",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "ENTERTAINMENT_VIDEO_GAMES",
+      "primary": "ENTERTAINMENT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    "transaction_code": null,
+    "transaction_id": "M66JxPmV0QSN30J5LpaZH3N3gn7pjZHBMPooQ",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "playstation.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 2.99,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Digital Purchase"
+    ],
+    "category_id": "19019000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Apple",
+        "type": "merchant",
+        "website": "apple.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/apple_63.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zbzNyw83zkVDdrdpRo5y1yE67V7vbMWY4LNne",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-01-16",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/apple_63.png",
+    "merchant_entity_id": "zbzNyw83zkVDdrdpRo5y1yE67V7vbMWY4LNne",
+    "merchant_name": "Apple",
+    "name": "APPLE.COM/BILL",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "GENERAL_MERCHANDISE_ELECTRONICS",
+      "primary": "GENERAL_MERCHANDISE"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
+    "transaction_code": null,
+    "transaction_id": "Evvbk0r8qZhMwXANL7KjCRdRNpznZQIZpExx6",
+    "transaction_type": "digital",
+    "unofficial_currency_code": null,
+    "website": "apple.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": -51.89,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Payment",
+      "Credit Card"
+    ],
+    "category_id": "16001000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Capital One",
+        "type": "financial_institution",
+        "website": "capitalone.com",
+        "logo_url": null,
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "8rZrZMe51XDAyKd4rrZ9zzr4jrBJ8ME5Kp6mE",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-01-08",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": null,
+    "merchant_entity_id": null,
+    "merchant_name": null,
+    "name": "CAPITAL ONE AUTOPAY PYMT AuthDate 08-J an",
+    "payment_channel": "other",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "LOAN_PAYMENTS_CREDIT_CARD_PAYMENT",
+      "primary": "LOAN_PAYMENTS"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_LOAN_PAYMENTS.png",
+    "transaction_code": null,
+    "transaction_id": "RqqJObVYxwcVvQqMBX5RHaOaPEdqbMtKy1wwy",
+    "transaction_type": "special",
+    "unofficial_currency_code": null,
+    "website": null
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 0.28,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Service",
+      "Business Services"
+    ],
+    "category_id": "18008000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Amazon Web Services",
+        "type": "merchant",
+        "website": "aws.amazon.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/amazon_web_services_48.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "mZgqE19wa6oa01E0vJzyv91o1BVkmdKv7WwBv",
+        "phone_number": null
+      }
+    ],
+    "date": "2025-01-03",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/amazon_web_services_48.png",
+    "merchant_entity_id": "mZgqE19wa6oa01E0vJzyv91o1BVkmdKv7WwBv",
+    "merchant_name": "Amazon Web Services",
+    "name": "AWS",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "GENERAL_SERVICES_OTHER_GENERAL_SERVICES",
+      "primary": "GENERAL_SERVICES"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_GENERAL_SERVICES.png",
+    "transaction_code": null,
+    "transaction_id": "QPPJxB9YadTKAebBq8ZzHvwv8Bd4DYFwEJ88O",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "aws.amazon.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 6.75,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Computers and Electronics",
+      "Video Games"
+    ],
+    "category_id": "19013001",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Sony Playstation",
+        "type": "merchant",
+        "website": "playstation.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+        "phone_number": null
+      },
+      {
+        "name": "PayPal",
+        "type": "payment_app",
+        "website": "paypal.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/paypal_76.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zwkjrQbbDQqZJRk3egOAo0XB7jnygNDJk9Vjz",
+        "phone_number": null
+      }
+    ],
+    "date": "2024-12-23",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+    "merchant_entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+    "merchant_name": "Sony Playstation",
+    "name": "Sony Playstation",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "ENTERTAINMENT_VIDEO_GAMES",
+      "primary": "ENTERTAINMENT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    "transaction_code": null,
+    "transaction_id": "nbb49XoYdKskPmqb4109FoRoxVDAeEtMA7zzj",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "playstation.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 2.99,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Digital Purchase"
+    ],
+    "category_id": "19019000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Apple",
+        "type": "merchant",
+        "website": "apple.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/apple_63.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zbzNyw83zkVDdrdpRo5y1yE67V7vbMWY4LNne",
+        "phone_number": null
+      }
+    ],
+    "date": "2024-12-16",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/apple_63.png",
+    "merchant_entity_id": "zbzNyw83zkVDdrdpRo5y1yE67V7vbMWY4LNne",
+    "merchant_name": "Apple",
+    "name": "APPLE.COM/BILL",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "GENERAL_MERCHANDISE_ELECTRONICS",
+      "primary": "GENERAL_MERCHANDISE"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_GENERAL_MERCHANDISE.png",
+    "transaction_code": null,
+    "transaction_id": "pJJ4amgw6NuvBOdE8YLXcPmPX7rJM8I7JaYY4",
+    "transaction_type": "digital",
+    "unofficial_currency_code": null,
+    "website": "apple.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 3.24,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Computers and Electronics",
+      "Video Games"
+    ],
+    "category_id": "19013001",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Sony Playstation",
+        "type": "merchant",
+        "website": "playstation.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+        "phone_number": null
+      },
+      {
+        "name": "PayPal",
+        "type": "payment_app",
+        "website": "paypal.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/paypal_76.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zwkjrQbbDQqZJRk3egOAo0XB7jnygNDJk9Vjz",
+        "phone_number": null
+      }
+    ],
+    "date": "2024-12-12",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+    "merchant_entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+    "merchant_name": "Sony Playstation",
+    "name": "Sony Playstation",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "ENTERTAINMENT_VIDEO_GAMES",
+      "primary": "ENTERTAINMENT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    "transaction_code": null,
+    "transaction_id": "XAA8wrLY6qheQxM8vzVYfBoBY1ra9PHO46EE0",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "playstation.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 16.23,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Computers and Electronics",
+      "Video Games"
+    ],
+    "category_id": "19013001",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Sony Playstation",
+        "type": "merchant",
+        "website": "playstation.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+        "phone_number": null
+      },
+      {
+        "name": "PayPal",
+        "type": "payment_app",
+        "website": "paypal.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/paypal_76.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zwkjrQbbDQqZJRk3egOAo0XB7jnygNDJk9Vjz",
+        "phone_number": null
+      }
+    ],
+    "date": "2024-12-12",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+    "merchant_entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+    "merchant_name": "Sony Playstation",
+    "name": "Sony Playstation",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "ENTERTAINMENT_VIDEO_GAMES",
+      "primary": "ENTERTAINMENT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    "transaction_code": null,
+    "transaction_id": "NLLJM7bOj5iBy6kQgpezUpZpPOjrqnHpR3jjp",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "playstation.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": 4.32,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Shops",
+      "Computers and Electronics",
+      "Video Games"
+    ],
+    "category_id": "19013001",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Sony Playstation",
+        "type": "merchant",
+        "website": "playstation.com",
+        "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+        "phone_number": null
+      },
+      {
+        "name": "PayPal",
+        "type": "payment_app",
+        "website": "paypal.com",
+        "logo_url": "https://plaid-counterparty-logos.plaid.com/paypal_76.png",
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "zwkjrQbbDQqZJRk3egOAo0XB7jnygNDJk9Vjz",
+        "phone_number": null
+      }
+    ],
+    "date": "2024-12-12",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": "https://plaid-merchant-logos.plaid.com/sony_playstation_927.png",
+    "merchant_entity_id": "3oRMK5OMq55E6LeoK6JeeEQwv1Yv4e55YEVWX",
+    "merchant_name": "Sony Playstation",
+    "name": "Sony Playstation",
+    "payment_channel": "online",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": "PayPal",
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "ENTERTAINMENT_VIDEO_GAMES",
+      "primary": "ENTERTAINMENT"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_ENTERTAINMENT.png",
+    "transaction_code": null,
+    "transaction_id": "eJJM3yjY06uL94MDBN1mcEzEYA6dDBsLdaBBe",
+    "transaction_type": "place",
+    "unofficial_currency_code": null,
+    "website": "playstation.com"
+  },
+  {
+    "account_id": "jbboMAJzxqse6OboV8kafKmkQyjR8NfYYQ7ne",
+    "account_owner": "8560",
+    "amount": -79.02,
+    "authorized_date": null,
+    "authorized_datetime": null,
+    "category": [
+      "Payment",
+      "Credit Card"
+    ],
+    "category_id": "16001000",
+    "check_number": null,
+    "counterparties": [
+      {
+        "name": "Capital One",
+        "type": "financial_institution",
+        "website": "capitalone.com",
+        "logo_url": null,
+        "confidence_level": "VERY_HIGH",
+        "entity_id": "8rZrZMe51XDAyKd4rrZ9zzr4jrBJ8ME5Kp6mE",
+        "phone_number": null
+      }
+    ],
+    "date": "2024-12-09",
+    "datetime": null,
+    "iso_currency_code": "USD",
+    "location": {
+      "address": null,
+      "city": null,
+      "region": null,
+      "postal_code": null,
+      "country": null,
+      "lat": null,
+      "lon": null,
+      "store_number": null
+    },
+    "logo_url": null,
+    "merchant_entity_id": null,
+    "merchant_name": null,
+    "name": "CAPITAL ONE AUTOPAY PYMT AuthDate 08-D ec",
+    "payment_channel": "other",
+    "payment_meta": {
+      "reference_number": null,
+      "ppd_id": null,
+      "payee": null,
+      "by_order_of": null,
+      "payer": null,
+      "payment_method": null,
+      "payment_processor": null,
+      "reason": null
+    },
+    "pending": false,
+    "pending_transaction_id": null,
+    "personal_finance_category": {
+      "confidence_level": "VERY_HIGH",
+      "detailed": "LOAN_PAYMENTS_CREDIT_CARD_PAYMENT",
+      "primary": "LOAN_PAYMENTS"
+    },
+    "personal_finance_category_icon_url": "https://plaid-category-icons.plaid.com/PFC_LOAN_PAYMENTS.png",
+    "transaction_code": null,
+    "transaction_id": "Yvvp6MDYLBhaVB9v0QAnU6R6N8PA1mInQ9vv9",
+    "transaction_type": "special",
+    "unofficial_currency_code": null,
+    "website": null
+  }
+]
+[]
+[]
+false
+"CAESJVl2dnA2TURZTEJoYVZCOXYwUUFuVTZSNk44UEExbUluUTl2djkaCwjOqZm+BhCApMA6IgsIzqmZvgYQgKTAOioLCM6pmb4GEICkwDo="
+LATEST TRANSACTIONS!!!
