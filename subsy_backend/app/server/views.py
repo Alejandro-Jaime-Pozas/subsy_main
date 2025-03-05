@@ -111,7 +111,7 @@ def exchange_public_token(request):
 
             # Store the access_token in the session (for demo purposes)
             # request.session["access_token"] = exchange_response.to_dict()["access_token"]
-            
+
             get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
             return JsonResponse({"success": True})
         except plaid.ApiException as e:
@@ -123,9 +123,6 @@ def exchange_public_token(request):
 @validate_access_token
 def get_balance(request, *args, **kwargs):
     try:
-        # access_token = request.session.get("access_token")
-        # if not access_token:
-        #     return JsonResponse({"error": "Access token not found."}, status=403)
         balance_request = AccountsBalanceGetRequest(
             access_token=kwargs["access_token"],
             options={
