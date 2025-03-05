@@ -8,7 +8,7 @@ def validate_access_token(view_func):
     """Wrapper function that checks if user has a valid access token."""
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
-        access_token = request.session.get("access_token")
+        access_token = request.session.get("access_token")  # will need to fetch this from db later
         # print('got access token from request in wrapper fn:', access_token)
         if not access_token:
             return JsonResponse({'error': 'Access token not available.'}, status=403)

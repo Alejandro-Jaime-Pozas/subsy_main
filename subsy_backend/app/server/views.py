@@ -75,7 +75,7 @@ for req_product in PLAID_REQUIRED_IF_SUPPORTED_PRODUCTS:
 def create_link_token(request):
     # print("PLAID_SANDBOX_REDIRECT_URI:", os.getenv('PLAID_SANDBOX_REDIRECT_URI'))
     # print("PLAID_REDIRECT_URI:", os.getenv('PLAID_REDIRECT_URI'))
-    print("PLAID_REDIRECT_URI:", products)
+    # print("PLAID_REDIRECT_URI:", products)
     try:
         link_token_request = LinkTokenCreateRequest(
             user=LinkTokenCreateRequestUser(
@@ -107,11 +107,12 @@ def exchange_public_token(request):
             public_token = data.get("public_token")
 
             exchange_request = ItemPublicTokenExchangeRequest(public_token=public_token)
-            exchange_response = plaid_client.item_public_token_exchange(exchange_request)
+            exchange_response = plaid_client.item_public_token_exchange(exchange_request)  # have access_token and item_id in response
 
             # Store the access_token in the session (for demo purposes)
-            request.session["access_token"] = exchange_response.to_dict()["access_token"]
-            # access_token = exchange_response.to_dict()["access_token"]
+            # request.session["access_token"] = exchange_response.to_dict()["access_token"]
+            
+            get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
             return JsonResponse({"success": True})
         except plaid.ApiException as e:
             print(e)

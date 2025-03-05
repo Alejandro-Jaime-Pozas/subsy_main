@@ -12,7 +12,7 @@ function App(props) {
   const [allTransactions, setAllTransactions] = useState(safeParse('all_transactions'));
   // const [latestTransactions, setLatestTransactions] = useState(safeParse('latest_transactions'));
   const [loading, setLoading] = useState(false);
-  
+
   // Creates a Link token
   const createLinkToken = useCallback(async () => {
     // For OAuth, use previously generated Link token
@@ -33,16 +33,18 @@ function App(props) {
   // Handle successful Plaid Link flow
   const onSuccess = useCallback(async (publicToken) => {
     setLoading(true);
-    await fetch("/api/exchange_public_token/", {
+    const response = await fetch("/api/exchange_public_token/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ public_token: publicToken }),
     });
+    const data = await response.json();
+    console.log(data);
     // await getLatestTransactions();
-    await getAllTransactions();
-    await getBalance();
+    // await getAllTransactions();
+    // await getBalance();
   }, []);
 
   // Fetch balance data
@@ -53,7 +55,7 @@ function App(props) {
     setData(data);
     localStorage.setItem("balance", JSON.stringify(data));
     setLoading(false);
-    // console.log(data)
+    console.log(data)
   }, [setData, setLoading]);
 
   // // Fetch latest transaction data
@@ -106,7 +108,7 @@ function App(props) {
     }
   }, [token, isOauth, ready, open]);
 
-  
+
   return (
     <div>
       <button onClick={() => open()
