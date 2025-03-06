@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # manually install
     'core',
-    'rest_framework',
+    'user',
     'server',
+    'rest_framework',
+    'drf_spectacular',
     # allow react CORS
     'corsheaders',
 ]
@@ -95,6 +97,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # to setup openapi def schema
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
