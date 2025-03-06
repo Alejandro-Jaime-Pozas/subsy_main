@@ -110,7 +110,7 @@ def exchange_public_token(request):
             exchange_response = plaid_client.item_public_token_exchange(exchange_request)  # have access_token and item_id in response
 
             # Store the access_token in the session (for demo purposes)
-            # request.session["access_token"] = exchange_response.to_dict()["access_token"]
+            request.session["access_token"] = exchange_response.to_dict()["access_token"]
 
             get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
             return JsonResponse({"success": True})
