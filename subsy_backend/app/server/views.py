@@ -112,7 +112,7 @@ def exchange_public_token(request):
             # Store the access_token in the session (for demo purposes)
             request.session["access_token"] = exchange_response.to_dict()["access_token"]
 
-            get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
+            # get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
             return JsonResponse({"success": True})
         except plaid.ApiException as e:
             print(e)
@@ -130,8 +130,8 @@ def get_balance(request, *args, **kwargs):
             }
         )
         balance_response = plaid_client.accounts_balance_get(balance_request)
-        print('access token:', kwargs["access_token"])
-        print(balance_response.to_dict())
+        # print('access token:', kwargs["access_token"])
+        # print(balance_response.to_dict())
         return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)
     except plaid.ApiException as e:
         print(e)
@@ -247,11 +247,11 @@ def get_all_transactions(request, *args, **kwargs):
             has_more = response['has_more']
             # pretty_print_response(response)  # TO VIEW TRANSACTION DETAILS
             counter += 1
-            print('MOVING ON TO CURSOR NUMBER:', str(counter))
-            print('has_more equals:', str(has_more))
-            print('LEN OF ADDED TRANSACTIONS:', str(len(added)))
-            print('access token:', kwargs["access_token"])
-            print('='*100)
+            # print('MOVING ON TO CURSOR NUMBER:', str(counter))
+            # print('has_more equals:', str(has_more))
+            # print('LEN OF ADDED TRANSACTIONS:', str(len(added)))
+            # print('access token:', kwargs["access_token"])
+            # print('='*100)
 
         all_transactions_response = {
             'added': added,
