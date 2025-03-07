@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'user',
     'server',
     'rest_framework',
+    'rest_framework.authtoken',  # support for auth tokens in drf
     'drf_spectacular',
     # allow react CORS
     'corsheaders',
