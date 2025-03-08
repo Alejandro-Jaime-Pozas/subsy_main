@@ -38,10 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # manually install
+    # manually install custom apps
     'core',
     'user',
     'server',
+    'apps.company',
+    # external apps
     'rest_framework',
     'rest_framework.authtoken',  # support for auth tokens in drf
     'drf_spectacular',
