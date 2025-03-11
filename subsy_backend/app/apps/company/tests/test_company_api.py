@@ -8,7 +8,7 @@ from rest_framework import status
 
 from core.models import Company
 from core.tests.shared_data import TEST_USER_DATA, TEST_COMPANY_DATA
-# from company.serializers import CompanySerializer
+from apps.company.serializers import CompanySerializer
 
 
 COMPANIES_LIST_URL = reverse('apps.company:company-list')
@@ -19,13 +19,19 @@ COMPANIES_LIST_URL = reverse('apps.company:company-list')
 # read a company
 # update a company
 
+# create default user for tests
+def create_user():
+    user = get_user_model().objects.create_user(**TEST_USER_DATA)
+    return user
+
 # create default company that can be updated with kwargs
 def create_company(users, **kwargs):
     """Create and return a test company."""
     defaults = TEST_COMPANY_DATA.copy()
     defaults.update(kwargs)
 
-    company = Company.objects.create(users=users, **defaults)
+    company = Company.objects.create(**defaults)
+    company.users.set(users)
     return company
 
 
@@ -42,20 +48,28 @@ class PublicCompanyApiTetsts(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-# class PrivateCompanyApiTests(TestCase):
-#     """All company api tests should be private, require existing user."""
+class PrivateCompanyApiTests(TestCase):
+    """All company api tests should be private, require existing user(s)."""
 
-#     @classmethod
-#     def setUpTestData(cls):
-#         cls.client = APIClient()
-#         # cls.user_token = cls.client.post()
+    def setUp(self):
+        self.client = APIClient()
+        self.user = create_user()
+        self.client.force_authenticate(user=self.user)
+        self.payload = TEST_COMPANY_DATA
 
-#     def setUp(self):
-#         self.payload = {
-#             'name': 'Apple',
-#             'domain': 'apple.com',
-#         }
+    def test_retrieve_companies_success(self):
+        """Test retrieving companies for a user is successful."""
+        create_company(users=get_user_model().objects.filter(id=self.user.id))
+        create_company(
+            users=get_user_model().objects.filter(id=self.user.id),
+            name='AWS test',
+            domain='awstest.com',
+        )
 
-#     def test_create_company_success(self):
-#         """Test creating a company is successful."""
-#         # need a linked user's token
+        res = self.client.get(COMPANIES_LIST_URL)
+
+        companies = Company.objects.all()
+        serializer = CompanySerializer(companies, many=True)
+        print(res.data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['results'], sorted(serializer.data, key=lambda co: -co['id']))  # companies are returned in reverse order in viewset
