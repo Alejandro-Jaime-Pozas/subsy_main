@@ -11,7 +11,6 @@ from core.tests.shared_data import TEST_USER_DATA, TEST_COMPANY_DATA
 # from company.serializers import CompanySerializer
 
 
-# CREATE_COMPANY_URL = reverse('apps.company:company-create')
 COMPANIES_LIST_URL = reverse('apps.company:company-list')
 
 
@@ -23,7 +22,7 @@ COMPANIES_LIST_URL = reverse('apps.company:company-list')
 # create default company that can be updated with kwargs
 def create_company(users, **kwargs):
     """Create and return a test company."""
-    defaults = TEST_COMPANY_DATA
+    defaults = TEST_COMPANY_DATA.copy()
     defaults.update(kwargs)
 
     company = Company.objects.create(users=users, **defaults)
