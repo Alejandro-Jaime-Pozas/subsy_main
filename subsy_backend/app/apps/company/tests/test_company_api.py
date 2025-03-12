@@ -15,17 +15,13 @@ COMPANIES_LIST_URL = reverse('apps.company:company-list')
 
 
 # need a user to exist in order for there to exist a company, so all tests private
-# create a company
-# read a company
-# update a company
-
 # create default user for tests
 def create_user():
     user = get_user_model().objects.create_user(**TEST_USER_DATA)
     return user
 
 # create default company that can be updated with kwargs
-def create_company(users, **kwargs):
+def create_company(users=None, **kwargs):
     """Create and return a test company."""
     defaults = TEST_COMPANY_DATA.copy()
     defaults.update(kwargs)
@@ -55,8 +51,8 @@ class PrivateCompanyApiTests(TestCase):
         self.client = APIClient()
         self.user = create_user()
         self.client.force_authenticate(user=self.user)
-        self.payload = TEST_COMPANY_DATA
 
+# test GET companies success (multiple)
     def test_retrieve_companies_success(self):
         """Test retrieving companies for a user is successful."""
         create_company(users=get_user_model().objects.filter(id=self.user.id))
@@ -70,6 +66,28 @@ class PrivateCompanyApiTests(TestCase):
 
         companies = Company.objects.all()
         serializer = CompanySerializer(companies, many=True)
-        print(res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data['results'], sorted(serializer.data, key=lambda co: -co['id']))  # companies are returned in reverse order in viewset
+        self.assertEqual(res.data['results'], sorted(serializer.data, key=lambda co: co['id']))  # companies are returned in reverse order in viewset
+
+    # test POST company success
+    def test_create_company_success(self):
+        """Test that creating a company success."""
+        payload = TEST_COMPANY_DATA.copy()
+        payload['users'] = [self.user.id, ]
+
+        res = self.client.post(COMPANIES_LIST_URL, payload)
+
+        company = Company.objects.get(id=res.data['id'])
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(res.data['users'], [self.user.id])
+        for k, v in payload.items():
+            if k != 'users':
+                self.assertEqual(getattr(company, k), v)
+
+    # test GET company detail success
+        # will need to check how routers create url detail endpoint to create reverse url lookup constant vs COMPANY_LIST_URL
+
+    # test GET company NOT from user returns permission error
+    # test PUT company success
+    # test PATCH company success
+    # test DELETE company success

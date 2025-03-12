@@ -24,12 +24,12 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('server.urls')),
+    path('api/users/', include('user.urls')),
+    path('api/', include('apps.company.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),  # for YAML file
     path(
         'api/docs/',
         SpectacularSwaggerView.as_view(url_name='api-schema'),
         name='api-docs',
     ),  # for web ui for testing
-    path('api/user/', include('user.urls')),
-    path('api/company/', include('apps.company.urls')),
 ]

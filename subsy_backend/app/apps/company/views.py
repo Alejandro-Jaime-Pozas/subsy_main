@@ -18,7 +18,7 @@ class CompanyViewSet(
 ):
     """Set the main company view set."""
     serializer_class = CompanySerializer
-    queryset = Company.objects.all().order_by('-pk')  # CHANGE TO JUST THIS USER'S COMPANIES
+    queryset = Company.objects.all().order_by('pk')  # CHANGE TO JUST THIS USER'S COMPANIES
 
     # def get_queryset(self):
     #     return super().get_queryset()
