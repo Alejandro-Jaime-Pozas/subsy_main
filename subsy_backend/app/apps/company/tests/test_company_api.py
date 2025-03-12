@@ -13,6 +13,9 @@ from apps.company.serializers import CompanySerializer
 
 COMPANIES_LIST_URL = reverse('apps.company:company-list')
 
+# create detail url
+def get_company_detail_url(company_id):
+    return reverse('apps.company:company-detail', args=[company_id])
 
 # need a user to exist in order for there to exist a company, so all tests private
 # create default user for tests
@@ -86,6 +89,17 @@ class PrivateCompanyApiTests(TestCase):
 
     # test GET company detail success
         # will need to check how routers create url detail endpoint to create reverse url lookup constant vs COMPANY_LIST_URL
+    def test_retrieve_company_detail(self):
+        """Test retrieving company detail success."""
+        company = create_company(users=get_user_model().objects.filter(id=self.user.id))
+
+        company_detail_url = get_company_detail_url(company.id)
+        res = self.client.get(company_detail_url)
+
+        serializer = CompanySerializer(company)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
 
     # test GET company NOT from user returns permission error
     # test PUT company success
