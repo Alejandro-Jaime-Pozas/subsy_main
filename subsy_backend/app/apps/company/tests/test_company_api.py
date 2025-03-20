@@ -34,7 +34,7 @@ def create_company(users=None, **kwargs):
     return company
 
 
-class PublicCompanyApiTetsts(TestCase):
+class PublicCompanyApiTests(TestCase):
     """Test unauthenticated api tests."""
 
     def setUp(self):
