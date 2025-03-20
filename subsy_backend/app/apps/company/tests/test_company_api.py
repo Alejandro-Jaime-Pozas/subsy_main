@@ -102,6 +102,7 @@ class PrivateCompanyApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
     # test GET company NOT from user returns permission error
-    # test PUT company success
-    # test PATCH company success
-    # test DELETE company success
+    # think if need to be redundant with tests below since using viewsets
+        # test PUT company success
+        # test PATCH company success
+        # test DELETE company success
