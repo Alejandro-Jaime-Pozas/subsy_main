@@ -15,7 +15,6 @@ router = DefaultRouter()
 
 router.register('companies', views.CompanyViewSet, basename='company')
 
-
 urlpatterns = [
     path('', include(router.urls))
 ]
