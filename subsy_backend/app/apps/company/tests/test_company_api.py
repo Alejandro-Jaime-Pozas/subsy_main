@@ -102,9 +102,14 @@ class PrivateCompanyApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
     # test GET company NOT from user returns permission error
+    def test_company_not_assigned_to_user(self):
+        """Test that a company not assigned to the user returns permission error."""
+        user2 = get_user_model().objects.create_user(
+            email='harry@example.com'
+        )
+        company = create_company(users=get_user_model().objects.filter(id=user2.id))
 
-    
-    # think if need to be redundant with tests below since using viewsets
-        # test PUT company success
-        # test PATCH company success
-        # test DELETE company success
+        res = self.client.get(get_company_detail_url(company.id))
+
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(res.data['detail'], 'You do not have permission to view this company.')
