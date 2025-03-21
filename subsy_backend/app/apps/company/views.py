@@ -13,11 +13,11 @@ class CompanyViewSet(
 ):
     """Set the main company view set."""
     serializer_class = CompanySerializer
-    queryset = Company.objects.all().order_by('pk')
+    queryset = Company.objects.all()
 
     # override to only return companies that the user is in
     def get_queryset(self):
-        return super().get_queryset().filter(users=self.request.user)
+        return super().get_queryset().filter(users=self.request.user).order_by('pk')
 
     # override if user is not part of company, return 403 permission denied
     def get_object(self):

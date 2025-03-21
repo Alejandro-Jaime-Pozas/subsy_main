@@ -7,8 +7,6 @@ from rest_framework.routers import DefaultRouter
 
 from apps.company import views
 
-# from apps.company import views
-
 app_name = 'apps.company'
 
 router = DefaultRouter()
