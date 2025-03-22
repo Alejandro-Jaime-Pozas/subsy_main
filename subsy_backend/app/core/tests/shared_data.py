@@ -128,4 +128,9 @@ def create_default_instances():
 def create_user():
     """Create and return a user instance."""
     user = get_user_model().objects.create_user(**TEST_USER_DATA)
-    return user 
+    return user
+
+def create_company():
+    """Create and return a company instance."""
+    company = Company.objects.create(**TEST_COMPANY_DATA)
+    return company

@@ -21,10 +21,11 @@ class LinkedBankView(
 
     def get_queryset(self):
         """
-        Filter the queryset to only show the linked bank (plaid item)
-        for the current user.
+        Filter the queryset to only show the linked banks (plaid item)
+        for the current user's companies.
         """
-        return super().get_queryset().filter(user=self.request.user)  # THIS SHOULD FAIL since LinkedBank does not have a user field, can be accessed through company.users. So, could change to checking filter(company=self.request.user.companies) or something similar.
+        user_companies = self.request.user.companies.all()
+        return super().get_queryset().filter(company__in=user_companies)
 
 
     # BELOW CHATGPT CODE SHOULD BE REDUNDANT CODE since already in mixins/viewsets
