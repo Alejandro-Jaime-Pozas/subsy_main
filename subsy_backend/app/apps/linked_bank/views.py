@@ -21,30 +21,24 @@ class LinkedBankView(
 
     def get_queryset(self):
         """
-        Filter the queryset to only show the linked bank (plaid item) for the
-        current user.
+        Filter the queryset to only show the linked bank (plaid item)
+        for the current user.
         """
-        return super().get_queryset().filter(user=self.request.user)
-
-    def get(self, request, *args, **kwargs):
-        """
-        Get the linked bank (plaid item) for the user.
-        """
-        return self.retrieve(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        """
-        Delete the linked bank (plaid item) for the user.
-        """
-        linked_bank = self.get_object()
-        if request.user not in linked_bank.company.users.all():
-            return self.permission_denied(request)
-        return self.destroy(request, *args, **kwargs)
+        return super().get_queryset().filter(user=self.request.user)  # THIS SHOULD FAIL since LinkedBank does not have a user field, can be accessed through company.users. So, could change to checking filter(company=self.request.user.companies) or something similar.
 
 
-# class LinkedBankViewSet(
-#     BaseAuthPermissions,
-#     ReadOnlyModelViewSet):
+    # BELOW CHATGPT CODE SHOULD BE REDUNDANT CODE since already in mixins/viewsets
+    # def get(self, request, *args, **kwargs):
+    #     """
+    #     Get the linked bank (plaid item) for the user.
+    #     """
+    #     return self.retrieve(request, *args, **kwargs)
 
-#     queryset = LinkedBank.objects.all()
-#     serializer_class = LinkedBankSerializer
+    # def delete(self, request, *args, **kwargs):
+    #     """
+    #     Delete the linked bank (plaid item) for the user.
+    #     """
+    #     linked_bank = self.get_object()
+    #     if request.user not in linked_bank.company.users.all():
+    #         return self.permission_denied(request)
+    #     return self.destroy(request, *args, **kwargs)

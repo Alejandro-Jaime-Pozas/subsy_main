@@ -7,7 +7,10 @@ from rest_framework.test import APIClient
 from rest_framework import status
 
 from core.models import Company
-from core.tests.shared_data import TEST_USER_DATA, TEST_COMPANY_DATA
+from core.tests.shared_data import (
+    TEST_COMPANY_DATA,
+    create_user,
+)
 from apps.company.serializers import CompanySerializer
 
 
@@ -18,10 +21,6 @@ def get_company_detail_url(company_id):
     return reverse('apps.company:company-detail', args=[company_id])
 
 # need a user to exist in order for there to exist a company, so all tests private
-# create default user for tests
-def create_user():
-    user = get_user_model().objects.create_user(**TEST_USER_DATA)
-    return user
 
 # create default company that can be updated with kwargs
 def create_company(users=None, **kwargs):

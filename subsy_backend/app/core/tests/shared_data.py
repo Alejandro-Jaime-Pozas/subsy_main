@@ -123,3 +123,9 @@ def create_default_instances():
         'subscription': subscription,
         'tag': tag,
     }
+
+
+def create_user():
+    """Create and return a user instance."""
+    user = get_user_model().objects.create_user(**TEST_USER_DATA)
+    return user 
