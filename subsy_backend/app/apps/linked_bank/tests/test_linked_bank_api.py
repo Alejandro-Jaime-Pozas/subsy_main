@@ -17,8 +17,10 @@ from apps.linked_bank.serializers import LinkedBankSerializer
 
 LINKED_BANK_LIST_URL = reverse('apps.linked_bank:linked-bank-list')
 
+
 def get_linked_bank_detail_url(linked_bank_id):
     return reverse('apps.linked_bank:linked-bank-detail', args=[linked_bank_id])
+
 
 def create_linked_bank(company=None, user=None, **kwargs):
     """Create and return a test linked bank."""
