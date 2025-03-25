@@ -1,10 +1,12 @@
+"""Tests for the linked bank api."""
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from core.models import LinkedBank
+from core.models import LinkedBank, Company
 from core.tests.shared_data import (
     TEST_LINKED_BANK_DATA,
     create_user,
@@ -41,8 +43,9 @@ class PrivateLinkedBankApiTests(TestCase):
         self.user = create_user()
         self.client.force_authenticate(user=self.user)
 
+    # test GET linked bank detail for user success
     def test_retrieve_linked_bank_success(self):
-        """Test retrieving linked bank for a company is successful."""
+        """Test retrieving linked bank for a user's companies is successful."""
         linked_bank = create_linked_bank(user=self.user, **TEST_LINKED_BANK_DATA)
         linked_bank_detail_url = get_linked_bank_detail_url(linked_bank.id)
 
@@ -55,7 +58,7 @@ class PrivateLinkedBankApiTests(TestCase):
 
     # test GET linked banks list for user success
     def test_list_linked_bank_success(self):
-        """Test retrieving linked banks for a company is successful."""
+        """Test retrieving linked banks for a user's companies is successful."""
         test_company = create_company()
         create_linked_bank(user=self.user, company=test_company, **TEST_LINKED_BANK_DATA)
         test_data_2 = TEST_LINKED_BANK_DATA.copy()
@@ -70,9 +73,34 @@ class PrivateLinkedBankApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data['results'], serializer.data)
 
-
-    # test GET linked bank detail for user success
-
     # test DELETE linked bank for user success
+    def test_delete_linked_bank_success(self):
+        """Test deleting linked bank for a user's companies is successful."""
+        linked_bank = create_linked_bank(user=self.user, **TEST_LINKED_BANK_DATA)
+        linked_bank_detail_url = get_linked_bank_detail_url(linked_bank.id)
 
-    # test GET linked banks list for non-user permission denied error
+        res = self.client.delete(linked_bank_detail_url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+        res_get = self.client.get(linked_bank_detail_url)
+
+        self.assertEqual(res_get.status_code, status.HTTP_404_NOT_FOUND)
+
+    # test GET linked banks detail for non-user permission denied error
+    def test_detail_linked_bank_permission_denied(self):
+        """Test retrieving linked banks for a non-auth user returns permission denied error."""
+        linked_bank = create_linked_bank(user=self.user)
+        linked_bank_detail_url = get_linked_bank_detail_url(linked_bank.id)
+
+        new_user = get_user_model().objects.create_user(
+            email='test_email2@example.com'
+        )
+        unauth_client = APIClient()
+        unauth_client.force_authenticate(user=new_user)
+
+        res_unauth = unauth_client.get(linked_bank_detail_url)
+        res = self.client.get(linked_bank_detail_url)
+
+        self.assertEqual(res_unauth.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)

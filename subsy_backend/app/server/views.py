@@ -95,7 +95,7 @@ def create_link_token(request):
         link_token_response = plaid_client.link_token_create(link_token_request)
         return JsonResponse(link_token_response.to_dict(), safe=False)
     except plaid.ApiException as e:
-        print(e)
+        # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
 
 # Exchange Public Token for Access Token
@@ -115,7 +115,7 @@ def exchange_public_token(request):
             # get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
             return JsonResponse({"success": True})
         except plaid.ApiException as e:
-            print(e)
+            # print(e)  # Uncomment for debugging
             return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
@@ -134,7 +134,7 @@ def get_balance(request, *args, **kwargs):
         # print(balance_response.to_dict())
         return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)
     except plaid.ApiException as e:
-        print(e)
+        # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
 
 @validate_access_token
@@ -145,7 +145,7 @@ def item_remove_request(request, *args, **kwargs):
         # The Item was removed and the access_token is now invalid
         return JsonResponse({"success": response.to_dict()})
     except plaid.ApiException as e:
-        print(e)
+        # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
 
 # CSRF Token endpoint for front-end use
@@ -200,7 +200,7 @@ def get_latest_transactions(request, *args, **kwargs):
             # 'latest_transactions': latest_transactions})  # CHANGE BACK!
 
     except plaid.ApiException as e:
-        print(e)
+        # print(e)  # Uncomment for debugging
         error_response = format_error(e)  # can format other errors this same way later
         return JsonResponse(error_response)
 
@@ -262,7 +262,7 @@ def get_all_transactions(request, *args, **kwargs):
         }
         return JsonResponse({'all_transactions': all_transactions_response})
     except plaid.ApiException as e:
-        print(e)
+        # print(e)  # Uncomment for debugging
         error_response = format_error(e)  # can format other errors this same way later
         return JsonResponse(error_response)
 
