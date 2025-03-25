@@ -8,6 +8,8 @@ from core.models import BankAccount
 from core.tests.shared_data import (
     TEST_BANK_ACCOUNT_DATA,
     create_user,
+    create_bank_account,
+    create_linked_bank,
 )
 from bank_account.serializers import BankAccountSerializer
 
@@ -37,6 +39,15 @@ class PrivateBankAccountApiTests(TestCase):
     # test GET bank account detail for user success
     def test_list_bank_accounts_success(self):
         """Test that a user can retrieve their bank accounts."""
+        bank_account = create_bank_account(user=self.user, **TEST_BANK_ACCOUNT_DATA)
+        bank_account_detail_url = get_bank_account_detail_url(bank_account.id)
+
+        res = self.client.get(bank_account_detail_url)
+
+        serializer = BankAccountSerializer(bank_account)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
 
     # test GET bank account detail for user success
 

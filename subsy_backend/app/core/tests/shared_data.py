@@ -134,3 +134,17 @@ def create_company():
     """Create and return a company instance."""
     company = Company.objects.create(**TEST_COMPANY_DATA)
     return company
+
+def create_linked_bank(**kwargs):
+    """Create and return a linked bank instance."""
+    company = kwargs.get('company') or create_company()
+    user = kwargs.get('user') or create_user()
+    company.users.add(user)
+    linked_bank = LinkedBank.objects.create(**TEST_LINKED_BANK_DATA, company=company)
+    return linked_bank
+
+def create_bank_account(**kwargs):
+    """Create and return a bank account instance."""
+    linked_bank = kwargs.get('linked_bank') or create_linked_bank(**kwargs)
+    bank_account = BankAccount.objects.create(**TEST_BANK_ACCOUNT_DATA, linked_bank=linked_bank)
+    return bank_account
