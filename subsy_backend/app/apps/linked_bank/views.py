@@ -25,7 +25,7 @@ class LinkedBankView(
         for the current user's companies.
         """
         user_companies = self.request.user.companies.all()
-        return super().get_queryset().filter(company__in=user_companies)
+        return super().get_queryset().filter(company__in=user_companies).order_by('pk')
 
 
     # BELOW CHATGPT CODE SHOULD BE REDUNDANT CODE since already in mixins/viewsets

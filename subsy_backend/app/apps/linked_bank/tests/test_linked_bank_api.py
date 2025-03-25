@@ -53,24 +53,26 @@ class PrivateLinkedBankApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    # # test GET linked banks list for user success
-    # def test_list_linked_banks_success(self):
-    #     """Test retrieving linked banks for a user is successful."""
-    #     LinkedBank.objects.create(
-    #         user=self.user,
-    #         **TEST_LINKED_BANK_DATA,
-    #     )
+    # test GET linked banks list for user success
+    def test_list_linked_bank_success(self):
+        """Test retrieving linked banks for a company is successful."""
+        test_company = create_company()
+        create_linked_bank(user=self.user, company=test_company, **TEST_LINKED_BANK_DATA)
+        test_data_2 = TEST_LINKED_BANK_DATA.copy()
+        test_data_2['item_id'] = 'test_item_id_2'
+        create_linked_bank(user=self.user, company=test_company, **test_data_2)
 
-    #     res = self.client.get(LINKED_BANK_LIST_URL)
+        res = self.client.get(LINKED_BANK_LIST_URL)
 
-    #     linked_banks = LinkedBank.objects.all()
-    #     serializer = LinkedBankSerializer(linked_banks, many=True)
+        linked_banks = LinkedBank.objects.all()
+        serializer = LinkedBankSerializer(linked_banks, many=True)
 
-    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['results'], serializer.data)
 
-# test GET linked bank detail for user success
 
-# test DELETE linked bank for user success
+    # test GET linked bank detail for user success
 
-# test GET linked banks list for non-user permission denied error
+    # test DELETE linked bank for user success
+
+    # test GET linked banks list for non-user permission denied error
