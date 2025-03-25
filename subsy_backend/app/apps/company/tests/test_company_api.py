@@ -100,7 +100,7 @@ class PrivateCompanyApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    # test GET company NOT from user returns permission error
+    # test GET company NOT from user returns not found error
     def test_company_not_assigned_to_user(self):
         """Test that a company not assigned to the user returns permission error."""
         user2 = get_user_model().objects.create_user(
@@ -110,5 +110,4 @@ class PrivateCompanyApiTests(TestCase):
 
         res = self.client.get(get_company_detail_url(company.id))
 
-        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertEqual(res.data['detail'], 'You do not have permission to view this company.')
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)

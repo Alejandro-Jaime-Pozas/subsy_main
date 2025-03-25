@@ -19,11 +19,3 @@ class CompanyViewSet(
     def get_queryset(self):
         """Return companies that the user is in."""
         return super().get_queryset().filter(users=self.request.user).order_by('pk')
-
-    # override if user is not part of company, return 403 permission denied
-    def get_object(self):
-        """Raise 403 if user is not part of company."""
-        obj = get_object_or_404(Company, pk=self.kwargs['pk'])
-        if self.request.user not in obj.users.all():
-            raise PermissionDenied('You do not have permission to view this company.', 403)
-        return obj
