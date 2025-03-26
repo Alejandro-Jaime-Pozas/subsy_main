@@ -69,3 +69,12 @@ class PrivateBankAccountApiTests(TestCase):
         self.assertEqual(res.data['results'], serializer.data)
 
     # test GET bank account for unauthorized user returns 404 not found.
+    def test_get_detail_bank_account_unauthorized(self):
+        """Test that a user can't retrieve another user's bank account."""
+        user2 = create_user(email='test2@example.com')
+        bank_account = create_bank_account(user=user2, **TEST_BANK_ACCOUNT_DATA)
+        bank_account_detail_url = get_bank_account_detail_url(bank_account.id)
+
+        res = self.client.get(bank_account_detail_url)
+
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)

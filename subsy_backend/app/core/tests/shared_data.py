@@ -125,9 +125,11 @@ def create_default_instances():
     }
 
 
-def create_user():
+def create_user(**kwargs):
     """Create and return a user instance."""
-    user = get_user_model().objects.create_user(**TEST_USER_DATA)
+    user_data = TEST_USER_DATA.copy()
+    user_data.update(**kwargs)
+    user = get_user_model().objects.create_user(**user_data)
     return user
 
 def create_company():
