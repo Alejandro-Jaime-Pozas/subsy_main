@@ -1,6 +1,6 @@
 from functools import wraps
 from django.http import JsonResponse
-import random, string
+import random, string, json
 
 # WRAPPER FUNCTIONS FOR PLAID VIEWS
 
@@ -21,6 +21,11 @@ def validate_access_token(view_func):
 def random_37_char_string():
     return ''.join(random.choices(string.ascii_letters + string.digits, k=37))
 
+
+def pretty_print_json(data):
+    """Pretty print JSON data."""
+    print(json.dumps(data, indent=4, sort_keys=True))
+
 # CONSTANTS FOR USE IN TESTS
 
 SUBSCRIPTION_PAYMENT_PERIOD_CHOICES = [
@@ -31,6 +36,7 @@ SUBSCRIPTION_PAYMENT_PERIOD_CHOICES = [
     ('Y', 'Yearly'),
     ('VAR', 'Variable'),
 ]
+
 SUBSCRIPTION_PAYMENT_TYPE_CHOICES = [
     ('F', 'Fixed'),
     ('V', 'Variable'),

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'server',
     'apps.company',
     'apps.linked_bank',
+    'apps.bank_account',
     # external apps
     'rest_framework',
     'rest_framework.authtoken',  # support for auth tokens in drf

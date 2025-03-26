@@ -146,5 +146,7 @@ def create_linked_bank(**kwargs):
 def create_bank_account(**kwargs):
     """Create and return a bank account instance."""
     linked_bank = kwargs.get('linked_bank') or create_linked_bank(**kwargs)
-    bank_account = BankAccount.objects.create(**TEST_BANK_ACCOUNT_DATA, linked_bank=linked_bank)
+    test_bank_acct_data = TEST_BANK_ACCOUNT_DATA.copy()
+    test_bank_acct_data['account_id'] = kwargs.get('account_id') or '1kvZXwn1mehQnB1RlbwGtJDADWkMkJc4DAwVk'  # unique
+    bank_account = BankAccount.objects.create(**test_bank_acct_data, linked_bank=linked_bank)
     return bank_account
