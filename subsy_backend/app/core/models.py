@@ -109,7 +109,7 @@ class Application(models.Model):
     i.e. Snowflake, Azure, AWS are applications.
     """
     name = models.CharField(max_length=255, unique=True)  # assumed by the transaction merchant data
-    related_names = models.JSONField(default=list)  # other names the application is known by
+    related_names = models.JSONField(default=list)  # other names the application is known by such as Amazon is AWS, Amazon Inc
     website = models.URLField(max_length=5000, null=True)  # from transaction website field
     manage_subscription_link = models.URLField(max_length=5000, default=None, null=True)  # will later need to find best way to automate finding subscription page links for all applications..
 

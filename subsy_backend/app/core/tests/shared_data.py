@@ -2,6 +2,8 @@ from ..models import *
 from django.contrib.auth import get_user_model
 from datetime import datetime, timedelta, timezone
 
+from utils import random_37_char_string
+
 """Object data for input in django test modules."""
 
 TEST_USER_DATA = {
@@ -149,6 +151,6 @@ def create_bank_account(**kwargs):
     """Create and return a bank account instance."""
     linked_bank = kwargs.get('linked_bank') or create_linked_bank(**kwargs)
     test_bank_acct_data = TEST_BANK_ACCOUNT_DATA.copy()
-    test_bank_acct_data['account_id'] = kwargs.get('account_id') or '1kvZXwn1mehQnB1RlbwGtJDADWkMkJc4DAwVk'  # unique
+    test_bank_acct_data['account_id'] = kwargs.get('account_id') or random_37_char_string()  # unique
     bank_account = BankAccount.objects.create(**test_bank_acct_data, linked_bank=linked_bank)
     return bank_account
