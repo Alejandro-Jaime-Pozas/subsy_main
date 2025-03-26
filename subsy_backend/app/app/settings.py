@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'apps.linked_bank',
     'apps.bank_account',
     'apps.transaction',
+    'apps.application',
+    # 'apps.subscription',
+    # 'apps.tag',
     # external apps
     'rest_framework',
     'rest_framework.authtoken',  # support for auth tokens in drf

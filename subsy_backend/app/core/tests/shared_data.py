@@ -134,36 +134,51 @@ def create_user(**kwargs):
     user = get_user_model().objects.create_user(**user_data)
     return user
 
-def create_company():
+def create_company(**kwargs):
     """Create and return a company instance."""
-    company = Company.objects.create(**TEST_COMPANY_DATA)
+    company_data = TEST_COMPANY_DATA.copy()
+    company_data.update(**kwargs)
+    company = Company.objects.create(**company_data)
     return company
 
 def create_linked_bank(**kwargs):
     """Create and return a linked bank instance."""
-    company = kwargs.get('company') or create_company()
-    user = kwargs.get('user') or create_user()
+    company = kwargs.pop('company', None) or create_company()
+    user = kwargs.pop('user', None) or create_user()
     company.users.add(user)
-    linked_bank = LinkedBank.objects.create(**TEST_LINKED_BANK_DATA, company=company)
+    linked_bank_data = TEST_LINKED_BANK_DATA.copy()
+    linked_bank_data['item_id'] = kwargs.get('item_id') or random_37_char_string()  # unique
+    linked_bank = LinkedBank.objects.create(**linked_bank_data, company=company)
     return linked_bank
 
 def create_bank_account(**kwargs):
     """Create and return a bank account instance."""
-    linked_bank = kwargs.get('linked_bank') or create_linked_bank(**kwargs)
+    linked_bank = kwargs.pop('linked_bank', None) or create_linked_bank(**kwargs)
     test_bank_acct_data = TEST_BANK_ACCOUNT_DATA.copy()
-    test_bank_acct_data['account_id'] = kwargs.get('account_id') or random_37_char_string()  # unique
+    test_bank_acct_data['account_id'] = kwargs.pop('account_id', None) or random_37_char_string()  # unique
     bank_account = BankAccount.objects.create(**test_bank_acct_data, linked_bank=linked_bank)
     return bank_account
 
 def create_transaction(**kwargs):
     """Create and return a transaction instance."""
-    bank_account = kwargs.get('bank_account') or create_bank_account(**kwargs)
-    application = kwargs.get('application') or Application.objects.create(**TEST_APPLICATION_DATA)
+    bank_account = kwargs.pop('bank_account', None) or create_bank_account(**kwargs)
+    application_data = TEST_APPLICATION_DATA.copy()
+    application_data['name'] = kwargs.pop('name', None) or 'Test Application ' + random_37_char_string()
+    application = Application.objects.create(**application_data)
     transaction_data = TEST_TRANSACTION_DATA.copy()
-    transaction_data['transaction_id'] = kwargs.get('transaction_id') or random_37_char_string()  # unique
+    transaction_data['transaction_id'] = kwargs.pop('transaction_id', None) or random_37_char_string()  # unique
     transaction = Transaction.objects.create(
-        **TEST_TRANSACTION_DATA,
+        **transaction_data,
         bank_account=bank_account,
         application=application,
     )
     return transaction
+
+def create_application(**kwargs):
+    """Create and return an application instance."""
+    application_data = TEST_APPLICATION_DATA.copy()
+    application_data['name'] = kwargs.pop('name', None) or 'Test Application ' + random_37_char_string()
+    transaction = kwargs.pop('transaction', None) or create_transaction(**kwargs)
+    application = Application.objects.create(**application_data)
+    application.transactions.add(transaction)
+    return application

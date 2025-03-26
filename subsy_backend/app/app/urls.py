@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/', include('apps.company.urls')),
     path('api/', include('apps.linked_bank.urls')),
     path('api/', include('apps.bank_account.urls')),
+    path('api/', include('apps.application.urls')),
     path('api/', include('apps.transaction.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),  # for YAML file
     path(
