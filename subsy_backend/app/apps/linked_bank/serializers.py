@@ -1,9 +1,9 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from core.models import LinkedBank
 
 
-class LinkedBankSerializer(ModelSerializer):
+class LinkedBankSerializer(serializers.ModelSerializer):
     """
     Serializer for the LinkedBank model.
     """

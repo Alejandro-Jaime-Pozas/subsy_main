@@ -154,3 +154,16 @@ def create_bank_account(**kwargs):
     test_bank_acct_data['account_id'] = kwargs.get('account_id') or random_37_char_string()  # unique
     bank_account = BankAccount.objects.create(**test_bank_acct_data, linked_bank=linked_bank)
     return bank_account
+
+def create_transaction(**kwargs):
+    """Create and return a transaction instance."""
+    bank_account = kwargs.get('bank_account') or create_bank_account(**kwargs)
+    application = kwargs.get('application') or Application.objects.create(**TEST_APPLICATION_DATA)
+    transaction_data = TEST_TRANSACTION_DATA.copy()
+    transaction_data['transaction_id'] = kwargs.get('transaction_id') or random_37_char_string()  # unique
+    transaction = Transaction.objects.create(
+        **TEST_TRANSACTION_DATA,
+        bank_account=bank_account,
+        application=application,
+    )
+    return transaction

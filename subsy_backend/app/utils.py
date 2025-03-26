@@ -19,7 +19,7 @@ def validate_access_token(view_func):
 # FUNCTIONS FOR USE IN TESTS
 
 def random_37_char_string():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=37))
+    return 'e' + ''.join(random.choices(string.ascii_letters + string.digits, k=36))
 
 
 def pretty_print_json(data):
