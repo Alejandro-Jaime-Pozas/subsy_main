@@ -168,7 +168,7 @@ class Subscription(models.Model):
         on_delete=models.PROTECT,
         related_name='subscriptions'
     )  # models.PROTECT to prevent deletion of application since would delete all related subscriptions
-    subscription_manager = models.ForeignKey(  # maybe naming convention not smartest since it differs
+    user = models.ForeignKey(  # maybe naming convention not smartest since it differs
         User,
         on_delete=models.SET_NULL,
         related_name='subscriptions',
