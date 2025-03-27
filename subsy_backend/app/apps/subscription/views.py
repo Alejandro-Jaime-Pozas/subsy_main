@@ -12,7 +12,7 @@ class ApplicationViewSet(
 ):
     """
     Client should be able to use Retrieve, List
-    operations on the linked bank (plaid item).
+    # operations on the linked bank (plaid item).
     """
 
     queryset = Application.objects.all()
