@@ -164,18 +164,20 @@ def create_transaction(**kwargs):
     bank_account = kwargs.pop('bank_account', None) or create_bank_account(**kwargs)
     application_data = TEST_APPLICATION_DATA.copy()
     application_data['name'] = kwargs.pop('name', None) or 'Test Application ' + random_37_char_string()
-    application = Application.objects.create(**application_data)
     transaction_data = TEST_TRANSACTION_DATA.copy()
     transaction_data['transaction_id'] = kwargs.pop('transaction_id', None) or random_37_char_string()  # unique
     transaction = Transaction.objects.create(
         **transaction_data,
         bank_account=bank_account,
-        application=application,
     )
     return transaction
 
 def create_application(**kwargs):
-    """Create and return an application instance."""
+    """
+    Create and return an application instance.
+
+    Input the name field to set the application name.
+    """
     application_data = TEST_APPLICATION_DATA.copy()
     application_data['name'] = kwargs.pop('name', None) or 'Test Application ' + random_37_char_string()
     transaction = kwargs.pop('transaction', None) or create_transaction(**kwargs)

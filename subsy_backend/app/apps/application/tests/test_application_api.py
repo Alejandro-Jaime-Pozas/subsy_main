@@ -1,5 +1,6 @@
 """Test the application API."""
 
+from venv import create
 from django.test import TestCase
 from django.urls import reverse
 
@@ -13,7 +14,7 @@ from core.tests.shared_data import (
     create_application,
     create_company,
 )
-from utils import random_37_char_string
+from utils import pretty_print_json
 
 from ..serializers import ApplicationSerializer
 
@@ -43,7 +44,6 @@ class PrivateApplicationApiTests(TestCase):
             company=company
         )
         company2 = create_company(domain='testdomain3.com')
-        item_id = random_37_char_string()
         create_application(
             user=self.user,
             company=company2
@@ -55,3 +55,38 @@ class PrivateApplicationApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data['results'], serializer.data)
+
+    def test_retrieve_application_detail(self):
+        """Test viewing a application detail."""
+        application = create_application(user=self.user)
+        url = create_detail_url(application.id)
+        res = self.client.get(url)
+
+        serializer = ApplicationSerializer(application)
+
+        self.assertEqual(res.data, serializer.data)
+
+    def test_retrieve_applications_limited_to_user(self):
+        """Test retrieving applications are limited to user."""
+        # create a second user, api client, and applications
+        user2 = create_user(email='test2@example.com')
+        client2 = APIClient()
+        client2.force_authenticate(user2)
+        # OG user app
+        company = create_company(domain='testdomain2.com')
+        user1_app = create_application(
+            user=self.user,
+            company=company
+        )
+        # user2 app
+        company2 = create_company(domain='user2.com')
+        user2_app = create_application(
+            user=user2,
+            company=company2,
+            name='Test App 2'
+        )
+
+        url = create_detail_url(user1_app.id)
+        res2 = client2.get(url)
+
+        self.assertEqual(res2.status_code, status.HTTP_404_NOT_FOUND)
