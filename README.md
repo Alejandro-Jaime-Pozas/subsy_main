@@ -1,6 +1,6 @@
 # Overview
 
-App that collects all of your accounts company pays for (g suite, airbyte, stitch, slack, simon, notion, ramp, perkup, figma, etc) and updates realtime which is active, cancelled, cost summary, recommendations, etc.
+App that collects all of the accounts company pays for (g suite, airbyte, stitch, slack, simon, notion, ramp, perkup, figma, etc) and updates realtime which is active, cancelled, cost summary, recommendations, etc.
 - You can connect your accounting software like quickbooks, xero, freshbooks, expensify or individually link all of your company bank accounts (PLAID) so we can get all of your subscriptions.
 
 Once we have all of your bank accounts/credit cards/paypal, etc, MySubs will
