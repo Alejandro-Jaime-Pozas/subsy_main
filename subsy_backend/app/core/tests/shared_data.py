@@ -87,7 +87,7 @@ TEST_SUBSCRIPTION_DATA = {
     "last_payment_date": default_datetime - timedelta(days=7),
     "next_payment_date": default_datetime,
     # "application": application,
-    # "subscription_manager": user
+    # "user": user
 }
 
 TEST_TAG_DATA = {
@@ -110,7 +110,7 @@ def create_default_instances():
     subscription = Subscription.objects.create(
         **TEST_SUBSCRIPTION_DATA,
         application=application,
-        subscription_manager=user,
+        user=user,
     )
     tag = Tag.objects.create(**TEST_TAG_DATA)
     tag.subscriptions.add(subscription)
@@ -184,3 +184,19 @@ def create_application(**kwargs):
     application = Application.objects.create(**application_data)
     application.transactions.add(transaction)
     return application
+
+def create_subscription(**kwargs):
+    """Create and return a subscription instance."""
+    user = kwargs.get('user', None)
+    application = kwargs.pop('application', None) or create_application(**kwargs)
+    subscription_data = TEST_SUBSCRIPTION_DATA.copy()
+    # subscription_data['start_date'] = kwargs.pop('start_date', None) or default_datetime - timedelta(days=7)
+    # subscription_data['end_date'] = kwargs.pop('end_date', None) or default_datetime
+    # subscription_data['last_payment_date'] = kwargs.pop('last_payment_date', None) or default_datetime - timedelta(days=7)
+    # subscription_data['next_payment_date'] = kwargs.pop('next_payment_date', None) or default_datetime
+    subscription = Subscription.objects.create(
+        **subscription_data,
+        application=application,
+        user=user,
+    )
+    return subscription

@@ -1,12 +1,12 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from core.views import BaseAuthPermissions
-from core.models import Application
+from core.models import Subscription
 
-from .serializers import ApplicationSerializer
+from .serializers import SubscriptionSerializer
 
 
-class ApplicationViewSet(
+class SubscriptionViewSet(
     BaseAuthPermissions,
     ReadOnlyModelViewSet,
 ):
@@ -15,8 +15,8 @@ class ApplicationViewSet(
     # operations on the linked bank (plaid item).
     """
 
-    queryset = Application.objects.all()
-    serializer_class = ApplicationSerializer
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionSerializer
 
     def get_queryset(self):
         """

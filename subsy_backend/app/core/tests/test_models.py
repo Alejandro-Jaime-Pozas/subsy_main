@@ -448,7 +448,7 @@ class SubscriptionTests(TestCase):
             "last_payment_date": None,
             "next_payment_date": None,
             "application": self.data.get('application'),
-            "subscription_manager": None,
+            "user": None,
         }
         subscription = Subscription.objects.create(**subscription_data)
 
@@ -472,7 +472,7 @@ class SubscriptionTests(TestCase):
         self.data.get('user').delete()  # if this is in setUpTestData, does it delete for future tests?
 
         sub_id = self.data.get('subscription').id
-        self.assertIsNone(Subscription.objects.get(id=sub_id).subscription_manager)
+        self.assertIsNone(Subscription.objects.get(id=sub_id).user)
 
     def test_subscriptions_have_tags_field(self):
         """

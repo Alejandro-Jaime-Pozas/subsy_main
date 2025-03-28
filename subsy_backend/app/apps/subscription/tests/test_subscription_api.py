@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Subscription
-
+from core.tests.shared_data import create_application, create_subscription, create_user
 
 from utils import pretty_print_json
 
@@ -21,4 +21,36 @@ def create_detail_url(subscription_id):
     return reverse('apps.subscription:subscription-detail', args=[subscription_id])
 
 
-# 
+# user should be able to CRUD subscriptions? since our app could be wrong and they can fix it
+class PrivateSubscriptionApiTests(TestCase):
+    """Test the subscription API."""
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = create_user()
+        self.client.force_authenticate(self.user)
+
+    # test GET a subscription
+    def test_retrieve_subscription(self):
+        """Test retrieving a subscription."""
+        subscription = create_subscription(
+            user=self.user,
+        )
+
+        url = create_detail_url(subscription.id)
+        res = self.client.get(url)
+
+        subscription = Subscription.objects.get(id=res.data['id'])
+        serializer = SubscriptionSerializer(subscription)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
+
+    # test GET all subscriptions
+
+
+    # test PATCH a subscription
+
+
+    # test subscription for a user that isn't authorized returns error

@@ -1,14 +1,14 @@
 from rest_framework import serializers
 
-from core.models import Application
+from core.models import Subscription
 
 
-class ApplicationSerializer(serializers.ModelSerializer):
+class SubscriptionSerializer(serializers.ModelSerializer):
     """
-    Serializer for the Application model.
+    Serializer for the Subscription model.
     """
 
     class Meta:
-        model = Application
+        model = Subscription
         fields = '__all__'
         read_only_fields = [field.name for field in model._meta.fields]

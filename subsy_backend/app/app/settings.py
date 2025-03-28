@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'apps.bank_account',
     'apps.transaction',
     'apps.application',
-    # 'apps.subscription',
+    'apps.subscription',
     # 'apps.tag',
     # external apps
     'rest_framework',
