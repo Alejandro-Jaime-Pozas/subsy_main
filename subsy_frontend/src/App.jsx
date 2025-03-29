@@ -42,9 +42,8 @@ function App(props) {
     });
     const data = await response.json();
     console.log(data);
-    // await getLatestTransactions();
-    // await getAllTransactions();
-    // await getBalance();
+    await getAllTransactions();
+    await getBalance();
   }, []);
 
   // Fetch balance data

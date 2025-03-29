@@ -71,6 +71,7 @@ required_if_supported_products = []
 for req_product in PLAID_REQUIRED_IF_SUPPORTED_PRODUCTS:
     required_if_supported_products.append(Products(req_product))
 
+
 # Create Link Token
 def create_link_token(request):
     # print("PLAID_SANDBOX_REDIRECT_URI:", os.getenv('PLAID_SANDBOX_REDIRECT_URI'))
@@ -98,6 +99,7 @@ def create_link_token(request):
         # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
 
+
 # Exchange Public Token for Access Token
 @csrf_exempt
 def exchange_public_token(request):
@@ -119,7 +121,9 @@ def exchange_public_token(request):
             return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
+
 # Get Account Balances
+# WILL USE THIS ENDPOINT TO CREATE LINKED BANK AND BANK ACCOUNTS
 @validate_access_token
 def get_balance(request, *args, **kwargs):
     try:
@@ -130,13 +134,16 @@ def get_balance(request, *args, **kwargs):
             }
         )
         balance_response = plaid_client.accounts_balance_get(balance_request)
-        # print('access token:', kwargs["access_token"])
-        # print(balance_response.to_dict())
+        # will need to create LinkedBank and BankAccounts from this data
+        # pretty_print_response(balance_response.to_dict())
         return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)
     except plaid.ApiException as e:
         # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
 
+
+# This will invalidate the access_token and remove the item from the user's account
+# This is a one-way action and cannot be undone
 @validate_access_token
 def item_remove_request(request, *args, **kwargs):
     try:
@@ -148,10 +155,12 @@ def item_remove_request(request, *args, **kwargs):
         # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
 
+
 # CSRF Token endpoint for front-end use
 def csrf_token(request):
     token = get_token(request)
     return JsonResponse({"csrfToken": token})
+
 
 # Get Latest Transactions
 @validate_access_token
@@ -204,7 +213,9 @@ def get_latest_transactions(request, *args, **kwargs):
         error_response = format_error(e)  # can format other errors this same way later
         return JsonResponse(error_response)
 
-# Get Transactions
+
+# Get ALL Transactions
+# WILL USE THIS ENDPOINT TO CREATE TRANSACTIONS
 @validate_access_token
 def get_all_transactions(request, *args, **kwargs):
     # Set cursor to empty to receive all historical updates
@@ -219,7 +230,7 @@ def get_all_transactions(request, *args, **kwargs):
     modified = []
     removed = []  # Removed transaction ids
     has_more = True
-    counter = 1
+    counter = 1  # for testing
     try:
         # Iterate through each page of new transaction updates for item
         while has_more:
