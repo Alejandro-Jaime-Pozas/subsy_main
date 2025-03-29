@@ -33,9 +33,7 @@ class PrivateSubscriptionApiTests(TestCase):
     # test GET a subscription
     def test_retrieve_subscription_success(self):
         """Test retrieving a subscription."""
-        subscription = create_subscription(
-            user=self.user,
-        )
+        subscription = create_subscription(user=self.user,)
 
         url = create_detail_url(subscription.id)
         res = self.client.get(url)
@@ -45,7 +43,6 @@ class PrivateSubscriptionApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
-
 
     # test GET all subscriptions
     def test_retrieve_subscriptions_success(self):
@@ -68,8 +65,34 @@ class PrivateSubscriptionApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data['results'], serializer.data)
 
-
     # test PATCH a subscription
+    def test_partial_update_subscription_success(self):
+        """Test updating a subscription."""
+        subscription = create_subscription(
+            user=self.user,
+        )
+        payload = {
+            'active': False,
+        }
 
+        url = create_detail_url(subscription.id)
+        res = self.client.patch(url, payload)
+
+        subscription.refresh_from_db()
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(subscription.active, payload['active'])
 
     # test subscription for a user that isn't authorized returns error
+    def test_user_unauth_subscription_error(self):
+        """Test that a user that isn't authorized returns an error."""
+        subscription = create_subscription(user=self.user)
+
+        user2 = create_user()
+        client2 = APIClient()
+        client2.force_authenticate(user2)
+
+        url = create_detail_url(subscription.id)
+        res = client2.get(url)
+
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
