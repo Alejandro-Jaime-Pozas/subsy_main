@@ -11,8 +11,10 @@ class SubscriptionViewSet(
     ReadOnlyModelViewSet,
 ):
     """
-    Client should be able to use Retrieve, List
-    # operations on the linked bank (plaid item).
+    Client should be able to use all CRUD
+    operations on the subscription model
+    since subsy could make errors, user
+    can fix.
     """
 
     queryset = Subscription.objects.all()
@@ -24,7 +26,5 @@ class SubscriptionViewSet(
         for the current user's companies.
         """
         user = self.request.user
-        queryset = self.queryset.filter(
-            transactions__bank_account__linked_bank__company__users=user
-        )
+        queryset = self.queryset.filter(user=user)
         return queryset.order_by('pk')
