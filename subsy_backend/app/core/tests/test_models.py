@@ -500,4 +500,7 @@ class TagTests(TestCase):
         tag.subscriptions.add(subscription)
 
         self.assertIsInstance(tag, Tag)
-        self.assertEqual(subscription.id, Tag.objects.get(id=self.data.get('subscription').id).id)
+        self.assertEqual(
+            tag.subscriptions.first().id,
+            Subscription.objects.get(id=self.data.get('subscription').id).id
+        )
