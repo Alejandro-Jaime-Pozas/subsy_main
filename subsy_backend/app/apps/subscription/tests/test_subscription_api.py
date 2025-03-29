@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Subscription
-from core.tests.shared_data import create_application, create_subscription, create_user
+from core.tests.shared_data import create_application, create_company, create_subscription, create_user
 
 from utils import pretty_print_json
 
@@ -27,11 +27,11 @@ class PrivateSubscriptionApiTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = create_user()
+        self.user = create_user(email='sub_test_user@example.com')
         self.client.force_authenticate(self.user)
 
     # test GET a subscription
-    def test_retrieve_subscription(self):
+    def test_retrieve_subscription_success(self):
         """Test retrieving a subscription."""
         subscription = create_subscription(
             user=self.user,
@@ -48,6 +48,25 @@ class PrivateSubscriptionApiTests(TestCase):
 
 
     # test GET all subscriptions
+    def test_retrieve_subscriptions_success(self):
+        """Test retrieving all subscriptions."""
+        subscription1 = create_subscription(
+            user=self.user,
+        )
+        company2 = create_company(domain='example2.com')
+        subscription2 = create_subscription(
+            user=self.user,
+            company=company2,
+        )
+
+        url = SUBSCRIPTIONS_URL
+        res = self.client.get(url)
+
+        subscriptions = Subscription.objects.all()
+        serializer = SubscriptionSerializer(subscriptions, many=True)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data['results'], serializer.data)
 
 
     # test PATCH a subscription

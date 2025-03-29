@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from core.views import BaseAuthPermissions
 from core.models import Subscription
@@ -8,7 +8,7 @@ from .serializers import SubscriptionSerializer
 
 class SubscriptionViewSet(
     BaseAuthPermissions,
-    ReadOnlyModelViewSet,
+    ModelViewSet,
 ):
     """
     Client should be able to use all CRUD
@@ -22,8 +22,8 @@ class SubscriptionViewSet(
 
     def get_queryset(self):
         """
-        Filter the queryset to only show the linked banks (plaid item)
-        for the current user's companies.
+        Filter the queryset to only show the subscriptions
+        for the current user.
         """
         user = self.request.user
         queryset = self.queryset.filter(user=user)
