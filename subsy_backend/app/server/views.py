@@ -19,6 +19,8 @@ from plaid.model.country_code import CountryCode
 from utils import validate_access_token
 from datetime import datetime, timedelta, timezone
 
+from core.models import BankAccount, LinkedBank
+
 
 PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
 PLAID_SECRET = os.getenv('PLAID_SECRET')
@@ -109,9 +111,10 @@ def exchange_public_token(request):
             public_token = data.get("public_token")
 
             exchange_request = ItemPublicTokenExchangeRequest(public_token=public_token)
-            exchange_response = plaid_client.item_public_token_exchange(exchange_request)  # have access_token and item_id in response
+            exchange_response = plaid_client.item_public_token_exchange(exchange_request)  # has access_token and item_id in response
 
             # Store the access_token in the session (for demo purposes)
+            # WILL NEED TO STORE ACTUAL ACCESS TOKEN LATER IN GET BALANCE FOR THE ITEM
             request.session["access_token"] = exchange_response.to_dict()["access_token"]
 
             # get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
@@ -128,14 +131,22 @@ def exchange_public_token(request):
 def get_balance(request, *args, **kwargs):
     try:
         balance_request = AccountsBalanceGetRequest(
-            access_token=kwargs["access_token"],
+            access_token=kwargs["access_token"],  # replace this with USER/ITEM access_token
             options={
                 "min_last_updated_datetime": datetime.now(timezone.utc) - timedelta(days=1)
             }
         )
         balance_response = plaid_client.accounts_balance_get(balance_request)
-        # will need to create LinkedBank and BankAccounts from this data
         # pretty_print_response(balance_response.to_dict())
+        # will need to create LinkedBank and BankAccounts from this data
+        balance_response_dict = balance_response.to_dict()
+        bank_accounts = balance_response_dict.get("accounts", [])
+        linked_bank = balance_response_dict.get("item", {})
+        pretty_print_response(bank_accounts)
+        pretty_print_response(linked_bank)
+        db_linked_bank = LinkedBank.objects.create(**linked_bank)  # no company error
+        for acct in bank_accounts:
+            db_bank_account = BankAccount.objects.create(**acct, linked_bank=db_linked_bank)
         return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)
     except plaid.ApiException as e:
         # print(e)  # Uncomment for debugging

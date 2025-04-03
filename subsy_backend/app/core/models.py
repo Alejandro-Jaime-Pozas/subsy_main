@@ -16,6 +16,17 @@ from utils import (
 )
 
 
+# Filter any unnecessary kwargs received from plaid API
+class FilteredKwargsMixin:
+    """Mixin to filter out unexpected kwargs when creating a model instance."""
+
+    def __init__(self, *args, **kwargs):
+        model_fields = {field.name for field in self._meta.fields}  # Get valid fields
+        filtered_kwargs = {key: value for key, value in kwargs.items() if key in model_fields}
+        super().__init__(*args, **filtered_kwargs)
+
+
+
 class UserManager(BaseUserManager):
     """Manager for User."""
 
@@ -73,7 +84,7 @@ class Company(models.Model):
         return f'<Company {self.id}|{self.name}|{self.domain}>'
 
 
-class LinkedBank(models.Model):
+class LinkedBank(FilteredKwargsMixin, models.Model):
     """Linked Bank (equivalent to Plaid Item) in the db system."""
     item_id = models.CharField(max_length=37, unique=True)  # Plaid Item is a user's login credentials to a specific bank, like Chase. Unique !!!BE AWARE THAT MULTIPLE USERS LINKING THE SAME ONLINE BANK COULD RESULT IN DUPLICATE LINKEDBANKS FOR THE SAME COMPANY!!!
     access_token = models.CharField(max_length=255, null=True)  # Plaid access token. Will get from exchange_public_token request

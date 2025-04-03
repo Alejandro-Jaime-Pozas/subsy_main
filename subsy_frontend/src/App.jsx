@@ -114,6 +114,14 @@ function App(props) {
         } disabled={!ready}>
         <strong>Link account</strong>
       </button>
+      <button onClick={() => getBalance()
+        } disabled={!ready}>
+        <strong>Get Balance</strong>
+      </button>
+      <button onClick={() => getAllTransactions()
+        } disabled={!ready}>
+        <strong>Get All Transactions</strong>
+      </button>
       !!!ALL PRETTY TRANSACTIONS!!!
       {/* if transaction data has been retreived successfully, show pretty data */}
       {!loading &&
