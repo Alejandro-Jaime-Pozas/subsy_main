@@ -16,6 +16,8 @@ from plaid.model.item_remove_request import ItemRemoveRequest
 from plaid.configuration import Configuration
 from plaid.api_client import ApiClient
 from plaid.model.country_code import CountryCode
+from apps.bank_account.serializers import BankAccountSerializer
+from apps.linked_bank.serializers import LinkedBankSerializer
 from utils import validate_access_token
 from datetime import datetime, timedelta, timezone
 
@@ -127,7 +129,7 @@ def exchange_public_token(request):
 
 
 # Get Account Balances
-# SHOULD CREATE SEPARATE ENDPOINT. THIS ONE FOR GETTING PLAID BALANCE, ANOTHER FOR CREATING SUBSY LINKED BANK AND BANK ACCOUNTS, AND THEN ANOTHER FOR GETTING SUBSY LINKED BANK AND BANK ACCOUNTS
+# TODO SHOULD CREATE SEPARATE ENDPOINT. THIS ONE FOR GETTING PLAID BALANCE, ANOTHER FOR CREATING SUBSY LINKED BANK AND BANK ACCOUNTS, AND THEN ANOTHER FOR GETTING SUBSY LINKED BANK AND BANK ACCOUNTS
 # logged in user with their related company and accesss token will be passed in
 @validate_access_token
 def get_balance(request, *args, **kwargs):
@@ -140,6 +142,7 @@ def get_balance(request, *args, **kwargs):
         )
         balance_response = plaid_client.accounts_balance_get(balance_request)
         # pretty_print_response(balance_response.to_dict())
+        # ========================================================================
         # will need to create LinkedBank and BankAccounts from this data
         balance_response_dict = balance_response.to_dict()  # converts json into dict
         bank_accounts = balance_response_dict.get("accounts", [])
@@ -160,7 +163,13 @@ def get_balance(request, *args, **kwargs):
                 linked_bank=saved_linked_bank,
                 defaults=acct
             )
-        return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)  # WILL NEED TO RETURN LINKED BAND AND BANK ACCOUNT SERIALIZERS..
+        linked_bank_serializer = LinkedBankSerializer(saved_linked_bank)
+        bank_account_serializer = BankAccountSerializer(saved_bank_account, many=True)
+        # return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)  # WILL NEED TO RETURN LINKED BAND AND BANK ACCOUNT SERIALIZERS..
+        return JsonResponse({
+            "Linked Bank": linked_bank_serializer.data,
+            "Bank Accounts": bank_account_serializer.data
+        }, safe=False)
     except plaid.ApiException as e:
         # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
