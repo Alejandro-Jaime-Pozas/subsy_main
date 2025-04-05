@@ -137,8 +137,9 @@ def create_user(**kwargs):
 def create_company(**kwargs):
     """Create and return a company instance."""
     company_data = TEST_COMPANY_DATA.copy()
-    company_data.update(**kwargs)
-    company = Company.objects.create(**company_data)
+    company_data.update(kwargs)
+    # Check if a company with the same domain already exists
+    company, created = Company.objects.get_or_create(domain=company_data['domain'], defaults=company_data)
     return company
 
 def create_linked_bank(**kwargs):
@@ -148,7 +149,7 @@ def create_linked_bank(**kwargs):
     company.users.add(user)
     linked_bank_data = TEST_LINKED_BANK_DATA.copy()
     linked_bank_data['item_id'] = kwargs.get('item_id') or random_37_char_string()  # unique
-    linked_bank = LinkedBank.objects.create(**linked_bank_data, company=company)
+    linked_bank, created = LinkedBank.objects.get_or_create(**linked_bank_data, company=company)
     return linked_bank
 
 def create_bank_account(**kwargs):

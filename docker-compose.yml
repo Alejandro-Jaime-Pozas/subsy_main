@@ -39,6 +39,8 @@ services:
     volumes:
       - dev-db-data:/var/lib/postgresql/data
     # these are env variables stored in the docker container
+    ports:
+      - "5433:5432"          # Expose PostgreSQL on localhost:5433
     environment:
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser

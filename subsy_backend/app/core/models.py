@@ -23,8 +23,7 @@ class FilteredKwargsMixin:
     def __init__(self, *args, **kwargs):
         model_fields = {field.name for field in self._meta.fields}  # Get valid fields
         filtered_kwargs = {key: value for key, value in kwargs.items() if key in model_fields}
-        super().__init__(*args, **filtered_kwargs)
-
+        super().__init__(*args, **filtered_kwargs)  # pass this into models.Model.__init__
 
 
 class UserManager(BaseUserManager):
@@ -97,12 +96,12 @@ class LinkedBank(FilteredKwargsMixin, models.Model):
         return f'<LinkedBank {self.id}|{self.institution_name}|{self.institution_id}>'
 
 
-class BankAccount(models.Model):
+class BankAccount(FilteredKwargsMixin, models.Model):
     """Bank account in the db system."""
     account_id = models.CharField(max_length=37, unique=True)
-    balances_available = models.IntegerField(null=True)
-    balances_current = models.IntegerField(null=True)
-    balances_limit = models.IntegerField(null=True)
+    balances_available = models.IntegerField(null=True)  # will need to get from balances key
+    balances_current = models.IntegerField(null=True)  # will need to get from balances key
+    balances_limit = models.IntegerField(null=True)  # will need to get from balances key
     balances_currency_code = models.CharField(max_length=10, null=True)  # will merge iso_currency_code with unofficial_currency_code when request comes in
     name = models.CharField(max_length=255, null=True)
     official_name = models.CharField(max_length=255, null=True)

@@ -20,6 +20,7 @@ from utils import validate_access_token
 from datetime import datetime, timedelta, timezone
 
 from core.models import BankAccount, LinkedBank
+from core.tests.shared_data import create_company
 
 
 PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
@@ -126,7 +127,8 @@ def exchange_public_token(request):
 
 
 # Get Account Balances
-# WILL USE THIS ENDPOINT TO CREATE LINKED BANK AND BANK ACCOUNTS
+# SHOULD CREATE SEPARATE ENDPOINT. THIS ONE FOR GETTING PLAID BALANCE, ANOTHER FOR CREATING SUBSY LINKED BANK AND BANK ACCOUNTS, AND THEN ANOTHER FOR GETTING SUBSY LINKED BANK AND BANK ACCOUNTS
+# logged in user with their related company and accesss token will be passed in
 @validate_access_token
 def get_balance(request, *args, **kwargs):
     try:
@@ -139,15 +141,26 @@ def get_balance(request, *args, **kwargs):
         balance_response = plaid_client.accounts_balance_get(balance_request)
         # pretty_print_response(balance_response.to_dict())
         # will need to create LinkedBank and BankAccounts from this data
-        balance_response_dict = balance_response.to_dict()
+        balance_response_dict = balance_response.to_dict()  # converts json into dict
         bank_accounts = balance_response_dict.get("accounts", [])
         linked_bank = balance_response_dict.get("item", {})
-        pretty_print_response(bank_accounts)
-        pretty_print_response(linked_bank)
-        db_linked_bank = LinkedBank.objects.create(**linked_bank)  # no company error
+        # pretty_print_response(bank_accounts)
+        # pretty_print_response(linked_bank)
+        company = create_company()
+        # request.user.companies.add(company)  # WILL NEED TO ADD LATER ONCE USER AUTHENTICATION IS SET UP
+        saved_linked_bank, created = LinkedBank.objects.get_or_create(
+            item_id=linked_bank.pop("item_id"),
+            company=company,
+            defaults=linked_bank
+        )  # WATCH OUT, THIS MIGHT CREATE DUPLICATE LINKED BANKS IF SOME LINKED BANK DATA CHANGES
+        # NEED TO SPECIFY EACH KEY FROM PLAID RESPONSE SINCE SOME KEYS ARE NESTED DICTS
         for acct in bank_accounts:
-            db_bank_account = BankAccount.objects.create(**acct, linked_bank=db_linked_bank)
-        return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)
+            saved_bank_account, created = BankAccount.objects.get_or_create(
+                account_id=acct.pop("account_id"),
+                linked_bank=saved_linked_bank,
+                defaults=acct
+            )
+        return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)  # WILL NEED TO RETURN LINKED BAND AND BANK ACCOUNT SERIALIZERS..
     except plaid.ApiException as e:
         # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
