@@ -16,6 +16,23 @@ def validate_access_token(view_func):
         return view_func(request, *args, **kwargs)
     return wrapper
 
+# FUNCTIONS FOR USE IN VIEWS
+def extract_balance_fields_for_plaid_bank_account(balances):
+    """
+    Extracts balance fields from Plaid bank account data.
+
+    iso_currency_code and unofficial_currency_code from plaid:
+    one or the other is always null.
+    """
+    return {
+        'balances_available': balances.get('available'),
+        'balances_current': balances.get('current'),
+        'balances_limit': balances.get('limit'),
+        'balances_currency_code':
+            balances.get('iso_currency_code') or \
+            balances.get('unofficial_currency_code'),
+    }
+
 # FUNCTIONS FOR USE IN TESTS
 
 def random_37_char_string():
