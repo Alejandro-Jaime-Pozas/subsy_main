@@ -23,7 +23,7 @@ class FilteredKwargsMixin:
     def __init__(self, *args, **kwargs):
         model_fields = {field.name for field in self._meta.fields}  # Get valid fields
         filtered_kwargs = {key: value for key, value in kwargs.items() if key in model_fields}
-        super().__init__(*args, **filtered_kwargs)  # pass this into models.Model.__init__
+        super().__init__(*args, **filtered_kwargs)  # pass this into models.Model.__init__ which is next in the MRO
 
 
 class UserManager(BaseUserManager):

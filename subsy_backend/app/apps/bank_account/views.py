@@ -6,7 +6,10 @@ from .serializers import BankAccountSerializer
 
 
 class BankAccountViewSet(BaseAuthPermissions, ReadOnlyModelViewSet):
-    """Viewset for bank accounts."""
+    """
+    Viewset for bank accounts.
+    Only allows GET requests.
+    """
 
     queryset = BankAccount.objects.all()
     serializer_class = BankAccountSerializer

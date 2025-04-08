@@ -129,7 +129,6 @@ def exchange_public_token(request):
 
 
 # Get Account Balances
-# TODO SHOULD CREATE SEPARATE ENDPOINT. THIS ONE FOR GETTING PLAID BALANCE, ANOTHER FOR CREATING SUBSY LINKED BANK AND BANK ACCOUNTS, AND THEN ANOTHER FOR GETTING SUBSY LINKED BANK AND BANK ACCOUNTS
 # logged in user with their related company and accesss token will be passed in
 @validate_access_token
 def get_balance(request, *args, **kwargs):
@@ -143,6 +142,8 @@ def get_balance(request, *args, **kwargs):
         balance_response = plaid_client.accounts_balance_get(balance_request)
         # pretty_print_response(balance_response.to_dict())
         # ========================================================================
+        # TODO SHOULD CREATE SEPARATE ENDPOINT. THIS ONE FOR GETTING PLAID BALANCE, ANOTHER FOR CREATING SUBSY LINKED BANK AND BANK ACCOUNTS, AND THEN ANOTHER FOR GETTING SUBSY LINKED BANK AND BANK ACCOUNTS
+        # ========================================================================
         # will need to create LinkedBank and BankAccounts from this data
         balance_response_dict = balance_response.to_dict()  # converts json into dict
         bank_accounts = balance_response_dict.get("accounts", [])
@@ -152,19 +153,21 @@ def get_balance(request, *args, **kwargs):
         company = create_company()
         # request.user.companies.add(company)  # WILL NEED TO ADD LATER ONCE USER AUTHENTICATION IS SET UP
         saved_linked_bank, created = LinkedBank.objects.get_or_create(
-            item_id=linked_bank.pop("item_id"),
+            item_id=linked_bank.pop("item_id"),  # this ensures get_or_create checks for duplicates using item_id and company, not the defaults
             company=company,
             defaults=linked_bank
         )  # WATCH OUT, THIS MIGHT CREATE DUPLICATE LINKED BANKS IF SOME LINKED BANK DATA CHANGES
         # NEED TO SPECIFY EACH KEY FROM PLAID RESPONSE SINCE SOME KEYS ARE NESTED DICTS
+        saved_bank_accounts_list = []
         for acct in bank_accounts:
             saved_bank_account, created = BankAccount.objects.get_or_create(
                 account_id=acct.pop("account_id"),
                 linked_bank=saved_linked_bank,
                 defaults=acct
             )
+            saved_bank_accounts_list.append(saved_bank_account)
         linked_bank_serializer = LinkedBankSerializer(saved_linked_bank)
-        bank_account_serializer = BankAccountSerializer(saved_bank_account, many=True)
+        bank_account_serializer = BankAccountSerializer(saved_bank_accounts_list, many=True)
         # return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)  # WILL NEED TO RETURN LINKED BAND AND BANK ACCOUNT SERIALIZERS..
         return JsonResponse({
             "Linked Bank": linked_bank_serializer.data,
