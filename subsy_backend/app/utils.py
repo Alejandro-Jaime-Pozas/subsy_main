@@ -17,6 +17,13 @@ def validate_access_token(view_func):
     return wrapper
 
 # FUNCTIONS FOR USE IN VIEWS
+
+def filter_model_fields(model, data):
+    """Utility function to filter plaid API response fields based on the model's fields."""
+    model_fields = {field.name for field in model._meta.fields}
+    return {key: value for key, value in data.items() if key in model_fields}
+
+
 def extract_balance_fields_for_plaid_bank_account(balances):
     """
     Extracts balance fields from Plaid bank account data.

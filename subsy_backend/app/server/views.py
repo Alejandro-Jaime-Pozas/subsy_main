@@ -18,7 +18,11 @@ from plaid.api_client import ApiClient
 from plaid.model.country_code import CountryCode
 from apps.bank_account.serializers import BankAccountSerializer
 from apps.linked_bank.serializers import LinkedBankSerializer
-from utils import extract_balance_fields_for_plaid_bank_account, validate_access_token
+from utils import (
+    extract_balance_fields_for_plaid_bank_account,
+    validate_access_token,
+    filter_model_fields,
+)
 from datetime import datetime, timedelta, timezone
 
 from core.models import BankAccount, LinkedBank
@@ -144,7 +148,7 @@ def get_balance(request, *args, **kwargs):
         # ========================================================================
         # TODO SHOULD CREATE SEPARATE ENDPOINT. THIS ONE FOR GETTING PLAID BALANCE, ANOTHER FOR CREATING SUBSY LINKED BANK AND BANK ACCOUNTS, AND THEN ANOTHER FOR GETTING SUBSY LINKED BANK AND BANK ACCOUNTS
         # ========================================================================
-        # will need to create LinkedBank and BankAccounts from this data
+        # need to create LinkedBank and BankAccounts from this data
         balance_response_dict = balance_response.to_dict()  # converts json into dict
         linked_bank = balance_response_dict.get("item", {})
         bank_accounts = balance_response_dict.get("accounts", [])
@@ -152,21 +156,22 @@ def get_balance(request, *args, **kwargs):
         # pretty_print_response(linked_bank)
         company = create_company()  # FOR TESTING PURPOSES ONLY, WILL NEED TO GET ACTUAL COMPANY
         # request.user.companies.add(company)  # WILL NEED TO ADD LATER ONCE USER AUTHENTICATION IS SET UP
+        filtered_linked_bank_data = filter_model_fields(LinkedBank, linked_bank)
         saved_linked_bank, created = LinkedBank.objects.get_or_create(
-            item_id=linked_bank.pop("item_id"),  # this ensures get_or_create checks for duplicates using item_id and company, not the defaults
+            item_id=filtered_linked_bank_data.pop("item_id"),  # this ensures get_or_create checks for duplicates using item_id and company, not the defaults
             company=company,
-            defaults=linked_bank
+            defaults=filtered_linked_bank_data
         )  # WATCH OUT, THIS MIGHT CREATE DUPLICATE LINKED BANKS IF SOME LINKED BANK DATA CHANGES
         # NEED TO SPECIFY EACH KEY FROM PLAID RESPONSE SINCE SOME KEYS ARE NESTED DICTS
         saved_bank_accounts_list = []  # list of bank account objects
         for acct in bank_accounts:
             format_acct_balances = extract_balance_fields_for_plaid_bank_account(acct.pop("balances"))
-            acct.update(format_acct_balances)
-            pretty_print_response(acct)
+            filtered_bank_account_data = filter_model_fields(BankAccount, acct)
+            filtered_bank_account_data.update(format_acct_balances)
             saved_bank_account, created = BankAccount.objects.get_or_create(
-                account_id=acct.pop("account_id"),
+                account_id=filtered_bank_account_data.pop("account_id"),
                 linked_bank=saved_linked_bank,
-                defaults=acct
+                defaults=filtered_bank_account_data
             )
             saved_bank_accounts_list.append(saved_bank_account)
         linked_bank_serializer = LinkedBankSerializer(saved_linked_bank)
