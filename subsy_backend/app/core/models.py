@@ -125,7 +125,7 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=20, decimal_places=2, null=True)
     counterparties = models.JSONField(null=True)
     datetime = models.DateTimeField(null=True)
-    currency_code = models.CharField(max_length=10, null=True)  # will merge iso_currency_code with unofficial_currency_code when request comes in
+    currency_code = models.CharField(max_length=10, null=True)  # FIX: will merge iso_currency_code with unofficial_currency_code when request comes in
     logo_url = models.URLField(max_length=1000, null=True)
     merchant_name = models.CharField(max_length=255, null=True)
     name = models.CharField(max_length=255, null=True)
