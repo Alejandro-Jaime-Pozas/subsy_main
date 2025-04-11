@@ -267,7 +267,7 @@ def get_all_transactions(request, *args, **kwargs):
     # received one for the Item. Leave null if this is your
     # first sync call for this Item. The first request will
     # return a cursor.
-    cursor = ''
+    cursor = ''  # TODO change this to check if non-null cursor exists in company, if so, use existing cursor, else use empty cursor to get all historical transactions
 
     # New transaction updates since "cursor"
     added = []
@@ -279,7 +279,7 @@ def get_all_transactions(request, *args, **kwargs):
         # Iterate through each page of new transaction updates for item
         while has_more:
             request = TransactionsSyncRequest(
-                access_token=kwargs.get("access_token"),
+                access_token=kwargs.get("access_token"),  # TODO change this to check for company/linked bank access token
                 cursor=cursor,
                 options={"days_requested": 730}
             )
