@@ -135,7 +135,7 @@ class Transaction(models.Model):
     personal_finance_category_icon_url = models.URLField(max_length=1000, null=True)
     website = models.URLField(max_length=1000, null=True)
     bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='transactions')
-    application = models.ForeignKey(Application, on_delete=models.SET_NULL, related_name='transactions', null=True)
+    application = models.ForeignKey(Application, on_delete=models.SET_NULL, related_name='transactions', null=True)  # TODO when creating new transactions, will either need to pass in an existing Application or create new one based on transaction merchant name
 
     def __repr__(self):
         return f'<Transaction {self.id}|{self.merchant_name}|{self.name}|{self.transaction_id}>'

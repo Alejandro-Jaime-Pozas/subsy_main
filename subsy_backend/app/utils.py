@@ -40,6 +40,13 @@ def extract_balance_fields_for_plaid_bank_account(balances):
             balances.get('unofficial_currency_code'),
     }
 
+def merge_currency_codes(iso_code, unofficial_code):
+    """
+    Merge the iso currency code and the unofficial currency code
+    from plaid transactions.
+    """
+    return iso_code if iso_code else unofficial_code if unofficial_code else None
+
 # FUNCTIONS FOR USE IN TESTS
 
 def random_37_char_string():

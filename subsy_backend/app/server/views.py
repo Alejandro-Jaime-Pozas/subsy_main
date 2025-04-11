@@ -154,7 +154,7 @@ def get_balance(request, *args, **kwargs):
         bank_accounts = balance_response_dict.get("accounts", [])
         # pretty_print_response(bank_accounts)
         # pretty_print_response(linked_bank)
-        company = create_company()  # FOR TESTING PURPOSES ONLY, WILL NEED TO GET ACTUAL COMPANY
+        company = create_company()  # TODO REPLACE FOR TESTING PURPOSES ONLY, WILL NEED TO GET ACTUAL COMPANY LATER
         # request.user.companies.add(company)  # WILL NEED TO ADD LATER ONCE USER AUTHENTICATION IS SET UP
         filtered_linked_bank_data = filter_model_fields(LinkedBank, linked_bank)
         saved_linked_bank, created = LinkedBank.objects.get_or_create(
@@ -296,6 +296,8 @@ def get_all_transactions(request, *args, **kwargs):
                 continue
             # If cursor is not an empty string, we got results,
             # so add this page of results
+            # TODO will need to either only pass in fields that my transactions model requires or leave as is and then later filter the fields for my model
+            # TODO will need to create for added, update for modified, and delete for removed transactions
             added.extend(response['added'])
             modified.extend(response['modified'])
             removed.extend(response['removed'])
@@ -309,6 +311,7 @@ def get_all_transactions(request, *args, **kwargs):
             # print('='*100)
 
         all_transactions_response = {
+            # TODO change this to return a list of my transaction models, not plaid version
             'added': added,
             'modified': modified,
             'removed': removed,
