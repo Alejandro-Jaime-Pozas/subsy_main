@@ -124,7 +124,7 @@ class Transaction(models.Model):
     account_owner = models.CharField(max_length=255, null=True)
     amount = models.DecimalField(max_digits=20, decimal_places=2, null=True)
     counterparties = models.JSONField(null=True)
-    datetime = models.DateTimeField(null=True)
+    date = models.DateField(null=True)
     currency_code = models.CharField(max_length=10, null=True)  # FIX: will merge iso_currency_code with unofficial_currency_code when request comes in
     logo_url = models.URLField(max_length=1000, null=True)
     merchant_name = models.CharField(max_length=255, null=True)
@@ -134,7 +134,7 @@ class Transaction(models.Model):
     personal_finance_category = models.JSONField(null=True)
     personal_finance_category_icon_url = models.URLField(max_length=1000, null=True)
     website = models.URLField(max_length=1000, null=True)
-    bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='transactions')
+    bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='transactions')  # TODO need to pass in when creating transactions from Plaid API
     application = models.ForeignKey(Application, on_delete=models.SET_NULL, related_name='transactions', null=True)  # TODO when creating new transactions, will either need to pass in an existing Application or create new one based on transaction merchant name
 
     def __repr__(self):

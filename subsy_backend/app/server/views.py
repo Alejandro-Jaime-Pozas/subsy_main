@@ -18,14 +18,20 @@ from plaid.api_client import ApiClient
 from plaid.model.country_code import CountryCode
 from apps.bank_account.serializers import BankAccountSerializer
 from apps.linked_bank.serializers import LinkedBankSerializer
+from apps.transaction.serializers import TransactionSerializer
 from utils import (
     extract_balance_fields_for_plaid_bank_account,
+    merge_currency_codes,
     validate_access_token,
     filter_model_fields,
 )
 from datetime import datetime, timedelta, timezone
 
-from core.models import BankAccount, LinkedBank
+from core.models import (
+    BankAccount,
+    LinkedBank,
+    Transaction
+)
 from core.tests.shared_data import create_company
 
 
@@ -178,8 +184,8 @@ def get_balance(request, *args, **kwargs):
         bank_account_serializer = BankAccountSerializer(saved_bank_accounts_list, many=True)
         # return JsonResponse({"Balance": balance_response.to_dict()}, safe=False)  # prev plaid response
         return JsonResponse({
+            "Bank Accounts": bank_account_serializer.data,
             "Linked Bank": linked_bank_serializer.data,
-            "Bank Accounts": bank_account_serializer.data
         }, safe=False)
     except plaid.ApiException as e:
         # print(e)  # Uncomment for debugging
@@ -275,6 +281,7 @@ def get_all_transactions(request, *args, **kwargs):
     removed = []  # Removed transaction ids
     has_more = True
     counter = 1  # for testing
+    created = []  # TODO this is confusing since added included, fix
     try:
         # Iterate through each page of new transaction updates for item
         while has_more:
@@ -296,8 +303,6 @@ def get_all_transactions(request, *args, **kwargs):
                 continue
             # If cursor is not an empty string, we got results,
             # so add this page of results
-            # TODO will need to either only pass in fields that my transactions model requires or leave as is and then later filter the fields for my model
-            # TODO will need to create for added, update for modified, and delete for removed transactions
             added.extend(response['added'])
             modified.extend(response['modified'])
             removed.extend(response['removed'])
@@ -310,6 +315,34 @@ def get_all_transactions(request, *args, **kwargs):
             # print('access token:', kwargs["access_token"])
             # print('='*100)
 
+        # TODO will need to create for added, update for modified transactions
+        if added:
+            for transaction in added:
+                # filter only required model fields
+                filtered_transaction_data = filter_model_fields(Transaction, transaction)
+                # merge the currency fields to get the currency_code
+                currency_code = merge_currency_codes(
+                    transaction['iso_currency_code'],
+                    transaction['unofficial_currency_code']
+                )
+                # add the related bank acct obj to data
+                bank_account = BankAccount.objects.get(
+                    account_id=transaction['account_id'],
+                )
+                filtered_transaction_data['currency_code'] = currency_code
+                filtered_transaction_data['bank_account'] = bank_account
+                created_transaction = Transaction.objects.create(**filtered_transaction_data)  # TODO when testing this will create error since transaction_id already exists..
+                created.append(created_transaction)  # prob need to serialize this obj
+                # TODO since application obj relationship can be null, leave for now, later implement
+        if modified:
+            pass
+        # if removed do nothing for now
+        if removed:
+            pass
+
+        # serialize all created transactions
+        created = TransactionSerializer(created, many=True)
+
         all_transactions_response = {
             # TODO change this to return a list of my transaction models, not plaid version
             'added': added,
@@ -317,8 +350,10 @@ def get_all_transactions(request, *args, **kwargs):
             'removed': removed,
             'has_more': has_more,
             'cursor': cursor,
+            'created': created.data,
         }
         return JsonResponse({'all_transactions': all_transactions_response})
+
     except plaid.ApiException as e:
         # print(e)  # Uncomment for debugging
         error_response = format_error(e)  # can format other errors this same way later

@@ -2,6 +2,7 @@ from functools import wraps
 from django.http import JsonResponse
 import random, string, json
 
+
 # WRAPPER FUNCTIONS FOR PLAID VIEWS
 
 def validate_access_token(view_func):
@@ -15,6 +16,7 @@ def validate_access_token(view_func):
         kwargs["access_token"] = access_token
         return view_func(request, *args, **kwargs)
     return wrapper
+
 
 # FUNCTIONS FOR USE IN VIEWS
 
@@ -32,13 +34,14 @@ def extract_balance_fields_for_plaid_bank_account(balances):
     one or the other is always null.
     """
     return {
-        'balances_available': balances.get('available'),
-        'balances_current': balances.get('current'),
-        'balances_limit': balances.get('limit'),
+        'balances_available': balances['available'],
+        'balances_current': balances['current'],
+        'balances_limit': balances['limit'],
         'balances_currency_code':
-            balances.get('iso_currency_code') or \
-            balances.get('unofficial_currency_code'),
+            balances['iso_currency_code'] or \
+            balances['unofficial_currency_code'],
     }
+
 
 def merge_currency_codes(iso_code, unofficial_code):
     """
@@ -46,6 +49,7 @@ def merge_currency_codes(iso_code, unofficial_code):
     from plaid transactions.
     """
     return iso_code if iso_code else unofficial_code if unofficial_code else None
+
 
 # FUNCTIONS FOR USE IN TESTS
 
@@ -56,6 +60,7 @@ def random_37_char_string():
 def pretty_print_json(data):
     """Pretty print JSON data."""
     print(json.dumps(data, indent=4, sort_keys=True))
+
 
 # CONSTANTS FOR USE IN TESTS
 
