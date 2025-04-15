@@ -1,6 +1,6 @@
 from ..models import *
 from django.contrib.auth import get_user_model
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 
 from utils import random_37_char_string
 
@@ -59,7 +59,7 @@ TEST_TRANSACTION_DATA = {
             "confidence_level": "VERY_HIGH"
         }
     ],
-    "datetime": "2023-09-24T11:01:01Z",
+    "date": "2023-09-24",
     "currency_code": "USD",
     "logo_url": "https://plaid-merchant-logos.plaid.com/walmart_1100.png",
     "merchant_name": "Walmart",
@@ -76,16 +76,16 @@ TEST_TRANSACTION_DATA = {
     # "bank_account": test_bank_account
 }
 
-default_datetime = datetime.now(timezone.utc)
+default_date = datetime.now(timezone.utc).date()
 
 TEST_SUBSCRIPTION_DATA = {
-    "start_date": default_datetime - timedelta(days=7),
-    "end_date": default_datetime,
+    "start_date": default_date - timedelta(days=7),
+    "end_date": default_date,
     "active": True,
     "payment_period": 'Weekly',
     "payment_type": 'Fixed',
-    "last_payment_date": default_datetime - timedelta(days=7),
-    "next_payment_date": default_datetime,
+    "last_payment_date": default_date - timedelta(days=7),
+    "next_payment_date": default_date,
     # "application": application,
     # "user": user
 }
@@ -191,10 +191,10 @@ def create_subscription(**kwargs):
     user = kwargs.get('user', None)
     application = kwargs.pop('application', None) or create_application(**kwargs)
     subscription_data = TEST_SUBSCRIPTION_DATA.copy()
-    # subscription_data['start_date'] = kwargs.pop('start_date', None) or default_datetime - timedelta(days=7)
-    # subscription_data['end_date'] = kwargs.pop('end_date', None) or default_datetime
-    # subscription_data['last_payment_date'] = kwargs.pop('last_payment_date', None) or default_datetime - timedelta(days=7)
-    # subscription_data['next_payment_date'] = kwargs.pop('next_payment_date', None) or default_datetime
+    # subscription_data['start_date'] = kwargs.pop('start_date', None) or default_date - timedelta(days=7)
+    # subscription_data['end_date'] = kwargs.pop('end_date', None) or default_date
+    # subscription_data['last_payment_date'] = kwargs.pop('last_payment_date', None) or default_date - timedelta(days=7)
+    # subscription_data['next_payment_date'] = kwargs.pop('next_payment_date', None) or default_date
     subscription = Subscription.objects.create(
         **subscription_data,
         application=application,

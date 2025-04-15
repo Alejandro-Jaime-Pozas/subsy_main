@@ -148,8 +148,8 @@ class Subscription(models.Model):
     interrupted time period.
     """
 
-    start_date = models.DateTimeField(default=None, null=True)
-    end_date = models.DateTimeField(default=None, null=True)
+    start_date = models.DateField(default=None, null=True)
+    end_date = models.DateField(default=None, null=True)
     active = models.BooleanField(default=True)
     payment_period = models.CharField(
         default='Monthly',
@@ -161,8 +161,8 @@ class Subscription(models.Model):
         choices=SUBSCRIPTION_PAYMENT_TYPE_CHOICES,
         null=True
     )
-    last_payment_date = models.DateTimeField(default=None, null=True)
-    next_payment_date = models.DateTimeField(default=None, null=True)
+    last_payment_date = models.DateField(default=None, null=True)
+    next_payment_date = models.DateField(default=None, null=True)
     application = models.ForeignKey(
         Application,
         on_delete=models.PROTECT,
