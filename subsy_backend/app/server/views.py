@@ -281,7 +281,7 @@ def get_all_transactions(request, *args, **kwargs):
     removed = []  # Removed transaction ids
     has_more = True
     counter = 1  # for testing
-    created = []  # TODO this is confusing since added included, fix
+    created_transactions = []  # TODO this is confusing since added included, fix
     try:
         # Iterate through each page of new transaction updates for item
         while has_more:
@@ -317,23 +317,28 @@ def get_all_transactions(request, *args, **kwargs):
 
         # TODO will need to create for added, update for modified transactions
         if added:
-            for transaction in added:
+            for plaid_transaction in added:
                 # filter only required model fields
-                filtered_transaction_data = filter_model_fields(Transaction, transaction)
+                plaid_transaction_data = filter_model_fields(Transaction, plaid_transaction)
                 # merge the currency fields to get the currency_code
                 currency_code = merge_currency_codes(
-                    transaction['iso_currency_code'],
-                    transaction['unofficial_currency_code']
+                    plaid_transaction['iso_currency_code'],
+                    plaid_transaction['unofficial_currency_code']
                 )
                 # add the related bank acct obj to data
                 bank_account = BankAccount.objects.get(
-                    account_id=transaction['account_id'],
+                    account_id=plaid_transaction['account_id'],
                 )
-                filtered_transaction_data['currency_code'] = currency_code
-                filtered_transaction_data['bank_account'] = bank_account
-                created_transaction = Transaction.objects.create(**filtered_transaction_data)  # TODO when testing this will create error since transaction_id already exists..
-                created.append(created_transaction)  # prob need to serialize this obj
-                # TODO since application obj relationship can be null, leave for now, later implement
+                plaid_transaction_data['currency_code'] = currency_code
+                plaid_transaction_data['bank_account'] = bank_account
+                transaction, created = Transaction.objects.get_or_create(
+                    transaction_id=plaid_transaction_data.pop('transaction_id'),
+                    defaults=plaid_transaction_data,
+                )  # TODO when testing this will create error since transaction_id already exists?
+                # if transaction was created in subsy, include in created list, else ignore
+                if created:
+                    created_transactions.append(transaction)
+                # TODO since application obj relationship can be null, leave for now, later include application obj logic
         if modified:
             pass
         # if removed do nothing for now
@@ -341,7 +346,7 @@ def get_all_transactions(request, *args, **kwargs):
             pass
 
         # serialize all created transactions
-        created = TransactionSerializer(created, many=True)
+        created_transactions_serializer = TransactionSerializer(created_transactions, many=True)
 
         all_transactions_response = {
             # TODO change this to return a list of my transaction models, not plaid version
@@ -350,7 +355,7 @@ def get_all_transactions(request, *args, **kwargs):
             'removed': removed,
             'has_more': has_more,
             'cursor': cursor,
-            'created': created.data,
+            'created': created_transactions_serializer.data,  # for now should return empty list if sandbox and if already have created transactions in db
         }
         return JsonResponse({'all_transactions': all_transactions_response})
 

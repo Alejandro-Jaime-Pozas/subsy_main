@@ -203,8 +203,13 @@ class TestViews(TestCase):
         self.assertJSONEqual(response.content, {"error": 'Status Code: 400\nReason: Test error.\n'})
 
     # test get_all_transactions endpoint
+    @patch('utils.merge_currency_codes')
     @patch('server.views.plaid_client.transactions_sync')
-    def test_get_all_transactions_success(self, mock_transactions_sync):
+    def test_get_all_transactions_success(
+        self,
+        mock_transactions_sync,
+        mock_merge_currency_codes,  # Adjusted order of mocks
+    ):
         """Test that getting transactions from plaid is successful."""
         mock_response = Mock()
         mock_response.to_dict.return_value = {
@@ -215,6 +220,7 @@ class TestViews(TestCase):
             'has_more': False,
         }
         mock_transactions_sync.return_value = mock_response
+        mock_merge_currency_codes.return_value = 'USD'
 
         request = self.factory.get('get_all_transactions/')
         self._add_session_to_request(request)  # add session and access token
