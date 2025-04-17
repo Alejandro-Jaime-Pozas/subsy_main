@@ -361,9 +361,9 @@ def get_all_transactions(request, *args, **kwargs):
 
         # serialize all created transactions
         created_transactions_serializer = TransactionSerializer(
-                                            created_transactions,
-                                            many=True
-                                        )
+            created_transactions,
+            many=True
+        )
 
         all_transactions_response = {
             # TODO change this to return a list of my transaction models, not plaid version
