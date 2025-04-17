@@ -3,6 +3,7 @@ import os, json, time
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
+from django.core.exceptions import ObjectDoesNotExist
 import plaid
 from plaid.api import plaid_api
 from plaid.model.products import Products
@@ -315,7 +316,7 @@ def get_all_transactions(request, *args, **kwargs):
             # print('access token:', kwargs["access_token"])
             # print('='*100)
 
-        # TODO will need to create for added, update for modified transactions
+        # If there's transactions added for linked bank, create transaction objects in db
         if added:
             for plaid_transaction in added:
                 # filter only required model fields
@@ -339,14 +340,30 @@ def get_all_transactions(request, *args, **kwargs):
                 if created:
                     created_transactions.append(transaction)
                 # TODO since application obj relationship can be null, leave for now, later include application obj logic
+        # TODO test that this code works, since don't have modified usually in sandbox or my data
         if modified:
-            pass
-        # if removed do nothing for now
+            # will need to fetch transaction, and update only relevant fields
+            for plaid_transaction in modified:
+                # fetch transaction from db using transaction_id
+                try:
+                    transaction = Transaction.objects.filter(
+                        transaction_id=plaid_transaction['transaction_id']
+                    )
+                    plaid_transaction_data = filter_model_fields(Transaction, plaid_transaction)
+                    # update the new fields for the transaction from plaid
+                    transaction.update(**plaid_transaction_data)  # this uses SQL directly, so no need to save
+                except ObjectDoesNotExist:
+                    print(f'Cannot update. Transaction {plaid_transaction["transaction_id"]} does not exist in db.')
+
+        # If removed do nothing for now
         if removed:
             pass
 
         # serialize all created transactions
-        created_transactions_serializer = TransactionSerializer(created_transactions, many=True)
+        created_transactions_serializer = TransactionSerializer(
+                                            created_transactions,
+                                            many=True
+                                        )
 
         all_transactions_response = {
             # TODO change this to return a list of my transaction models, not plaid version
