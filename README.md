@@ -105,7 +105,7 @@ A transaction then can **possibly** indicate there's an application involved. An
 
 
 An application exists outside of our django app universe (in a sense) and does not need to be linked to a subscription. Applications are the equivalent of a software platform like Notion, Slack, etc. They exist outside the scope of our universe. A subscription is always linked to an application.
-  - The name for the application will be derived from the transaction merchant name/name. This will be the name used for the application, and will in the future implement a smarter way (ai) to improve applications like apple vs icloud or microsoft vs office 365. 
+  - The name for the application will be derived from the transaction merchant name/name. This will be the name used for the application, and will in the future implement a smarter way (ai) to improve applications like apple vs icloud or microsoft vs office 365.
   - To implement application creation, could either find an existing API that somehow contains most online subscription platforms, or could create the application when considering a transaction that is referencing an application that does not yet exist in our django app universe. Example, django app has Snowflake and Azure as apps only, a new transaction comes in from user bank that is AWS, so AWS is checked in db, and created since it did not exist.
 
 
@@ -166,3 +166,10 @@ A subscription can also be linked to a sub manager, which is the user managing t
 # IdeaLab
 
 - Could check the subscription type, example monthly, for a company's AWS subscription, and compare to what they could save if they change for a yearly subscription. Say instead of $1000 per month which comes to $12000 a year they could pay instead $10000 and save $2000 dls...could in dashboard somewhere mention the total savings they could get by paying yearly (though would come with heavier upfront payment), in the end just so they know their options
+
+
+
+# Reference
+
+### Potential partnerships
+- ActivTrak or similar app: can track how company employees are using and spending time in different software platforms (zoom, gmail, notion, slack, figma, salesforce, linkedin, etc) BUT DO COMPANIES BUY INTO THIS? SINCE POTENTIAL BIG BROTHER IS WATCHING IMPLICATIONS...but company should disclose that tracking is ONLY used to manage if subscriptions are being used by employees to determine subscription benefits, not tracking productivity (though they do)
