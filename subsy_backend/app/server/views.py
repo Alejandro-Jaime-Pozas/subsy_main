@@ -31,7 +31,8 @@ from datetime import datetime, timedelta, timezone
 from core.models import (
     BankAccount,
     LinkedBank,
-    Transaction
+    Transaction,
+    Application,
 )
 from core.tests.shared_data import create_company
 
@@ -340,6 +341,8 @@ def get_all_transactions(request, *args, **kwargs):
                 if created:
                     created_transactions.append(transaction)
                 # TODO since application obj relationship can be null, leave for now, later include application obj logic
+            # TODO after adding all new transactions, trigger creating or getting application obj, subscription obj
+            # get_or_create_application_obj(created)
         # TODO test that this code works, since don't have modified usually in sandbox or my data
         if modified:
             # will need to fetch transaction, and update only relevant fields
@@ -380,6 +383,17 @@ def get_all_transactions(request, *args, **kwargs):
         # print(e)  # Uncomment for debugging
         error_response = format_error(e)  # can format other errors this same way later
         return JsonResponse(error_response)
+
+def get_or_create_application(created_transactions):
+    """Get or create a transaction's application object based on the transaction's merchant name"""
+    for transaction in created_transactions:
+        # merchant name takes precedence over name
+        # if merchant name, check if it already exists in db, else check name exists in db (do nothing)
+        merchant_name, name = transaction.merchant_name, transaction.name
+        if merchant_name:
+            exists = Application.objects.filter(merchant_name__iexact=merchant_name)
+        elif name:
+            pass
 
 def pretty_print_response(response):
   print(json.dumps(response, indent=2, sort_keys=True, default=str))
