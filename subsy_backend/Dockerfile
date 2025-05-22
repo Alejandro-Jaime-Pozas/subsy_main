@@ -8,10 +8,10 @@ ENV PYTHONUNBUFFERED=1
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./app /backend
-# Zscaler issues start
-COPY ./jci_pc_config /tmp/jci_pc_config
-# COPY ./ZscalerRootCertificate.crt /usr/local/share/ca-certificates/
-# Zscaler issues end
+# # Zscaler issues start
+# COPY ./jci_pc_config /tmp/jci_pc_config
+# # COPY ./ZscalerRootCertificate.crt /usr/local/share/ca-certificates/
+# # Zscaler issues end
 WORKDIR /backend
 EXPOSE 8000
 
