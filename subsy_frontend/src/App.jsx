@@ -57,17 +57,6 @@ function App(props) {
     console.log(data)
   }, [setData, setLoading]);
 
-  // // Fetch latest transaction data
-  // const getLatestTransactions = useCallback(async () => {
-  //   setLoading(true);
-  //   const response = await fetch("/api/get_latest_transactions/", {});
-  //   const data = await response.json();
-  //   setLatestTransactions(data.latest_transactions);
-  //   localStorage.setItem("latest_transactions", JSON.stringify(data.latest_transactions));
-  //   setLoading(false);
-  //   console.log(data);
-  // }, [setLatestTransactions, setLoading]);
-
   // Fetch all transaction data
   const getAllTransactions = useCallback(async () => {
     setLoading(true);
