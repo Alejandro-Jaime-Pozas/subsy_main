@@ -117,30 +117,6 @@ class Application(models.Model):
         return f'<Application {self.id}|{self.name}>'
 
 
-class Transaction(models.Model):
-    """Transaction (cash in or cash out) in the db system."""
-    transaction_id = models.CharField(max_length=37, unique=True)
-    account_id = models.CharField(max_length=37)
-    account_owner = models.CharField(max_length=255, null=True)
-    amount = models.DecimalField(max_digits=20, decimal_places=2, null=True)
-    counterparties = models.JSONField(null=True)
-    date = models.DateField(null=True)
-    currency_code = models.CharField(max_length=10, null=True)  # FIX: will merge iso_currency_code with unofficial_currency_code when request comes in
-    logo_url = models.URLField(max_length=1000, null=True)
-    merchant_name = models.CharField(max_length=255, null=True)
-    name = models.CharField(max_length=255, null=True)
-    payment_channel = models.CharField(max_length=255, null=True)
-    pending = models.BooleanField(null=True)
-    personal_finance_category = models.JSONField(null=True)
-    personal_finance_category_icon_url = models.URLField(max_length=1000, null=True)
-    website = models.URLField(max_length=1000, null=True)
-    bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='transactions')  # TODO need to pass in when creating transactions from Plaid API
-    application = models.ForeignKey(Application, on_delete=models.SET_NULL, related_name='transactions', null=True)  # TODO when creating new transactions, will either need to pass in an existing Application or create new one based on transaction merchant name
-
-    def __repr__(self):
-        return f'<Transaction {self.id}|{self.merchant_name}|{self.name}|{self.transaction_id}>'
-
-
 class Subscription(models.Model):
     """
     Subscription in the db system. A subscription is a software platform
@@ -168,7 +144,7 @@ class Subscription(models.Model):
         on_delete=models.PROTECT,
         related_name='subscriptions'
     )  # models.PROTECT to prevent deletion of application since would delete all related subscriptions
-    user = models.ForeignKey(  # maybe naming convention not smartest since it differs
+    user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         related_name='subscriptions',
@@ -177,6 +153,31 @@ class Subscription(models.Model):
 
     def __repr__(self):
         return f'<Subscription {self.id}|{self.application.name}|{self.start_date}>'
+
+
+class Transaction(models.Model):
+    """Transaction (cash in or cash out) in the db system."""
+    transaction_id = models.CharField(max_length=37, unique=True)
+    account_id = models.CharField(max_length=37)
+    account_owner = models.CharField(max_length=255, null=True)
+    amount = models.DecimalField(max_digits=20, decimal_places=2, null=True)
+    counterparties = models.JSONField(null=True)
+    date = models.DateField(null=True)
+    currency_code = models.CharField(max_length=10, null=True)  # FIX: will merge iso_currency_code with unofficial_currency_code when request comes in
+    logo_url = models.URLField(max_length=1000, null=True)
+    merchant_name = models.CharField(max_length=255, null=True)
+    name = models.CharField(max_length=255, null=True)
+    payment_channel = models.CharField(max_length=255, null=True)
+    pending = models.BooleanField(null=True)
+    personal_finance_category = models.JSONField(null=True)
+    personal_finance_category_icon_url = models.URLField(max_length=1000, null=True)
+    website = models.URLField(max_length=1000, null=True)
+    bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='transactions')  # TODO need to pass in when creating transactions from Plaid API
+    application = models.ForeignKey(Application, on_delete=models.SET_NULL, related_name='transactions', null=True)  # TODO when creating new transactions, will either need to pass in an existing Application or create new one based on transaction merchant name
+    subscription = models.ForeignKey(Subscription, on_delete=models.SET_NULL, related_name='transactions', null=True)
+
+    def __repr__(self):
+        return f'<Transaction {self.id}|{self.merchant_name}|{self.name}|{self.transaction_id}>'
 
 
 class Tag(models.Model):

@@ -270,6 +270,10 @@ def get_latest_transactions(request, *args, **kwargs):
 # WILL USE THIS ENDPOINT TO CREATE TRANSACTIONS
 @validate_access_token
 def get_all_transactions(request, *args, **kwargs):
+    """
+    Get all transactions for the linked bank item,
+    then create them internally in subsy.
+    """
     # Set cursor to empty to receive all historical updates
     # Provide a cursor from your database if you've previously
     # received one for the Item. Leave null if this is your
@@ -317,7 +321,7 @@ def get_all_transactions(request, *args, **kwargs):
             # print('access token:', kwargs["access_token"])
             # print('='*100)
 
-        # If there's transactions added for linked bank, create transaction objects in db
+        # If there's transactions added for linked bank, create transaction objects in subsy db
         if added:
             for plaid_transaction in added:
                 # filter only required model fields
