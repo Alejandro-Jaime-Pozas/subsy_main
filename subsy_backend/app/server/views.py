@@ -286,6 +286,13 @@ def get_all_transactions(request, *args, **kwargs):
     """
     Get all transactions for the linked bank item,
     then create them internally in subsy.
+    This will create Transaction objects in the subsy db
+    based on the Plaid transactions data.
+    This is a one-time action to get all transactions
+    and create the transactions in the subsy db.
+    :return: JsonResponse with all transactions data,
+    added, modified, removed, has_more, cursor, and
+    created transactions
     """
     # Set cursor to empty to receive all historical updates
     # Provide a cursor from your database if you've previously
