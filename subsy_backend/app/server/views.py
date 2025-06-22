@@ -192,6 +192,9 @@ def get_balance(request, *args, **kwargs):
     except plaid.ApiException as e:
         # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
+    except Exception as e:
+        # print(e)  # Uncomment for debugging
+        return JsonResponse({"error": str(e)}, status=500)
 
 
 # This will invalidate the access_token and remove the item from the user's account
