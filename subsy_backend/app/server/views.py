@@ -144,6 +144,16 @@ def exchange_public_token(request):
 # logged in user with their related company and accesss token will be passed in
 @validate_access_token
 def get_balance(request, *args, **kwargs):
+    """
+    Get the balance for the linked bank item using the access token.
+    This will create a LinkedBank and BankAccounts from the Plaid response.
+    The LinkedBank will be created if it does not exist, and the BankAccounts
+    will be created or updated based on the Plaid response.
+    This will also create a Company object if it does not exist.
+    This is a one-time action to get the balance and create the linked bank
+    and bank accounts.
+    :return: JsonResponse with the balance data, linked bank, and bank accounts
+    """
     try:
         balance_request = AccountsBalanceGetRequest(
             access_token=kwargs["access_token"],  # replace this with USER/ITEM access_token
