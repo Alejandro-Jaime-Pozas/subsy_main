@@ -156,16 +156,6 @@ function App(props) {
           </pre>
         )
       )}
-      !!!LATEST TRANSACTIONS!!!
-      {/* show latest transactions json */}
-      {/* {!loading &&
-        latestTransactions != null &&
-        Object.entries(latestTransactions).map((entry, i) => (
-          <pre key={i}>
-            <code>{JSON.stringify(entry[1], null, 2)}</code>
-          </pre>
-        )
-      )} */}
     </div>
   );
 }

@@ -323,6 +323,7 @@ def get_all_transactions(request, *args, **kwargs):
 
         # If there's transactions added for linked bank, create transaction objects in subsy db
         if added:
+            # TODO perhaps this is NOT THE MOST EFFICIENT, COULD USE BULK OPERATIONS, LOOK INTO IT
             for plaid_transaction in added:
                 # filter only required model fields
                 plaid_transaction_data = filter_model_fields(Transaction, plaid_transaction)
