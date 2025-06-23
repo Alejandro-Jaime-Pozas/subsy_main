@@ -202,9 +202,9 @@ def get_balance(request, *args, **kwargs):
     except plaid.ApiException as e:
         # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
-    except Exception as e:
-        # print(e)  # Uncomment for debugging
-        return JsonResponse({"error": str(e)}, status=500)
+    # except Exception as e:
+    #     # print(e)  # Uncomment for debugging
+    #     return JsonResponse({"error": str(e)}, status=500)
 
 
 # This will invalidate the access_token and remove the item from the user's account
@@ -341,34 +341,89 @@ def get_all_transactions(request, *args, **kwargs):
             # print('access token:', kwargs["access_token"])
             # print('='*100)
 
+    #     # PREV VERSION OF CREATING TRANSACTIONS
+    #     # TODO perhaps this is NOT THE MOST EFFICIENT, COULD USE BULK OPERATIONS, LOOK INTO IT
+    #     for plaid_transaction in added:
+    #         # filter only required model fields
+    #         plaid_transaction_data = filter_model_fields(Transaction, plaid_transaction)
+    #         # merge the currency fields to get the currency_code
+    #         currency_code = merge_currency_codes(
+    #             plaid_transaction['iso_currency_code'],
+    #             plaid_transaction['unofficial_currency_code']
+    #         )
+    #         # add the related bank acct obj to data
+    #         bank_account = BankAccount.objects.get(
+    #             account_id=plaid_transaction['account_id'],
+    #         )
+    #         plaid_transaction_data['currency_code'] = currency_code
+    #         plaid_transaction_data['bank_account'] = bank_account
+    #         transaction, created = Transaction.objects.get_or_create(
+    #             transaction_id=plaid_transaction_data.pop('transaction_id'),
+    #             defaults=plaid_transaction_data,
+    #         )  # TODO when testing this will create error since transaction_id already exists?
+    #         # if transaction was created in subsy, include in created list, else ignore
+    #         if created:
+    #             created_transactions.append(transaction)
+    #         # TODO since application obj relationship can be null, leave for now, later include application obj logic
+    #     # TODO after adding all new transactions, trigger creating or getting application obj, subscription obj
+    #     # get_or_create_application_obj(created)
+    # # TODO test that this code works, since don't have modified usually in sandbox or my data
+
         # If there's transactions added for linked bank, create transaction objects in subsy db
         if added:
-            # TODO perhaps this is NOT THE MOST EFFICIENT, COULD USE BULK OPERATIONS, LOOK INTO IT
-            for plaid_transaction in added:
-                # filter only required model fields
-                plaid_transaction_data = filter_model_fields(Transaction, plaid_transaction)
-                # merge the currency fields to get the currency_code
-                currency_code = merge_currency_codes(
-                    plaid_transaction['iso_currency_code'],
-                    plaid_transaction['unofficial_currency_code']
+            # Bulk operation approach: Check which transactions already exist, then bulk create new ones
+            # Extract all transaction IDs from plaid response
+            plaid_transaction_ids = [t['transaction_id'] for t in added]
+
+            # Get existing transaction IDs from database
+            existing_transaction_ids = set(
+                Transaction.objects.filter(
+                    transaction_id__in=plaid_transaction_ids
+                ).values_list('transaction_id', flat=True)
+            )
+
+            # Filter out transactions that already exist
+            new_transactions = [t for t in added if t['transaction_id'] not in existing_transaction_ids]
+
+            if new_transactions:
+                # Prepare transaction objects for bulk creation
+                transaction_objects = []
+                bank_account_cache = {}  # Cache bank accounts to avoid repeated queries
+
+                for plaid_transaction in new_transactions:
+                    # filter only required model fields
+                    plaid_transaction_data = filter_model_fields(Transaction, plaid_transaction)
+                    # merge the currency fields to get the currency_code
+                    currency_code = merge_currency_codes(
+                        plaid_transaction['iso_currency_code'],
+                        plaid_transaction['unofficial_currency_code']
+                    )
+
+                    # Get or cache bank account
+                    account_id = plaid_transaction['account_id']
+                    if account_id not in bank_account_cache:
+                        bank_account_cache[account_id] = BankAccount.objects.get(account_id=account_id)
+
+                    # Create transaction object (don't save yet)
+                    transaction_obj = Transaction(
+                        transaction_id=plaid_transaction['transaction_id'],
+                        bank_account=bank_account_cache[account_id],
+                        currency_code=currency_code,
+                        **plaid_transaction_data
+                    )
+                    transaction_objects.append(transaction_obj)
+
+                # Bulk create all new transactions
+                Transaction.objects.bulk_create(
+                    transaction_objects,
+                    ignore_conflicts=True  # In case of race conditions
                 )
-                # add the related bank acct obj to data
-                bank_account = BankAccount.objects.get(
-                    account_id=plaid_transaction['account_id'],
-                )
-                plaid_transaction_data['currency_code'] = currency_code
-                plaid_transaction_data['bank_account'] = bank_account
-                transaction, created = Transaction.objects.get_or_create(
-                    transaction_id=plaid_transaction_data.pop('transaction_id'),
-                    defaults=plaid_transaction_data,
-                )  # TODO when testing this will create error since transaction_id already exists?
-                # if transaction was created in subsy, include in created list, else ignore
-                if created:
-                    created_transactions.append(transaction)
-                # TODO since application obj relationship can be null, leave for now, later include application obj logic
-            # TODO after adding all new transactions, trigger creating or getting application obj, subscription obj
-            # get_or_create_application_obj(created)
-        # TODO test that this code works, since don't have modified usually in sandbox or my data
+
+            # Get all transactions (both existing and newly created) for response
+            all_transaction_ids = [t['transaction_id'] for t in added]
+            created_transactions = list(Transaction.objects.filter(transaction_id__in=all_transaction_ids))
+
+        # If modified do nothing for now
         if modified:
             # will need to fetch transaction, and update only relevant fields
             for plaid_transaction in modified:
