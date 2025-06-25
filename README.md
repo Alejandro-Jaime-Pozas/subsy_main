@@ -74,6 +74,17 @@ Once we have all of your bank accounts/credit cards/paypal, etc, MySubs will
 
 ## Database
 
+1. Dev database connection settings for vscode postgresql explorer:
+  {
+  "label": "devdb",
+  "host": "localhost",
+  "user": "devuser",
+  "port": 5433,
+  "ssl": false,
+  "database": "devdb",
+  "password": "changeme"
+}
+
 ### Overview
 
 URL relationship diagram: https://lucid.app/lucidchart/09f82465-b143-4aa5-ae47-e29c728e4c5c/edit?viewport_loc=-2398%2C-2540%2C3206%2C1144%2C0_0&invitationId=inv_fc19301a-e399-41a6-8355-1f9ccf2add46
