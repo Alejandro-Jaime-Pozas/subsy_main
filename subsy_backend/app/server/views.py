@@ -341,29 +341,6 @@ def get_all_transactions(request, *args, **kwargs):
             # print('access token:', kwargs["access_token"])
             # print('='*100)
 
-    #     # PREV VERSION OF CREATING TRANSACTIONS
-    #     # TODO perhaps this is NOT THE MOST EFFICIENT, COULD USE BULK OPERATIONS, LOOK INTO IT
-    #     for plaid_transaction in added:
-    #         # filter only required model fields
-    #         plaid_transaction_data = filter_model_fields(Transaction, plaid_transaction)
-    #         # merge the currency fields to get the currency_code
-    #         currency_code = merge_currency_codes(
-    #             plaid_transaction['iso_currency_code'],
-    #             plaid_transaction['unofficial_currency_code']
-    #         )
-    #         # add the related bank acct obj to data
-    #         bank_account = BankAccount.objects.get(
-    #             account_id=plaid_transaction['account_id'],
-    #         )
-    #         plaid_transaction_data['currency_code'] = currency_code
-    #         plaid_transaction_data['bank_account'] = bank_account
-    #         transaction, created = Transaction.objects.get_or_create(
-    #             transaction_id=plaid_transaction_data.pop('transaction_id'),
-    #             defaults=plaid_transaction_data,
-    #         )  # TODO when testing this will create error since transaction_id already exists?
-    #         # if transaction was created in subsy, include in created list, else ignore
-    #         if created:
-    #             created_transactions.append(transaction)
     #         # TODO since application obj relationship can be null, leave for now, later include application obj logic
     #     # TODO after adding all new transactions, trigger creating or getting application obj, subscription obj
     #     # get_or_create_application_obj(created)
@@ -406,7 +383,7 @@ def get_all_transactions(request, *args, **kwargs):
 
                     # Create transaction object (don't save yet)
                     transaction_obj = Transaction(
-                        transaction_id=plaid_transaction['transaction_id'],
+                        transaction_id=plaid_transaction_data.pop('transaction_id'),
                         bank_account=bank_account_cache[account_id],
                         currency_code=currency_code,
                         **plaid_transaction_data
@@ -420,10 +397,10 @@ def get_all_transactions(request, *args, **kwargs):
                 )
 
             # Get all transactions (both existing and newly created) for response
-            all_transaction_ids = [t['transaction_id'] for t in added]
-            created_transactions = list(Transaction.objects.filter(transaction_id__in=all_transaction_ids))
+            created_transactions = list(Transaction.objects.filter(transaction_id__in=plaid_transaction_ids))
 
         # If modified do nothing for now
+        # TODO: test later on
         if modified:
             # will need to fetch transaction, and update only relevant fields
             for plaid_transaction in modified:
@@ -439,6 +416,7 @@ def get_all_transactions(request, *args, **kwargs):
                     print(f'Cannot update. Transaction {plaid_transaction["transaction_id"]} does not exist in db.')
 
         # If removed do nothing for now
+        # TODO: test later on
         if removed:
             pass
 
@@ -455,7 +433,7 @@ def get_all_transactions(request, *args, **kwargs):
             'removed': removed,
             'has_more': has_more,
             'cursor': cursor,
-            'created': created_transactions_serializer.data,  # for now should return empty list if sandbox and if already have created transactions in db
+            'created': created_transactions_serializer.data,
         }
         return JsonResponse({'all_transactions': all_transactions_response})
 
