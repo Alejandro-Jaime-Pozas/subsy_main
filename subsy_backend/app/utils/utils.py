@@ -68,7 +68,7 @@ def merge_transaction_names(merchant_name: str, name: str) -> str:
     elif not merchant_name:
         return name
     # else check which is longer, if equal return merchant_name
-    return merchant_name if len(merchant_name) >= len(name) else name
+    return merchant_name if len(merchant_name) <= len(name) else name  # go with simpler value for now (Uber**012381)
 
 
 # FUNCTIONS FOR USE IN TESTS

@@ -375,7 +375,7 @@ def get_all_transactions(request, *args, **kwargs):
         )
 
         # TODO TODO: now that transactions have been created, create and link application and subscription objects
-        create_application_if_not_exists(created_transactions)
+        create_application_if_not_exists(created_transactions_serializer.data)
         # So the process goes something like:
         # 	- Get all transactions history from plaid when user links all accts for one bank
         # 	- Create transaction for each of those based on subsy required fields
