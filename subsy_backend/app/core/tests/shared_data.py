@@ -2,7 +2,7 @@ from ..models import *
 from django.contrib.auth import get_user_model
 from datetime import datetime, timedelta, timezone, date
 
-from utils import random_37_char_string
+from subsy_backend.app.utils.utils import random_37_char_string
 
 """Object data for input in django test modules."""
 

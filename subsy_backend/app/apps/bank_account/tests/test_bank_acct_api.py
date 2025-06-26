@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
-from utils import pretty_print_json
+from subsy_backend.app.utils.utils import pretty_print_json
 
 from core.models import BankAccount
 from core.tests.shared_data import (

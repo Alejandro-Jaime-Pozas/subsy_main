@@ -9,7 +9,7 @@ from django.db.models import ProtectedError
 
 # from django.forms.models import model_to_dict
 
-from utils import random_37_char_string
+from subsy_backend.app.utils.utils import random_37_char_string
 from core.tests.shared_data import (
     create_default_instances,
     TEST_BANK_ACCOUNT_DATA,

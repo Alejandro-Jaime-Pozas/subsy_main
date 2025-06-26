@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch
 from django.test import TestCase, RequestFactory
 from django.contrib.sessions.middleware import SessionMiddleware
 
-from utils import validate_access_token
+from subsy_backend.app.utils.utils import validate_access_token
 from server.views import (
     create_link_token,
     exchange_public_token,

@@ -10,7 +10,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 
-from utils import (
+from subsy_backend.app.utils.utils import (
     SUBSCRIPTION_PAYMENT_PERIOD_CHOICES,
     SUBSCRIPTION_PAYMENT_TYPE_CHOICES,
 )
@@ -149,7 +149,7 @@ class Subscription(models.Model):
         on_delete=models.SET_NULL,
         related_name='subscriptions',
         null=True
-    )
+    )  # TODO fix should be multiple users linked to subscription? or just one, the subscription manager?
 
     def __repr__(self):
         return f'<Subscription {self.id}|{self.application.name}|{self.start_date}>'

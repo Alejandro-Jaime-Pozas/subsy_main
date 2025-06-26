@@ -20,7 +20,7 @@ from plaid.model.country_code import CountryCode
 from apps.bank_account.serializers import BankAccountSerializer
 from apps.linked_bank.serializers import LinkedBankSerializer
 from apps.transaction.serializers import TransactionSerializer
-from utils import (
+from subsy_backend.app.utils.utils import (
     extract_balance_fields_for_plaid_bank_account,
     merge_currency_codes,
     validate_access_token,
@@ -427,11 +427,13 @@ def get_all_transactions(request, *args, **kwargs):
         )
 
         # TODO TODO: now that transactions have been created, create and link application and subscription objects
+        create_application_if_not_exists(created_transactions)
         # So the process goes something like:
         # 	- Get all transactions history from plaid when user links all accts for one bank
         # 	- Create transaction for each of those based on subsy required fields
         # 	- Check each transaction, create an application if merchant name not in applications
-        # 	- Check each transaction, create a subscription if merchant name not in subscriptions
+        #     - To check transactions, only pass in transaction_id and merchant_name (not all fields)
+        # 	- Check each transaction, create a subscription if merchant name not in subscriptions (TODO not ideal, deduplicate checking both application and subscription objs)
         #     - Else add the transaction to existing subscription and update fields like start/end date, length, pmt period etc.
 
         all_transactions_response = {

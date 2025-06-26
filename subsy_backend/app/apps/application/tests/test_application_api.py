@@ -13,7 +13,7 @@ from core.tests.shared_data import (
     create_application,
     create_company,
 )
-from utils import pretty_print_json
+from subsy_backend.app.utils.utils import pretty_print_json
 
 from ..serializers import ApplicationSerializer
 

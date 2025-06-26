@@ -9,7 +9,7 @@ from rest_framework.test import APIClient
 from core.models import Subscription
 from core.tests.shared_data import create_application, create_company, create_subscription, create_user
 
-from utils import pretty_print_json
+from subsy_backend.app.utils.utils import pretty_print_json
 
 from ..serializers import SubscriptionSerializer
 
