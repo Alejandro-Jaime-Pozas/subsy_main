@@ -10,7 +10,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 
-from subsy_backend.app.utils.utils import (
+from utils.utils import (
     SUBSCRIPTION_PAYMENT_PERIOD_CHOICES,
     SUBSCRIPTION_PAYMENT_TYPE_CHOICES,
 )

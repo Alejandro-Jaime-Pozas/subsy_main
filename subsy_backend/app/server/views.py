@@ -20,7 +20,7 @@ from plaid.model.country_code import CountryCode
 from apps.bank_account.serializers import BankAccountSerializer
 from apps.linked_bank.serializers import LinkedBankSerializer
 from apps.transaction.serializers import TransactionSerializer
-from subsy_backend.app.utils.utils import (
+from utils.utils import (
     extract_balance_fields_for_plaid_bank_account,
     merge_currency_codes,
     validate_access_token,
