@@ -341,7 +341,6 @@ def get_all_transactions(request, *args, **kwargs):
             # print('access token:', kwargs["access_token"])
             # print('='*100)
 
-    #         # TODO since application obj relationship can be null, leave for now, later include application obj logic
     #     # TODO after adding all new transactions, trigger creating or getting application obj, subscription obj
     #     # get_or_create_application_obj(created)
     # # TODO test that this code works, since don't have modified usually in sandbox or my data
@@ -400,6 +399,7 @@ def get_all_transactions(request, *args, **kwargs):
             created_transactions = list(Transaction.objects.filter(transaction_id__in=plaid_transaction_ids))
 
         # If modified do nothing for now
+        # TODO: change from individual update to bulk update
         # TODO: test later on
         if modified:
             # will need to fetch transaction, and update only relevant fields
@@ -426,14 +426,21 @@ def get_all_transactions(request, *args, **kwargs):
             many=True
         )
 
+        # TODO TODO: now that transactions have been created, create and link application and subscription objects
+        # So the process goes something like:
+        # 	- Get all transactions history from plaid when user links all accts for one bank
+        # 	- Create transaction for each of those based on subsy required fields
+        # 	- Check each transaction, create an application if merchant name not in applications
+        # 	- Check each transaction, create a subscription if merchant name not in subscriptions
+        #     - Else add the transaction to existing subscription and update fields like start/end date, length, pmt period etc.
+
         all_transactions_response = {
-            # TODO change this to return a list of my transaction models, not plaid version
-            'added': added,
-            'modified': modified,
-            'removed': removed,
+            'added': added,  # plaid version of added transactions
+            'modified': modified,  # TODO change this to return a list of my transaction models, not plaid version
+            'removed': removed,  # TODO change this to return a list of my transaction models, not plaid version
             'has_more': has_more,
             'cursor': cursor,
-            'created': created_transactions_serializer.data,
+            'created': created_transactions_serializer.data,  # subsy created transactions
         }
         return JsonResponse({'all_transactions': all_transactions_response})
 
