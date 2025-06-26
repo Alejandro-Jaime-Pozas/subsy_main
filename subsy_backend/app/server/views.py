@@ -26,6 +26,10 @@ from utils.utils import (
     validate_access_token,
     filter_model_fields,
 )
+from utils.model_utils import (
+    create_application_if_not_exists,
+    create_subscription_if_not_exists,
+)
 from datetime import datetime, timedelta, timezone
 
 from core.models import (
@@ -289,10 +293,6 @@ def get_all_transactions(request, *args, **kwargs):
             # print('access token:', kwargs["access_token"])
             # print('='*100)
 
-    #     # TODO after adding all new transactions, trigger creating or getting application obj, subscription obj
-    #     # get_or_create_application_obj(created)
-    # # TODO test that this code works, since don't have modified usually in sandbox or my data
-
         # If there's transactions added for linked bank, create transaction objects in subsy db
         if added:
             # Bulk operation approach: Check which transactions already exist, then bulk create new ones
@@ -379,8 +379,6 @@ def get_all_transactions(request, *args, **kwargs):
         # So the process goes something like:
         # 	- Get all transactions history from plaid when user links all accts for one bank
         # 	- Create transaction for each of those based on subsy required fields
-        # 	- Check each transaction, create an application if merchant name not in applications
-        #     - To check transactions, only pass in transaction_id and merchant_name (not all fields)
         # 	- Check each transaction, create a subscription if merchant name not in subscriptions (TODO not ideal, deduplicate checking both application and subscription objs)
         #     - Else add the transaction to existing subscription and update fields like start/end date, length, pmt period etc.
 

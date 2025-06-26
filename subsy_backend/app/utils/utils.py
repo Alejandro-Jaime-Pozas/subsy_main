@@ -46,9 +46,29 @@ def extract_balance_fields_for_plaid_bank_account(balances):
 def merge_currency_codes(iso_code, unofficial_code):
     """
     Merge the iso currency code and the unofficial currency code
-    from plaid transactions.
+    from plaid transactions. One is always null.
     """
     return iso_code if iso_code else unofficial_code if unofficial_code else None
+
+
+def merge_transaction_names(merchant_name: str, name: str) -> str:
+    """
+    Gets the best name for the transaction, since two names
+    potentially possible.
+    :param merchant_name: Merchant name from transaction data.
+    :param name: Name from transaction data.
+    :return: Merged name.
+    """
+    # maybe whichever name is longer is more descriptive therefore better?
+    # obv if either is none then choose other, or both none then none
+    if not merchant_name and not name:
+        return None
+    elif not name:
+        return merchant_name
+    elif not merchant_name:
+        return name
+    # else check which is longer, if equal return merchant_name
+    return merchant_name if len(merchant_name) >= len(name) else name
 
 
 # FUNCTIONS FOR USE IN TESTS
