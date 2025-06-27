@@ -20,6 +20,7 @@ from plaid.model.country_code import CountryCode
 from apps.bank_account.serializers import BankAccountSerializer
 from apps.linked_bank.serializers import LinkedBankSerializer
 from apps.transaction.serializers import TransactionSerializer
+from apps.application.serializers import ApplicationSerializer
 from utils.utils import (
     extract_balance_fields_for_plaid_bank_account,
     merge_currency_codes,
@@ -28,7 +29,7 @@ from utils.utils import (
 )
 from utils.model_utils import (
     create_application_if_not_exists,
-    create_subscription_if_not_exists,
+    # create_subscription_if_not_exists,
 )
 from datetime import datetime, timedelta, timezone
 
@@ -375,7 +376,9 @@ def get_all_transactions(request, *args, **kwargs):
         )
 
         # TODO TODO: now that transactions have been created, create and link application and subscription objects
-        create_application_if_not_exists(created_transactions_serializer.data)
+        created_apps = create_application_if_not_exists(created_transactions_serializer.data)
+        # serialize all created applications
+        created_apps_serializer = ApplicationSerializer(created_apps, many=True)
         # So the process goes something like:
         # 	- Get all transactions history from plaid when user links all accts for one bank
         # 	- Create transaction for each of those based on subsy required fields
@@ -388,7 +391,8 @@ def get_all_transactions(request, *args, **kwargs):
             'removed': removed,  # TODO change this to return a list of my transaction models, not plaid version
             'has_more': has_more,
             'cursor': cursor,
-            'created': created_transactions_serializer.data,  # subsy created transactions
+            'created_transactions': created_transactions_serializer.data,  # subsy created transactions
+            'created_applications': created_apps_serializer.data,  # created applications from transactions
         }
         return JsonResponse({'all_transactions': all_transactions_response})
 

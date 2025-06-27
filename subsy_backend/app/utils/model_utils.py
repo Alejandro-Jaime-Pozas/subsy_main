@@ -1,38 +1,57 @@
 """
 Utils for model-related operations.
 """
+from core.models import (Application)
 from utils.utils import merge_transaction_names
 
 
 def create_application_if_not_exists(transactions: list):
     """
-    Create an application if it does not already exist based on the transactions provided.
-    :param transactions: Dictionary containing transaction data.
-    :return: 
+    Create Application objects for transactions whose application_name does not exist in the DB.
+    Includes both name and website fields. Uses the first website found for each unique application_name.
+    :param transactions: List of transaction dicts with application_name and website fields.
+    :return: List of created Application objects.
     """
-    # # Create new list of filtered transactions, only need transaction_id, merchant_name (or name), website for now
-    # filtered_txs = get_filtered_transactions_for_application_obj(transactions)
 
-    # Choose the best name for the application (merchant_name or name) include for each transaction
-    transactions_w_app_name = set_application_name(transactions)  # returns addtl application_name field for each tx
+    # 1. Map application_name to website from transactions (first occurrence wins)
+    app_name_to_website = {}
+    for tx in transactions:
+        app_name = merge_transaction_names(
+            tx.get("merchant_name"),
+            tx.get("name"),
+        )  # choose the best name for app
+        website = tx.get("website")
+        if app_name and app_name not in app_name_to_website:
+            app_name_to_website[app_name] = website  # maybe change this later if more fields needed (related_names)
 
-    # Check each transaction, create an application if application_name not in applications
-    
+    # 2. Query all existing application names in one DB hit
+    existing_apps = set(Application.objects.filter(name__in=app_name_to_website.keys()).values_list("name", flat=True))
+
+    # 3. Find which names need to be created
+    to_create = [name for name in app_name_to_website if name not in existing_apps]
+
+    # 4. Bulk create only the missing ones, including website
+    apps_created = Application.objects.bulk_create(
+        [Application(name=name, website=app_name_to_website[name]) for name in to_create],
+        ignore_conflicts=True
+    )
+
+    return apps_created
 
 
 def update_or_create_subscription(transactions: dict):
-    pass 
+    pass
 
 
 def set_application_name(transactions: list):
     """
-    Set the name for the application based on the 
+    Set the name for the application based on the
     transaction merchant_name vs name.
     """
     for tx in transactions:
         tx["application_name"] = merge_transaction_names(
-            tx.get("merchant_name"), 
-            tx.get("name")
+            tx.get("merchant_name"),
+            tx.get("name"),
         )
     return transactions
 
