@@ -380,10 +380,8 @@ def get_all_transactions(request, *args, **kwargs):
 
         # Serialize all created applications
         created_apps_serializer = ApplicationSerializer(created_apps, many=True)
-        
-        # So the process goes something like:
-        # 	- Get all transactions history from plaid when user links all accts for one bank
-        # 	- Create transaction for each of those based on subsy required fields
+
+        # TODO TODO create subscriptions or update them based on each transaction
         # 	- Check each transaction, create a subscription if merchant name not in subscriptions (TODO not ideal, deduplicate checking both application and subscription objs)
         #     - Else add the transaction to existing subscription and update fields like start/end date, length, pmt period etc.
 
