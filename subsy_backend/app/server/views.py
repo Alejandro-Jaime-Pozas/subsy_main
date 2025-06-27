@@ -344,7 +344,7 @@ def get_all_transactions(request, *args, **kwargs):
                     ignore_conflicts=True  # In case of race conditions
                 )
 
-            # Get all transactions (both existing and newly created) for response
+            # Get all created transactions for response
             created_transactions = list(Transaction.objects.filter(transaction_id__in=plaid_transaction_ids))
 
         # If modified do nothing for now
@@ -369,7 +369,7 @@ def get_all_transactions(request, *args, **kwargs):
         if removed:
             pass
 
-        # serialize all created transactions
+        # Serialize all created transactions
         created_transactions_serializer = TransactionSerializer(
             created_transactions,
             many=True
@@ -377,8 +377,10 @@ def get_all_transactions(request, *args, **kwargs):
 
         # TODO TODO: now that transactions have been created, create and link application and subscription objects
         created_apps = create_application_if_not_exists(created_transactions_serializer.data)
-        # serialize all created applications
+
+        # Serialize all created applications
         created_apps_serializer = ApplicationSerializer(created_apps, many=True)
+        
         # So the process goes something like:
         # 	- Get all transactions history from plaid when user links all accts for one bank
         # 	- Create transaction for each of those based on subsy required fields

@@ -1,7 +1,7 @@
 """
 Utils for model-related operations.
 """
-from core.models import (Application)
+from core.models import Application
 from utils.utils import merge_transaction_names
 
 
@@ -36,7 +36,12 @@ def create_application_if_not_exists(transactions: list):
         ignore_conflicts=True
     )
 
-    return apps_created
+    # Get the newly created applications from the db
+    created_apps_list = list(Application.objects.filter(
+        name__in=[app.name for app in apps_created]
+    ))
+
+    return created_apps_list
 
 
 def update_or_create_subscription(transactions: dict):
