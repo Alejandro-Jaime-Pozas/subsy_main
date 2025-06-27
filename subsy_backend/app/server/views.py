@@ -29,7 +29,7 @@ from utils.utils import (
 )
 from utils.model_utils import (
     create_application_if_not_exists,
-    # create_subscription_if_not_exists,
+    create_or_update_subscriptions,
 )
 from datetime import datetime, timedelta, timezone
 
@@ -375,7 +375,7 @@ def get_all_transactions(request, *args, **kwargs):
             many=True
         )
 
-        # TODO TODO: now that transactions have been created, create and link application and subscription objects
+        # TODO TODO: now that transactions have been created, create and link subscription objects
         # Pass in transactions to create applications
         created_apps = create_application_if_not_exists(created_transactions_serializer.data)
 
@@ -383,8 +383,7 @@ def get_all_transactions(request, *args, **kwargs):
         created_apps_serializer = ApplicationSerializer(created_apps, many=True)
 
         # TODO TODO create subscriptions or update them based on each transaction
-        # 	- Check each transaction, create a subscription if merchant name not in subscriptions (TODO not ideal, deduplicate checking both application and subscription objs)
-        #     - Else add the transaction to existing subscription and update fields like start/end date, length, pmt period etc.
+        created_subscriptions = create_or_update_subscriptions(created_transactions_serializer.data)
 
         all_transactions_response = {
             'added': added,  # plaid version of added transactions

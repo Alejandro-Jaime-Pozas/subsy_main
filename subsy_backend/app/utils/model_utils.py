@@ -5,6 +5,7 @@ from core.models import Application
 from utils.utils import merge_transaction_names
 
 
+# TODO need to add the transaction_id to link the application to specific transaction...or maybe change relationship so tx > sbx > apx?
 def create_application_if_not_exists(transactions: list):
     """
     Create Application objects for transactions whose application_name does not exist in the DB.
@@ -44,8 +45,19 @@ def create_application_if_not_exists(transactions: list):
     return created_apps_list
 
 
-def update_or_create_subscription(transactions: dict):
-    pass
+def create_or_update_subscriptions(transactions: list):
+    """
+    Create or update subscriptions for the given transactions.
+    :param transactions: List of transaction dicts.
+    :return: List of created Subscription objects.
+    """
+
+    # Set two lists to create and update subscriptions
+    to_create = []
+    to_update = []
+
+    # Fetch all existing subscriptions in db for the current company
+    # TODO add company logic to main views.py code first, to link company to transactions
 
 
 def set_application_name(transactions: list):
