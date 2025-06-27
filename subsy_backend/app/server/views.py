@@ -376,6 +376,7 @@ def get_all_transactions(request, *args, **kwargs):
         )
 
         # TODO TODO: now that transactions have been created, create and link application and subscription objects
+        # Pass in transactions to create applications
         created_apps = create_application_if_not_exists(created_transactions_serializer.data)
 
         # Serialize all created applications
