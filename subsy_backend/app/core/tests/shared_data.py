@@ -199,5 +199,6 @@ def create_subscription(**kwargs):
         **subscription_data,
         application=application,
         user=user,
+        company=kwargs.get('company', None) or create_company(),
     )
     return subscription

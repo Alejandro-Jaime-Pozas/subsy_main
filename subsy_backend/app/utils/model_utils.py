@@ -1,7 +1,13 @@
 """
 Utils for model-related operations.
 """
-from core.models import Application
+from core.models import (
+    Application,
+    Subscription,
+    Company,
+    Transaction,
+)
+from core.tests.shared_data import create_subscription
 from utils.utils import merge_transaction_names
 
 
@@ -52,25 +58,36 @@ def create_or_update_subscriptions(transactions: list):
     :return: List of created Subscription objects.
     """
 
+    # Handle empty transactions list
+    if not transactions:
+        return []
+
     # Set two lists to create and update subscriptions
     to_create = []
     to_update = []
 
     # Fetch all existing subscriptions in db for the current company
-    # easy way (but not ideal, ideally through user auth or something) to just get the first transaction, check its related company
-    existing_subscriptions =
+    # Easy way (but not ideal, ideally through user auth or something) to just get company via link trail
+    # TODO later change the company get to simpler code using the user's company or something to retrieve
+    company = Company.objects.get(
+        linked_banks__bank_accounts__id=transactions[0]["bank_account"]
+    )
+    # # TODO REMOVE THIS ONLY FOR TESTING !!!!
+    # test_create_subx = create_subscription(
+    #     application=Application.objects.first(),
+    # )
+    # company.subscriptions.add(test_create_subx)
+    # # TODO REMOVE THIS ONLY FOR TESTING !!!!
 
-def set_application_name(transactions: list):
-    """
-    Set the name for the application based on the
-    transaction merchant_name vs name.
-    """
+    existing_subscriptions = company.subscriptions
+
+    # Get the subscription app name
+    existing_subscription_names = set(existing_subscriptions.values_list("application__name", flat=True)) if existing_subscriptions else set()
+    print(existing_subscription_names)
+
+    # for each tx, check if merged_name fn result is in existing_subscription_names, if so, add to_update, else to_create
     for tx in transactions:
-        tx["application_name"] = merge_transaction_names(
-            tx.get("merchant_name"),
-            tx.get("name"),
-        )
-    return transactions
+        pass 
 
 
 def get_filtered_transactions_for_application_obj(transactions: list):
