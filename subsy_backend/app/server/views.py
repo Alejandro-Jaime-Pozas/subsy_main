@@ -344,6 +344,7 @@ def get_all_transactions(request, *args, **kwargs):
                 )
 
             # Get all created transactions for response
+            # TODO fix this since getting added transactions vs actually created transactions in subsy..
             created_transactions = list(Transaction.objects.filter(transaction_id__in=plaid_transaction_ids))
 
         # If modified do nothing for now
@@ -374,7 +375,6 @@ def get_all_transactions(request, *args, **kwargs):
             many=True
         )
 
-        # TODO TODO: now that transactions have been created, create and link subscription objects
         # Pass in transactions to create applications
         created_apps = create_application_if_not_exists(created_transactions_serializer.data)
 
@@ -382,6 +382,7 @@ def get_all_transactions(request, *args, **kwargs):
         created_apps_serializer = ApplicationSerializer(created_apps, many=True)
 
         # TODO TODO create subscriptions or update them based on each transaction
+        # Pass in transactions to create or update subscriptions
         created_subscriptions = create_or_update_subscriptions(created_transactions_serializer.data)
 
         all_transactions_response = {

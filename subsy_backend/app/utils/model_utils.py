@@ -1,6 +1,7 @@
 """
 Utils for model-related operations.
 """
+import json
 from core.models import (
     Application,
     Subscription,
@@ -43,12 +44,7 @@ def create_application_if_not_exists(transactions: list):
         ignore_conflicts=True
     )
 
-    # Get the newly created applications from the db
-    created_apps_list = list(Application.objects.filter(
-        name__in=[app.name for app in apps_created]
-    ))
-
-    return created_apps_list
+    return apps_created
 
 
 def create_or_update_subscriptions(transactions: list):
@@ -61,10 +57,6 @@ def create_or_update_subscriptions(transactions: list):
     # Handle empty transactions list
     if not transactions:
         return []
-
-    # Set two lists to create and update subscriptions
-    to_create = []
-    to_update = []
 
     # Fetch all existing subscriptions in db for the current company
     # Easy way (but not ideal, ideally through user auth or something) to just get company via link trail
@@ -81,13 +73,104 @@ def create_or_update_subscriptions(transactions: list):
 
     existing_subscriptions = company.subscriptions
 
-    # Get the subscription app name
+    # Get existing subscription app names
     existing_subscription_names = set(existing_subscriptions.values_list("application__name", flat=True)) if existing_subscriptions else set()
-    print(existing_subscription_names)
+    print("existing subscriptions:", existing_subscription_names)
 
-    # for each tx, check if merged_name fn result is in existing_subscription_names, if so, add to_update, else to_create
+    # Set two lists to create and update subscriptions
+    to_create = []
+    to_update = []
+
+    acct_application_names = set()
+
+    # For each tx, check if merged_name fn result is in existing_subscription_names, if so, add to_update, else to_create
     for tx in transactions:
-        pass 
+        # Get the application name for tx
+        app_name = merge_transaction_names(
+            tx.get("merchant_name"),
+            tx.get("name"),
+        )
+        acct_application_names.add(app_name)
+
+        # Set the fields needed to update subscription
+        sub_fields = {
+            "transaction_id": tx.get("id"),
+            "application_name": app_name,
+        }
+
+        # If app name already exists, add to update list, else to create list
+        if app_name in existing_subscription_names:
+            to_update.append(sub_fields)
+        else:
+            to_create.append(sub_fields)
+
+    print("total tx to create subs for:", to_create)
+    print("total tx to update subs for:", to_update)
+
+    # Create and update subscriptions from lists
+
+    # Need to pass in Application, Company, and related Transaction. Issue is we need the actual obj instances for each model
+    transaction_objs = Transaction.objects.filter(id__in={tx.get("id") for tx in transactions})  # since transactions is a list of dicts, not instances
+    application_objs = Application.objects.filter(name__in=acct_application_names)
+
+    # Create lookup dictionaries for efficient access (no repeated DB queries)
+    transaction_lookup = {tx.id: tx for tx in transaction_objs}
+    application_lookup = {app.name: app for app in application_objs}
+
+    print("company transactions:", len(transaction_objs))
+    print("company applications:", len(application_objs))
+
+    # Create Subscription objects efficiently
+    created_subscriptions = []
+    if to_create:
+
+        to_create_objs = []
+        seen_subscriptions = set()
+
+        for tx_data in to_create:
+            app_name = tx_data["application_name"]
+            transaction_id = tx_data["transaction_id"]
+
+            # Get objects from lookup dictionaries (no DB queries)
+            app_obj = application_lookup.get(app_name)
+            transaction_obj = transaction_lookup.get(transaction_id)
+
+            # TODO change code to just create subscriptions if sub name not already in app names
+            if app_obj and transaction_obj and app_name not in seen_subscriptions:
+                sub_obj = Subscription(
+                    company=company,
+                    application=app_obj,
+                )
+                seen_subscriptions.add(app_name)
+                to_create_objs.append(sub_obj)
+
+        # Bulk create subscriptions
+        if to_create_objs:
+            created_subscriptions = Subscription.objects.bulk_create(
+                to_create_objs,
+                batch_size=1000,
+            )
+
+            subs_lookup = {sub.application.name: sub for sub in created_subscriptions}
+
+            # Update transactions to link to their subscriptions
+            # Since it's one-to-many (Subscription -> Transaction), we update the transaction's subscription field
+            for tx_data in to_create:
+                tx_id = tx_data["transaction_id"]
+                tx_app_name = tx_data["application_name"]
+                tx_obj = transaction_lookup[tx_id]
+                tx_obj.subscription = subs_lookup[tx_app_name]
+
+            # Bulk update all modified transactions
+            if transaction_lookup:
+                Transaction.objects.bulk_update(
+                    list(transaction_lookup.values()),
+                    ['subscription'],
+                    batch_size=1000
+                )
+
+
+    return created_subscriptions
 
 
 def get_filtered_transactions_for_application_obj(transactions: list):
