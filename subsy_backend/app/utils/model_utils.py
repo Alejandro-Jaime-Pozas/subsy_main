@@ -57,8 +57,8 @@ def create_or_update_subscriptions(transactions: list):
     to_update = []
 
     # Fetch all existing subscriptions in db for the current company
-    # TODO add company logic to main views.py code first, to link company to transactions
-
+    # easy way (but not ideal, ideally through user auth or something) to just get the first transaction, check its related company
+    existing_subscriptions =
 
 def set_application_name(transactions: list):
     """

@@ -142,13 +142,18 @@ class Subscription(models.Model):
     application = models.ForeignKey(
         Application,
         on_delete=models.PROTECT,
-        related_name='subscriptions'
+        related_name='subscriptions',
     )  # models.PROTECT to prevent deletion of application since would delete all related subscriptions
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         related_name='subscriptions',
-        null=True
+        null=True,
     )  # TODO fix should be multiple users linked to subscription? or just one, the subscription manager?
 
     def __repr__(self):

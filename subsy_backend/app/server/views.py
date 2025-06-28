@@ -1,4 +1,3 @@
-# Create your views here.
 import os, json, time
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -161,7 +160,7 @@ def get_balance(request, *args, **kwargs):
     """
     try:
         balance_request = AccountsBalanceGetRequest(
-            access_token=kwargs["access_token"],  # replace this with USER/ITEM access_token
+            access_token=kwargs["access_token"],  # TODO replace this with USER/ITEM access_token
             options={
                 "min_last_updated_datetime": datetime.now(timezone.utc) - timedelta(days=1)
             }

@@ -12,7 +12,9 @@ class TransactionViewSet(
 ):
     """
     Client should be able to use Retrieve, List
-    operations on the linked bank (plaid item).
+    operations on the linked bank (plaid item)
+    but not Create or Destroy since transactions
+    are plaid items.
     """
 
     queryset = Transaction.objects.all()

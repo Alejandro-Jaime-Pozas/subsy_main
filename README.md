@@ -151,19 +151,34 @@ A subscription can also be linked to a sub manager, which is the user managing t
     - A bank acct can have 0 or many transactions
     - A transaction must have one bank acct
 - **TRANSACTION > APPLICATION**
-    - ONE TO MANY
+    - MANY TO ONE
     - MAIN = APPLICATION
     - A transaction can have 0 or 1 application
     - An application can have 0 or many transactions
+- **TRANSACTION > SUBSCRIPTION**
+    - MANY TO ONE
+    - MAIN = SUBSCRIPTION
+    - A transaction can have 0 or 1 subscription
+    - A subscription can have 0 or many transactions
 - **SUBSCRIPTION > APPLICATION**
-    - ONE TO MANY
+    - MANY TO ONE
     - MAIN = APPLICATION
     - A subscription must have 1 application
     - An application can have 0 or many subscriptions (since apps exist outside of mysubs universe)
+- **SUBSCRIPTION > COMPANY**
+    - MANY TO ONE
+    - MAIN = COMPANY
+    - A subscription must have 1 company
+    - A company can have 0 or many subscriptions
+- **SUBSCRIPTION > USER**
+    - MANY TO ONE
+    - MAIN = USER
+    - A subscription can have 0 or 1 user (subscription manager)
+    - A user can have 0 or many subscriptions for which they're in charge
 - **SUBSCRIPTION > TAG**
     - MANY TO MANY
     - MAIN = SUBSCRIPTION
-    - A subsription can have 0 or many tags
+    - A subscription can have 0 or many tags
     - A tag can have 0 or many subscriptions
 - **SUBSCRIPTION > USER**
     - MANY TO MANY
