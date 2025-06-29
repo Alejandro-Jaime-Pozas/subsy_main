@@ -65,12 +65,12 @@ def create_or_update_subscriptions(transactions: list):
         linked_banks__bank_accounts__id=transactions[0]["bank_account"]
     )
 
-    # # TODO REMOVE THIS ONLY FOR TESTING !!!!
-    # test_create_subx = create_subscription(
-    #     application=Application.objects.first(),
-    # )
-    # company.subscriptions.add(test_create_subx)
-    # # TODO REMOVE THIS ONLY FOR TESTING !!!!
+    # TODO REMOVE THIS ONLY FOR TESTING !!!!
+    test_create_subx = create_subscription(
+        application=Application.objects.first(),
+    )
+    company.subscriptions.add(test_create_subx)
+    # TODO REMOVE THIS ONLY FOR TESTING !!!!
 
     existing_subscriptions = company.subscriptions
 
@@ -105,8 +105,8 @@ def create_or_update_subscriptions(transactions: list):
         else:
             to_create.append(sub_fields)
 
-    print("total tx to create subs for:", to_create)
-    print("total tx to update subs for:", to_update)
+    print("total tx to create subs for:", len(to_create))
+    print("total tx to update subs for:", len(to_update))
 
     # Create and update subscriptions from lists
 
@@ -177,10 +177,10 @@ def create_or_update_subscriptions(transactions: list):
     if to_update:
 
         # Need to just add the new transactions to the existing subscriptions
-        # Test it out by setting 1 subscription as existing, all new transactions relating to existing subx should be added to that subx
         # to_update["application_name"] contains the app_name
         # Create lookup for existing subscriptions by application name
-        existing_subs_lookup = {sub.application.name: sub for sub in existing_subscriptions}
+        # TODO Test it out by setting 1 subscription as existing, all new transactions relating to existing subx should be added to that subx
+        existing_subs_lookup = {sub.application.name: sub for sub in existing_subscriptions.all()}
 
         # Update transactions to link to their existing subscriptions
         for tx_data in to_update:
@@ -191,6 +191,7 @@ def create_or_update_subscriptions(transactions: list):
 
             if tx_obj and existing_sub:
                 tx_obj.subscription = existing_sub
+                print("UPDATING: subscription", tx_app_name, ", adding transaction id:", tx_id)
 
         # Bulk update all modified transactions for existing subscriptions
         if transaction_lookup:

@@ -381,7 +381,6 @@ def get_all_transactions(request, *args, **kwargs):
         # Serialize all created applications
         created_apps_serializer = ApplicationSerializer(created_apps, many=True)
 
-        # TODO TODO create subscriptions or update them based on each transaction
         # Pass in transactions to create or update subscriptions
         created_subscriptions = create_or_update_subscriptions(created_transactions_serializer.data)
 
