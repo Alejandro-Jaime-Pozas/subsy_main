@@ -64,6 +64,7 @@ def create_or_update_subscriptions(transactions: list):
     company = Company.objects.get(
         linked_banks__bank_accounts__id=transactions[0]["bank_account"]
     )
+
     # # TODO REMOVE THIS ONLY FOR TESTING !!!!
     # test_create_subx = create_subscription(
     #     application=Application.objects.first(),
@@ -122,6 +123,7 @@ def create_or_update_subscriptions(transactions: list):
 
     # Create Subscription objects efficiently
     created_subscriptions = []
+
     if to_create:
 
         to_create_objs = []
@@ -158,8 +160,11 @@ def create_or_update_subscriptions(transactions: list):
             for tx_data in to_create:
                 tx_id = tx_data["transaction_id"]
                 tx_app_name = tx_data["application_name"]
-                tx_obj = transaction_lookup[tx_id]
-                tx_obj.subscription = subs_lookup[tx_app_name]
+                tx_obj = transaction_lookup.get(tx_id)
+                new_sub = subs_lookup.get(tx_app_name)
+
+                if tx_obj and new_sub:
+                    tx_obj.subscription = new_sub
 
             # Bulk update all modified transactions
             if transaction_lookup:
@@ -168,6 +173,32 @@ def create_or_update_subscriptions(transactions: list):
                     ['subscription'],
                     batch_size=1000
                 )
+
+    if to_update:
+
+        # Need to just add the new transactions to the existing subscriptions
+        # Test it out by setting 1 subscription as existing, all new transactions relating to existing subx should be added to that subx
+        # to_update["application_name"] contains the app_name
+        # Create lookup for existing subscriptions by application name
+        existing_subs_lookup = {sub.application.name: sub for sub in existing_subscriptions}
+
+        # Update transactions to link to their existing subscriptions
+        for tx_data in to_update:
+            tx_id = tx_data["transaction_id"]
+            tx_app_name = tx_data["application_name"]
+            tx_obj = transaction_lookup.get(tx_id)
+            existing_sub = existing_subs_lookup.get(tx_app_name)
+
+            if tx_obj and existing_sub:
+                tx_obj.subscription = existing_sub
+
+        # Bulk update all modified transactions for existing subscriptions
+        if transaction_lookup:
+            Transaction.objects.bulk_update(
+                list(transaction_lookup.values()),
+                ['subscription'],
+                batch_size=1000
+            )
 
 
     return created_subscriptions
