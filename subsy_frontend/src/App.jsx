@@ -42,8 +42,9 @@ function App(props) {
     });
     const data = await response.json();
     console.log(data);
-    await getAllTransactions();
-    await getBalance();
+    // TODO later automatically create all objects required once we have ingested all transaction history
+    // await getBalance();
+    // await getAllTransactions();
   }, []);
 
   // Fetch balance data
@@ -114,8 +115,6 @@ function App(props) {
       !!!ALL PRETTY TRANSACTIONS!!!
       {/* if transaction data has been retreived successfully, show pretty data */}
       {!loading &&
-        // latestTransactions != null &&
-        // latestTransactions.map((entry, i) => (
         // MAP ALL TRANSACTIONS
         allTransactions != null &&
         allTransactions.added.map((entry, i) => (

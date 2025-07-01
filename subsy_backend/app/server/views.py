@@ -20,6 +20,7 @@ from apps.bank_account.serializers import BankAccountSerializer
 from apps.linked_bank.serializers import LinkedBankSerializer
 from apps.transaction.serializers import TransactionSerializer
 from apps.application.serializers import ApplicationSerializer
+from apps.subscription.serializers import SubscriptionSerializer
 from utils.utils import (
     extract_balance_fields_for_plaid_bank_account,
     merge_currency_codes,
@@ -225,12 +226,6 @@ def item_remove_request(request, *args, **kwargs):
         return JsonResponse({"error": str(e)}, status=400)
 
 
-# CSRF Token endpoint for front-end use
-def csrf_token(request):
-    token = get_token(request)
-    return JsonResponse({"csrfToken": token})
-
-
 # Get ALL Transactions
 # WILL USE THIS ENDPOINT TO CREATE TRANSACTIONS
 @validate_access_token
@@ -378,11 +373,12 @@ def get_all_transactions(request, *args, **kwargs):
         # Pass in transactions to create applications
         created_apps = create_application_if_not_exists(created_transactions_serializer.data)
 
-        # Serialize all created applications
-        created_apps_serializer = ApplicationSerializer(created_apps, many=True)
-
         # Pass in transactions to create or update subscriptions
         created_subscriptions = create_or_update_subscriptions(created_transactions_serializer.data)
+
+        # Serialize all created applications and subscriptions
+        created_apps_serializer = ApplicationSerializer(created_apps, many=True)
+        created_subscriptions_serializer = SubscriptionSerializer(created_subscriptions, many=True)
 
         all_transactions_response = {
             'added': added,  # plaid version of added transactions
@@ -392,6 +388,7 @@ def get_all_transactions(request, *args, **kwargs):
             'cursor': cursor,
             'created_transactions': created_transactions_serializer.data,  # subsy created transactions
             'created_applications': created_apps_serializer.data,  # created applications from transactions
+            'created_subscriptions': created_subscriptions_serializer.data,
         }
         return JsonResponse({'all_transactions': all_transactions_response})
 
@@ -400,16 +397,11 @@ def get_all_transactions(request, *args, **kwargs):
         error_response = format_error(e)  # can format other errors this same way later
         return JsonResponse(error_response)
 
-def get_or_create_application(created_transactions):
-    """Get or create a transaction's application object based on the transaction's merchant name"""
-    for transaction in created_transactions:
-        # merchant name takes precedence over name
-        # if merchant name, check if it already exists in db, else check name exists in db (do nothing)
-        merchant_name, name = transaction.merchant_name, transaction.name
-        if merchant_name:
-            exists = Application.objects.filter(merchant_name__iexact=merchant_name)
-        elif name:
-            pass
+
+# CSRF Token endpoint for front-end use
+def csrf_token(request):
+    token = get_token(request)
+    return JsonResponse({"csrfToken": token})
 
 def pretty_print_response(response):
   print(json.dumps(response, indent=2, sort_keys=True, default=str))
