@@ -37,7 +37,6 @@ from core.models import (
     BankAccount,
     LinkedBank,
     Transaction,
-    Application,
 )
 from core.tests.shared_data import create_company
 
@@ -135,10 +134,13 @@ def exchange_public_token(request):
 
             # Store the access_token in the session (for demo purposes)
             # WILL NEED TO STORE ACTUAL ACCESS TOKEN LATER IN GET BALANCE FOR THE ITEM
-            request.session["access_token"] = exchange_response.to_dict()["access_token"]
+            request.session["access_token"] = exchange_response.to_dict()["access_token"]  # TODO remove once db implemented
 
             # get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
-            return JsonResponse({"success": True})
+            return JsonResponse({
+                "success": True,
+                "access_token": exchange_response.to_dict()["access_token"],
+            })
         except plaid.ApiException as e:
             # print(e)  # Uncomment for debugging
             return JsonResponse({"error": str(e)}, status=400)
@@ -212,20 +214,6 @@ def get_balance(request, *args, **kwargs):
     #     return JsonResponse({"error": str(e)}, status=500)
 
 
-# This will invalidate the access_token and remove the item from the user's account
-# This is a one-way action and cannot be undone
-@validate_access_token
-def item_remove_request(request, *args, **kwargs):
-    try:
-        request = ItemRemoveRequest(access_token=kwargs['access_token'])
-        response = plaid_client.item_remove(request)
-        # The Item was removed and the access_token is now invalid
-        return JsonResponse({"success": response.to_dict()})
-    except plaid.ApiException as e:
-        # print(e)  # Uncomment for debugging
-        return JsonResponse({"error": str(e)}, status=400)
-
-
 # Get ALL Transactions
 # WILL USE THIS ENDPOINT TO CREATE TRANSACTIONS
 @validate_access_token
@@ -246,7 +234,7 @@ def get_all_transactions(request, *args, **kwargs):
     # received one for the Item. Leave null if this is your
     # first sync call for this Item. The first request will
     # return a cursor.
-    cursor = ''  # TODO change this to check if non-null cursor exists in company, if so, use existing cursor, else use empty cursor to get all historical transactions
+    cursor = ''  # TODO change this to check if non-null cursor exists in company item/linked_bank, if so, use existing cursor, else use empty cursor to get all historical transactions
 
     # New transaction updates since "cursor"
     added = []
@@ -258,12 +246,12 @@ def get_all_transactions(request, *args, **kwargs):
     try:
         # Iterate through each page of new transaction updates for item
         while has_more:
-            request = TransactionsSyncRequest(
+            transactions_request = TransactionsSyncRequest(
                 access_token=kwargs.get("access_token"),  # TODO change this to check for company/linked bank access token
                 cursor=cursor,
                 options={"days_requested": 730}
             )
-            response = plaid_client.transactions_sync(request).to_dict()
+            response = plaid_client.transactions_sync(transactions_request).to_dict()
             cursor = response['next_cursor']
             # If no transactions are available yet, wait and poll the endpoint.
             # Normally, we would listen for a webhook, but the Quickstart doesn't
@@ -397,6 +385,20 @@ def get_all_transactions(request, *args, **kwargs):
         error_response = format_error(e)  # can format other errors this same way later
         return JsonResponse(error_response)
 
+
+# This will invalidate the access_token and remove the item from the user's account
+# This is a one-way action and cannot be undone
+@validate_access_token
+def item_remove_request(request, *args, **kwargs):
+    try:
+        request = ItemRemoveRequest(access_token=kwargs['access_token'])
+        response = plaid_client.item_remove(request)
+        # The Item was removed and the access_token is now invalid
+        return JsonResponse({"success": response.to_dict()})
+    except plaid.ApiException as e:
+        # print(e)  # Uncomment for debugging
+        return JsonResponse({"error": str(e)}, status=400)
+    
 
 # CSRF Token endpoint for front-end use
 def csrf_token(request):
