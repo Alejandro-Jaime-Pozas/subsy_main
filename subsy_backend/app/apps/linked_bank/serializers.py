@@ -15,6 +15,7 @@ class LinkedBankSerializer(serializers.ModelSerializer):
         read_only_fields = [field.name for field in model._meta.fields]
 
         # Other possible Meta options:
+        # fields = ['id', 'item_id', 'institution_id', 'institution_name', 'company']
         # exclude = ['access_token', 'cursor']  # Alternative to specifying fields
         # depth = 1  # How deep to serialize nested relationships
         # extra_kwargs = {
