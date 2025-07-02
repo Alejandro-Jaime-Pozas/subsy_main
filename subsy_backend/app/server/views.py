@@ -137,10 +137,8 @@ def exchange_public_token(request):
             request.session["access_token"] = exchange_response.to_dict()["access_token"]  # TODO remove once db implemented
 
             # get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
-            return JsonResponse({
-                "success": True,
-                "access_token": exchange_response.to_dict()["access_token"],
-            })
+
+            return JsonResponse({"success": True})
         except plaid.ApiException as e:
             # print(e)  # Uncomment for debugging
             return JsonResponse({"error": str(e)}, status=400)
@@ -176,6 +174,7 @@ def get_balance(request, *args, **kwargs):
         # need to create LinkedBank and BankAccounts from this data
         balance_response_dict = balance_response.to_dict()  # converts json into dict
         linked_bank = balance_response_dict.get("item", {})
+        linked_bank['access_token'] = kwargs.get("access_token")  # TODO mask the token later to prevent exposure
         bank_accounts = balance_response_dict.get("accounts", [])
         # pretty_print_response(bank_accounts)
         # pretty_print_response(linked_bank)
@@ -398,7 +397,7 @@ def item_remove_request(request, *args, **kwargs):
     except plaid.ApiException as e:
         # print(e)  # Uncomment for debugging
         return JsonResponse({"error": str(e)}, status=400)
-    
+
 
 # CSRF Token endpoint for front-end use
 def csrf_token(request):
