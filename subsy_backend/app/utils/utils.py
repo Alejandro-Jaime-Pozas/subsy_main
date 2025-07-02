@@ -7,7 +7,7 @@ import random, string, json
 
 def validate_access_token(view_func):
     """Wrapper function that checks if user has a valid access token."""
-    # TODO may need to modify if for some reason require multiple access tokens for different banks, though access token should only be used initially to get the item_id and cursor.
+    # TODO may need to modify for returning users if required, so no need to exchange public token since already have access token stored in db, but need to extract it if returning user. (prob yes to update new transactions...)
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
         access_token = request.session.get("access_token")  # will need to fetch this from db later
