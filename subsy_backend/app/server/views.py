@@ -214,7 +214,7 @@ def get_balance(request, *args, **kwargs):
 
 
 # Get ALL Transactions
-# WILL USE THIS ENDPOINT TO CREATE TRANSACTIONS
+# WILL USE THIS ENDPOINT TO CREATE AND UPDATE TRANSACTIONS
 @validate_access_token
 def get_all_transactions(request, *args, **kwargs):
     """

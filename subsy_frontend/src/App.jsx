@@ -3,6 +3,8 @@ import { usePlaidLink } from "react-plaid-link";
 import "./App.scss";
 import { safeParse } from "./utils/LocalStorageUtils"
 import { toTitleCase } from "./utils/PrettyPrintUtils"
+import Register from "./components/Register";
+import Login from "./components/Login";
 
 function App(props) {
   const [token, setToken] = useState(null);
@@ -99,7 +101,9 @@ function App(props) {
 
 
   return (
-    <div>
+    <div className="App">
+      <Register />
+      <Login />
       <button onClick={() => open()
         } disabled={!ready}>
         <strong>Link account</strong>
