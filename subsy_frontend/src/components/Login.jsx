@@ -20,8 +20,16 @@ function Login() {
         body: JSON.stringify(form),
       });
       const data = await response.json();
+      console.log(data);
       if (!response.ok) {
-        throw new Error(data.detail || "Login failed");
+        // Handle Django serializer validation errors
+        if (data.non_field_errors && data.non_field_errors.length > 0) {
+          throw new Error(data.non_field_errors[0]);
+        } else if (data.detail) {
+          throw new Error(data.detail);
+        } else {
+          throw new Error("Login failed");
+        }
       }
       localStorage.setItem("authToken", data.token);
       setSuccess(true);
