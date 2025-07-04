@@ -32,7 +32,7 @@ class CreateTokenView(ObtainAuthToken):
         if token:
             # Set the token as an HttpOnly cookie
             response.set_cookie(
-                key='authToken',
+                key='auth_token',
                 value=token,
                 httponly=True,
                 secure=False,  # TODO Set to True in production (requires HTTPS)
