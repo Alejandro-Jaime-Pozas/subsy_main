@@ -20,7 +20,7 @@ function Login() {
         body: JSON.stringify(form),
       });
       const data = await response.json();
-      console.log(data);
+      console.log(data);  // to check response from backend
       if (!response.ok) {
         // Handle Django serializer validation errors
         if (data.non_field_errors && data.non_field_errors.length > 0) {
