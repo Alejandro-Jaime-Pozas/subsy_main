@@ -19,8 +19,31 @@ class CreateUserView(generics.CreateAPIView):
 
 
 class CreateTokenView(ObtainAuthToken):
-    """Create a new auth token for user."""
+    """Create a new auth token for user and set it as HttpOnly cookie."""
     serializer_class = AuthTokenSerializer
+
+    def post(self, request, *args, **kwargs):
+        # Call the parent class's post method to handle authentication and token creation
+        response = super().post(request, *args, **kwargs)
+
+        # Get the token from the response
+        token = response.data.get('token')
+
+        if token:
+            # Set the token as an HttpOnly cookie
+            response.set_cookie(
+                key='authToken',
+                value=token,
+                httponly=True,
+                secure=False,  # TODO Set to True in production (requires HTTPS)
+                samesite='Lax',
+                max_age=60*60*24*7,  # 1 week
+            )
+
+            # Optionally, remove the token from the response body for security
+            response.data.pop('token', None)
+
+        return response
 
 
 class ManageUserView(BaseAuthPermissions, generics.RetrieveUpdateAPIView):
