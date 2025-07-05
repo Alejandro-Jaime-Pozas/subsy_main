@@ -52,7 +52,7 @@ function App(props) {
   // Fetch balance data
   const getBalance = useCallback(async () => {
     setLoading(true);
-    const response = await fetch("/api/balance/", {});
+    const response = await fetch("/api/balance/", {credentials: 'include'});
     const data = await response.json();
     setData(data);
     localStorage.setItem("balance", JSON.stringify(data));
@@ -63,7 +63,7 @@ function App(props) {
   // Fetch all transaction data
   const getAllTransactions = useCallback(async () => {
     setLoading(true);
-    const response = await fetch("/api/get_all_transactions/", {});
+    const response = await fetch("/api/get_all_transactions/", {credentials: 'include'});
     const data = await response.json();
     setAllTransactions(data.all_transactions);
     localStorage.setItem("all_transactions", JSON.stringify(data.all_transactions));
