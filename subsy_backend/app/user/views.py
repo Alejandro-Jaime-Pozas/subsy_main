@@ -41,7 +41,7 @@ class CreateTokenView(ObtainAuthToken):
             )
 
             # Optionally, remove the token from the response body for security
-            response.data.pop('token', None)
+            # response.data.pop('token', None)  # TODO INCLUDE FOR PROD
 
         return response
 

@@ -191,7 +191,7 @@ def create_or_update_subscriptions(transactions: list):
 
             if tx_obj and existing_sub:
                 tx_obj.subscription = existing_sub
-                print("UPDATING: subscription", tx_app_name, ", adding transaction id:", tx_id)
+                # print("UPDATING: subscription", tx_app_name, ", adding transaction id:", tx_id)
 
         # Bulk update all modified transactions for existing subscriptions
         if transaction_lookup:

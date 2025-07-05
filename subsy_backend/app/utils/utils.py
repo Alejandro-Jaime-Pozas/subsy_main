@@ -1,9 +1,48 @@
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 from functools import wraps
+
 from django.http import JsonResponse
+
 import random, string, json
 
 
 # WRAPPER FUNCTIONS FOR PLAID VIEWS
+
+def auth_required(view_func):
+    """Single decorator that handles authentication and permissions."""
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        # Check for token in cookie first, set it to request meta data
+        print("Cookies:", request.COOKIES)
+        print("Session:", request.session)
+        print("Headers:", request.META.get('HTTP_AUTHORIZATION'))
+        token = request.COOKIES.get('auth_token')
+        print("Token from cookie:", token)
+        if not token:
+            return JsonResponse({"error": "Authentication required from cookie."}, status=401)
+
+        request.META['HTTP_AUTHORIZATION'] = f'Token {token}'
+
+        # Check authentication
+        auth = TokenAuthentication()
+        try:
+            user, auth = auth.authenticate(request)
+            if user:
+                request.user = user
+            else:
+                return JsonResponse({"error": "Authentication required"}, status=401)
+        except Exception:
+            return JsonResponse({"error": "Authentication required"}, status=401)
+
+        # Check permissions
+        perm = IsAuthenticated()
+        if not perm.has_permission(request, None):
+            return JsonResponse({"error": "Permission denied"}, status=403)
+
+        return view_func(request, *args, **kwargs)
+    return wrapper
 
 def validate_access_token(view_func):
     """Wrapper function that checks if user has a valid access token."""

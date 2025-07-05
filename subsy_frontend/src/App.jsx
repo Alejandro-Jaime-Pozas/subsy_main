@@ -46,7 +46,7 @@ function App(props) {
     console.log(data);
     // TODO later automatically create all objects required once we have ingested all transaction history
     // await getBalance();
-    // await getAllTransactions();
+    // await getAllTransactions();  // perhaps with async this won't work since need to wait for getBalance
   }, []);
 
   // Fetch balance data

@@ -22,9 +22,10 @@ from apps.transaction.serializers import TransactionSerializer
 from apps.application.serializers import ApplicationSerializer
 from apps.subscription.serializers import SubscriptionSerializer
 from utils.utils import (
+    auth_required,
+    validate_access_token,
     extract_balance_fields_for_plaid_bank_account,
     merge_currency_codes,
-    validate_access_token,
     filter_model_fields,
 )
 from utils.model_utils import (
@@ -95,6 +96,7 @@ for req_product in PLAID_REQUIRED_IF_SUPPORTED_PRODUCTS:
 
 # Create Link Token
 def create_link_token(request):
+    """Create plaid link token to later exchange for plaid public token."""
     # print("PLAID_SANDBOX_REDIRECT_URI:", os.getenv('PLAID_SANDBOX_REDIRECT_URI'))
     # print("PLAID_REDIRECT_URI:", os.getenv('PLAID_REDIRECT_URI'))
     # print("PLAID_REDIRECT_URI:", products)
@@ -124,6 +126,7 @@ def create_link_token(request):
 # Exchange Public Token for Access Token
 @csrf_exempt
 def exchange_public_token(request):
+    """Exchange plaid public token for a permanent plaid access token."""
     if request.method == "POST":
         try:
             data = json.loads(request.body)
@@ -147,10 +150,12 @@ def exchange_public_token(request):
 
 # Get Account Balances
 # logged in user with their related company and accesss token will be passed in
+@auth_required  # TODO fix http request from react include cookie data/token
 @validate_access_token
 def get_balance(request, *args, **kwargs):
     """
     Get the balance for the linked bank item using the access token.
+    Logged in user with related company and accesss token will be passed in.
     This will create a LinkedBank and BankAccounts from the Plaid response.
     The LinkedBank will be created if it does not exist, and the BankAccounts
     will be created or updated based on the Plaid response.
@@ -215,6 +220,7 @@ def get_balance(request, *args, **kwargs):
 
 # Get ALL Transactions
 # WILL USE THIS ENDPOINT TO CREATE AND UPDATE TRANSACTIONS
+@auth_required
 @validate_access_token
 def get_all_transactions(request, *args, **kwargs):
     """
@@ -387,6 +393,7 @@ def get_all_transactions(request, *args, **kwargs):
 
 # This will invalidate the access_token and remove the item from the user's account
 # This is a one-way action and cannot be undone
+@auth_required
 @validate_access_token
 def item_remove_request(request, *args, **kwargs):
     try:
@@ -401,6 +408,7 @@ def item_remove_request(request, *args, **kwargs):
 
 # CSRF Token endpoint for front-end use
 def csrf_token(request):
+    """CSRF Token endpoint for front-end use."""
     token = get_token(request)
     return JsonResponse({"csrfToken": token})
 
