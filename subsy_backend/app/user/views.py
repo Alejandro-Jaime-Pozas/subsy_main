@@ -6,6 +6,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 
 from core.views import BaseAuthPermissions
+from core.models import Company
 from user.serializers import (
     UserSerializer,
     AuthTokenSerializer,
@@ -16,6 +17,23 @@ class CreateUserView(generics.CreateAPIView):
     """Create a new user in the db."""
     serializer_class = UserSerializer
     permission_classes = []
+
+    def perform_create(self, serializer):
+        """Create user and associate with company based on email domain."""
+        user = serializer.save()
+
+        # Extract domain and company name from user's email
+        email_domain = user.email.split('@')[1]
+        company_name = email_domain.split('.')[0]
+
+        # Get or create company based on domain and name
+        company, created = Company.objects.get_or_create(
+            domain=email_domain,
+            defaults={'name': company_name}  # TODO perhaps later change using hunter io api
+        )
+
+        # Associate user with company
+        company.users.add(user)
 
 
 class CreateTokenView(ObtainAuthToken):

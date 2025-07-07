@@ -3,6 +3,7 @@ import { usePlaidLink } from "react-plaid-link";
 import "./App.scss";
 import { safeParse } from "./utils/LocalStorageUtils"
 import { toTitleCase } from "./utils/PrettyPrintUtils"
+import { fetchConfig } from "./utils/Variables";
 import Register from "./components/Register";
 import Login from "./components/Login";
 
@@ -52,7 +53,7 @@ function App(props) {
   // Fetch balance data
   const getBalance = useCallback(async () => {
     setLoading(true);
-    const response = await fetch("/api/balance/", {credentials: 'include'});
+    const response = await fetch("/api/balance/", fetchConfig);
     const data = await response.json();
     setData(data);
     localStorage.setItem("balance", JSON.stringify(data));
@@ -63,7 +64,7 @@ function App(props) {
   // Fetch all transaction data
   const getAllTransactions = useCallback(async () => {
     setLoading(true);
-    const response = await fetch("/api/get_all_transactions/", {credentials: 'include'});
+    const response = await fetch("/api/get_all_transactions/", fetchConfig);
     const data = await response.json();
     setAllTransactions(data.all_transactions);
     localStorage.setItem("all_transactions", JSON.stringify(data.all_transactions));

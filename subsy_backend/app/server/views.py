@@ -137,7 +137,7 @@ def exchange_public_token(request):
 
             # Store the access_token in the session (for demo purposes)
             # WILL NEED TO STORE ACTUAL ACCESS TOKEN LATER IN GET BALANCE FOR THE ITEM
-            request.session["access_token"] = exchange_response.to_dict()["access_token"]  # TODO remove once db implemented
+            request.session["access_token"] = exchange_response.to_dict()["access_token"]  # TODO if same browser but diff user, session is stored, CHANGE TO ALWAYS CHECK DB access_token not session
 
             # get_balance_data = get_balance(request)  # have both item and accounts data, so can create LinkedBank and BankAccounts from here
 
