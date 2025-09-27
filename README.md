@@ -1,4 +1,4 @@
-## Overview
+## Overview (Ideal End State)
 
 App that collects all of the accounts company pays for (g suite, airbyte, stitch, slack, simon, notion, ramp, perkup, figma, etc) and updates realtime which is active, cancelled, cost summary, recommendations, etc.
 
@@ -26,7 +26,25 @@ Once we have all of your bank accounts/credit cards/paypal, etc, MySubs will:
 
 ---
 
+## What This Does
+
+Subsy is a web application (limited to local computer for now) that allows users who work for some company to link their bank accounts and be able to see relevant bank data that gives the users insight into their subscription spend, specifically SAAS subscriptions. So for example, let's say their bank, Chase bank, has many monthly transactions where the name of it is "AWS". The user can see how much they've spent each month, break it down by different intervals if applicable, like day, week, month, year. The user can compare what they've spent for "AWS" vs other subscriptions with a nice chart that compares each of them. That's it, for now Subsy doesn't allow users to manager their subscriptions but does allow them to get cost insights based on Plaid transaction data.
+
+In the future, subsy will be an app where users can easily manage any subscriptions they may have, that means cancelling, modifying, or creating new subscriptions. It will be an everything web app so that users can view and manage spend.
+
+## Functionality
+
+The web application will function as a full stack web application using react as the frontend and django as the backend. For now, will keep it local, not deploy the web app to a web host, just the local machine. So react, django, and postgres for the database system. It will use environment variables to set all necessary credentials and variables need from the Plaid API, a financial API. The applications will be containerized using Docker to ensure cross-functional use.
+
+In terms of how the process looks like in linear fashion, a user creates their account which should automatically create or link that user to a company based on the user's email domain. With user created, user can now log in. Once they log in, a user will immediately be able to view a dashboard with a chart that goes back 12 months and shows the cost of all of their SAAS subscriptions. The user will be able to view that chart or switch to a tabular view with a tab for each, the tabular view will contain a row for each SAAS subscription and the amount of spend for last 12 months, name, subscription company logo, last payment date, next payment date, and any other relevant data for analysis. The chart will be able to filter out and group subscriptions for analysis.
+
+When the user logs in, that should trigger the django backend to update all relevant data, so it should get either all historical transactions if this is a new user/company acccount, or it should update latest transactions and all other relevant data like bank accounts, applications, and subscriptions. And once that is done, which could take a little bit so let the user know, it should show the chart and tabular data to the user with the latest updates.
+
 ## FRONTEND
+
+## Overview
+
+The frontend application will be a react application
 
 ### MAIN MENU
 
@@ -77,6 +95,10 @@ Once we have all of your bank accounts/credit cards/paypal, etc, MySubs will:
 > - This is PRIMARILY an intuitive app for frontend use, not like AWS or something much more technical, this is a basic use app (but where's the value if very low user interaction?).
 
 ## BACKEND
+
+### Overview
+
+The backend application will be primarily built using django framework and django rest framework, will contain all necessary models, views, urls, etc required to build a functional API. Database will be a relational database, Postgresql.
 
 ## Database
 
@@ -180,11 +202,6 @@ A subscription can also be linked to a sub manager, which is the user managing t
     - MAIN = SUBSCRIPTION
     - A subscription can have 0 or many tags
     - A tag can have 0 or many subscriptions
-- **SUBSCRIPTION > USER**
-    - MANY TO MANY
-    - MAIN = USER
-    - a subscription can have 0 or many users (subscription_manager)
-    - a user can have 0 or many subscriptions for which they're in charge
 
 ---
 
