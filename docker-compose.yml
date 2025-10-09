@@ -8,7 +8,7 @@ services:
     # ports: local machine port first, then container port
     ports:
       - "8000:8000"
-    # volumes used to persist data, we want to persist the backend dir
+    # volumes used to persist data from local to container, we want to persist the backend dir
     # this creates a two way sync
     volumes:
       - ./subsy_backend/app:/backend
