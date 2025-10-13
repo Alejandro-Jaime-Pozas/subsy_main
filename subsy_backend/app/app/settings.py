@@ -73,7 +73,7 @@ MIDDLEWARE = [
 # CORS_ALLOWED_ORIGINS = [
 #     # REPLACE WITH ENV VARIABLES BELOW LATER
 #     "http://localhost:3000",       # For React dev environment
-#     "http://react_frontend:3000",  # Service name in Docker
+#     "http://frontend:3000",  # Service name in Docker
 # ]
 
 # DEV ONLY
